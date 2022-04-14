@@ -3,15 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Tank
+  - Terrain
+  - Projectile
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Object
   - Water
   - UI
-  - 
+  - Ground
   - 
   - 
   - 
@@ -38,6 +41,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Foreground
+    uniqueID: 2874076177
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
