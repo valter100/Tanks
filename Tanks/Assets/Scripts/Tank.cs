@@ -25,10 +25,13 @@ public class Tank : MonoBehaviour
     [SerializeField] ParticleSystem movementEffect;
     [SerializeField] float timeBetweenEffectSpawn;
 
-    [Header("Projectile")]
-    [SerializeField] Projectile[] projectiles;
+    [Header("Combat")]
+    [SerializeField] List<Projectile> projectiles;
+    [SerializeField] List<int> ammo;
     [SerializeField] Projectile currentProjectile;
     [SerializeField] ParticleSystem fireParticles;
+    [SerializeField] Animator animator;
+    [SerializeField] ParticleSystem tankDestroyedParticles;
 
     [Header("References")]
     [SerializeField] GameObject rotatePoint;
@@ -68,22 +71,30 @@ public class Tank : MonoBehaviour
         currentFuel = maxFuel;
         currentProjectile = projectiles[0];
 
-        foreach (Projectile projectile in projectiles)
-            projectile.ResetAmmo();
+        for (int i = 0; i < projectiles.Count; i++)
+        {
+            ammo.Add(projectiles[i].GetAmmoCount());
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.GetCurrentPlayerIndex() != playerIndex || hasShot)
+        if (gameManager.GetCurrentPlayerIndex() != playerIndex || hasShot || currentHealth <= 0)
             return;
 
+        if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
+            Move();
 
-        Move();
         Aim();
-        SwapProjectile();
+
+        if (playerController.GetNewWeapon() == 1 || playerController.GetNewWeapon() == -1)
+            SwapProjectile();
+
         CalculateShootForce();
-        Shoot();
+
+        if (playerController.IsShooting() && HasAmmo())
+            Shoot();
     }
 
     public void Move()
@@ -92,10 +103,6 @@ public class Tank : MonoBehaviour
         {
             rb.AddForce(new Vector3(0, jumpForce, 0));
         }
-
-        if (playerController.GetMovement() == Vector3.zero || currentFuel <= 0)
-            return;
-        
 
         if (playerController.GetMovement().x > 0)
             transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -115,7 +122,7 @@ public class Tank : MonoBehaviour
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
         timeSinceLastEffect += Time.deltaTime;
-        if(timeSinceLastEffect > timeBetweenEffectSpawn)
+        if (timeSinceLastEffect > timeBetweenEffectSpawn)
         {
             Instantiate(movementEffect, transform.position, Quaternion.identity);
             timeSinceLastEffect = 0;
@@ -131,18 +138,22 @@ public class Tank : MonoBehaviour
         Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(rotatePoint.transform.position);
         Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
 
-        float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg;
-        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, Mathf.Clamp(rotationZ, 0, 180));
-        rotatePoint.transform.Rotate(0, 0, -90);
+        //Quaternion newRotation = Quaternion.LookRotation(lookVector);
+        //rotatePoint.transform.rotation = newRotation;
 
+        float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
+
+        if (rotationZ < -90)
+            rotationZ = -90;
+        else if (rotationZ > 179)
+            rotationZ = 179;
+
+        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
     }
 
     public void Shoot()
     {
-        if (!playerController.IsShooting() || !currentProjectile.HasAmmo())
-            return;
-
-        currentProjectile.ChangeAmmoCount(-1);
+        ammo[projectileIndex] -= 1;
         Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
         Projectile projectile = Instantiate(currentProjectile.gameObject, firePoint).GetComponent<Projectile>();
 
@@ -151,6 +162,16 @@ public class Tank : MonoBehaviour
         projectile.Shoot(cannon.transform.rotation, currentShootForce);
 
         hasShot = true;
+
+        animator.SetTrigger("Fire");
+
+        if (ammo[projectileIndex] <= 0)
+        {
+            projectiles.RemoveAt(projectileIndex);
+            ammo.RemoveAt(projectileIndex);
+
+            SwapProjectile();
+        }
     }
 
     public void TakeDamage(int damage)
@@ -158,10 +179,22 @@ public class Tank : MonoBehaviour
         currentHealth -= damage;
         healthSlider.value = currentHealth / maxHealth;
 
+        animator.SetTrigger("Damaged");
+
         if (currentHealth <= 0)
         {
-            gameManager.RemoveTankFromList(this);
+            animator.SetTrigger("Destroyed");
         }
+    }
+
+    public void RemoveTank()
+    {
+        gameManager.RemoveTankFromList(this);
+    }
+
+    public void SpawnDestroyedParticles()
+    {
+        Instantiate(tankDestroyedParticles, transform.position, Quaternion.Euler(-90,0,0), null);
     }
 
     public void AssignPlayer(int newIndex, string newName, Color newColor)
@@ -211,16 +244,18 @@ public class Tank : MonoBehaviour
 
     public void SwapProjectile()
     {
-        if (playerController.GetNewWeapon() == 0)
-            return;
-
         projectileIndex += playerController.GetNewWeapon();
 
-        if (projectileIndex >= projectiles.Length)
+        if (projectileIndex >= projectiles.Count)
             projectileIndex = 0;
         else if (projectileIndex < 0)
-            projectileIndex = projectiles.Length - 1;
+            projectileIndex = projectiles.Count - 1;
 
         currentProjectile = projectiles[projectileIndex];
+    }
+
+    public bool HasAmmo()
+    {
+        return ammo[projectileIndex] > 0;
     }
 }

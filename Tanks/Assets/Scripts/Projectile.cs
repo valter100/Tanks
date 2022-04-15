@@ -9,10 +9,10 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected int lifeTime;
     [SerializeField] protected ParticleSystem particles;
     [SerializeField] protected int startAmmoCount;
+    [SerializeField] protected bool canDamageSelf;
 
     protected Rigidbody rb;
     protected Tank ownTank;
-    [SerializeField] protected int ammoCount;
 
     void Awake()
     {
@@ -20,17 +20,13 @@ public abstract class Projectile : MonoBehaviour
         Destroy(gameObject,lifeTime);
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
+        Instantiate(particles, transform.position, Quaternion.identity, null);
+        //Vector3 distance = transform.position - other.transform.position;
+        //particles.transform.rotation = Quaternion.LookRotation(distance);
+        ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
         ownTank.GetGameManager().NextPlayer();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
-            return;
-
-        Hit(other.gameObject);
     }
 
     public void Shoot(Quaternion angle, float force)
@@ -48,22 +44,7 @@ public abstract class Projectile : MonoBehaviour
 
     public int GetAmmoCount()
     {
-        return ammoCount;
-    }
-
-    public void ChangeAmmoCount(int change)
-    {
-        ammoCount += change;
-    }
-
-    public void ResetAmmo()
-    {
-        ammoCount = startAmmoCount;
-    }
-
-    public bool HasAmmo()
-    {
-        return ammoCount > 0;
+        return startAmmoCount;
     }
 
     public abstract void Hit(GameObject other);

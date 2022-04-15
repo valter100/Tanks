@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1672302495151344001}
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
-  - component: {fileID: -1023275637233965037}
+  - component: {fileID: 6481296158931651720}
   m_Layer: 0
   m_Name: Blue Bullet
   m_TagString: Projectile
@@ -92,7 +92,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -113,7 +113,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-1023275637233965037
+--- !u!114 &6481296158931651720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,10 +122,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 725691630527340521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 514cc322dacc5234ab7cf4d37c38fd1d, type: 3}
+  m_Script: {fileID: 11500000, guid: c24ffe96743909840b5ecae3bfd2e427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
-  damage: 5
-  lifeTime: 5
-  particles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
+  damage: 7
+  lifeTime: 3
+  particles: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
+  startAmmoCount: 3
+  canDamageSelf: 1
+  explosionRadius: 3
