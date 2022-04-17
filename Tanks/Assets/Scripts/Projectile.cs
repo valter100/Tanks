@@ -10,6 +10,8 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected ParticleSystem particles;
     [SerializeField] protected int startAmmoCount;
     [SerializeField] protected bool canDamageSelf;
+    [SerializeField] protected Terrain terrain;
+    [SerializeField] protected float explosionRadius;
 
     protected Rigidbody rb;
     protected Tank ownTank;
@@ -17,12 +19,17 @@ public abstract class Projectile : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        terrain = Terrain.activeTerrain;
         Destroy(gameObject,lifeTime);
     }
 
     protected virtual void OnDestroy()
     {
         Instantiate(particles, transform.position, Quaternion.identity, null);
+        
+        if(GetComponent<DestructableTerrain>())
+            GetComponent<DestructableTerrain>().Terraform(this);
+
         //Vector3 distance = transform.position - other.transform.position;
         //particles.transform.rotation = Quaternion.LookRotation(distance);
         ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
@@ -47,6 +54,10 @@ public abstract class Projectile : MonoBehaviour
         return startAmmoCount;
     }
 
+    public float GetExplosionRadius()
+    {
+        return explosionRadius;
+    }
     public abstract void Hit(GameObject other);
     
         

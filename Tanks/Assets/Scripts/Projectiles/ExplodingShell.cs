@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class ExplodingShell : Projectile
 {
-    [Header("Exploding Shell")]
-    [SerializeField] float explosionRadius;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)

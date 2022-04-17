@@ -53,6 +53,11 @@ public class GameManager : MonoBehaviour
         return currentPlayerIndex;
     }
 
+    public Tank GetCurrentTank()
+    {
+        return tanks[currentPlayerIndex];
+    }
+
     public void RemoveTankFromList(Tank tank)
     {
         tanks.Remove(tank);

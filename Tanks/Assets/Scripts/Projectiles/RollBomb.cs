@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RollBomb : Projectile
 {
-    [SerializeField] float explosionRadius;
-
     public override void Hit(GameObject other)
     {
         other.GetComponent<Tank>().TakeDamage(damage);

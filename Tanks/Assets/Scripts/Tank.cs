@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,9 @@ public class Tank : MonoBehaviour
     [SerializeField] ParticleSystem fireParticles;
     [SerializeField] Animator animator;
     [SerializeField] ParticleSystem tankDestroyedParticles;
+
+    [Header("Status Effects")]
+    [SerializeField] bool isSlowed;
 
     [Header("References")]
     [SerializeField] GameObject rotatePoint;
@@ -77,7 +81,7 @@ public class Tank : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (gameManager.GetCurrentPlayerIndex() != playerIndex || hasShot || currentHealth <= 0)
@@ -121,6 +125,7 @@ public class Tank : MonoBehaviour
         }
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
+        //rb.AddForce(playerController.GetMovement() * movementSpeed);
         timeSinceLastEffect += Time.deltaTime;
         if (timeSinceLastEffect > timeBetweenEffectSpawn)
         {
@@ -128,8 +133,10 @@ public class Tank : MonoBehaviour
             timeSinceLastEffect = 0;
         }
 
-        currentFuel -= playerController.GetMovement().magnitude;
-
+        if (!isSlowed)
+            currentFuel -= playerController.GetMovement().magnitude;
+        else
+            currentFuel -= playerController.GetMovement().magnitude * 2;
         fuelSlider.value = currentFuel / maxFuel;
     }
 
@@ -194,7 +201,7 @@ public class Tank : MonoBehaviour
 
     public void SpawnDestroyedParticles()
     {
-        Instantiate(tankDestroyedParticles, transform.position, Quaternion.Euler(-90,0,0), null);
+        Instantiate(tankDestroyedParticles, transform.position, Quaternion.Euler(-90, 0, 0), null);
     }
 
     public void AssignPlayer(int newIndex, string newName, Color newColor)
@@ -220,6 +227,8 @@ public class Tank : MonoBehaviour
         currentFuel = maxFuel;
         fuelSlider.value = currentFuel / maxFuel;
         hasShot = false;
+        isSlowed = false;
+        GetComponent<Renderer>().material.color = playerColor;
     }
 
     public void UnreadyTank()
@@ -232,6 +241,21 @@ public class Tank : MonoBehaviour
     public string GetPlayerName()
     {
         return playerName;
+    }
+
+    public Projectile GetCurrentProjectile()
+    {
+        return currentProjectile;
+    }
+
+    public float GetFuelPercentage()
+    {
+        return currentFuel / maxFuel;
+    }
+
+    public float GetHealthPercentage()
+    {
+        return (currentHealth / maxHealth);
     }
 
     public void CalculateShootForce()
@@ -257,5 +281,11 @@ public class Tank : MonoBehaviour
     public bool HasAmmo()
     {
         return ammo[projectileIndex] > 0;
+    }
+
+    public void SetIsSlowed(bool state)
+    {
+        isSlowed = state;
+        GetComponent<Renderer>().material.color = Color.blue;
     }
 }
