@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 3
-  lifeTime: 3
+  lifeTime: 6
   particles: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
   startAmmoCount: 5
   canDamageSelf: 1

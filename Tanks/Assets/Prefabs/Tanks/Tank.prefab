@@ -1266,7 +1266,7 @@ MonoBehaviour:
   playerName: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 15
-  maxShootForce: 1000
+  maxShootForce: 20
   maxFuel: 100
   groundLayerMask:
     serializedVersion: 2
@@ -1296,6 +1296,7 @@ MonoBehaviour:
   fuelSlider: {fileID: 5387350034312859992}
   shootForceSlider: {fileID: 1448159220805746562}
   projectileText: {fileID: 0}
+  aimRadius: 250
   currentShootForce: 0
 --- !u!95 &3180057106955339533
 Animator:

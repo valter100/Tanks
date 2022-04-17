@@ -52,14 +52,15 @@ public class Tank : MonoBehaviour
     [SerializeField] Slider fuelSlider;
     [SerializeField] Slider shootForceSlider;
     [SerializeField] TMP_Text projectileText;
+    [SerializeField] float aimRadius;
 
     float timeSinceLastEffect;
     int projectileIndex;
-    bool hasShot = false;
+    bool hasFired = false;
     float currentFuel;
     float currentHealth;
     [SerializeField] float currentShootForce;
-    Camera mainCamera;
+    CameraController cameraController;
     PlayerController playerController;
     Rigidbody rb;
     Ray ray;
@@ -67,7 +68,7 @@ public class Tank : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
 
@@ -81,10 +82,9 @@ public class Tank : MonoBehaviour
         }
     }
 
-
     void Update()
     {
-        if (gameManager.GetCurrentPlayerIndex() != playerIndex || hasShot || currentHealth <= 0)
+        if (gameManager.GetCurrentPlayerIndex() != playerIndex || hasFired || currentHealth <= 0)
             return;
 
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
@@ -96,9 +96,6 @@ public class Tank : MonoBehaviour
             SwapProjectile();
 
         CalculateShootForce();
-
-        if (playerController.IsShooting() && HasAmmo())
-            Shoot();
     }
 
     public void Move()
@@ -142,7 +139,7 @@ public class Tank : MonoBehaviour
 
     public void Aim()
     {
-        Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(rotatePoint.transform.position);
+        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
         Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
 
         //Quaternion newRotation = Quaternion.LookRotation(lookVector);
@@ -158,7 +155,15 @@ public class Tank : MonoBehaviour
         rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
     }
 
-    public void Shoot()
+    public bool CanFire()
+    {
+        return HasAmmo()
+            && !hasFired
+            && gameManager.GetCurrentPlayerIndex() == playerIndex
+            && currentHealth > 0.0f;
+    }
+
+    public void Fire()
     {
         ammo[projectileIndex] -= 1;
         Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
@@ -166,9 +171,9 @@ public class Tank : MonoBehaviour
 
         projectile.transform.parent = null;
         projectile.SetOwnTank(this);
-        projectile.Shoot(cannon.transform.rotation, currentShootForce);
+        projectile.Fire(cannon.transform.rotation, currentShootForce);
 
-        hasShot = true;
+        hasFired = true;
 
         animator.SetTrigger("Fire");
 
@@ -178,6 +183,24 @@ public class Tank : MonoBehaviour
             ammo.RemoveAt(projectileIndex);
 
             SwapProjectile();
+        }
+
+        // Precompute point of collision
+
+        Vector3? collisionPoint = projectile.PrecomputeTrajectory();
+
+        // Update camera
+
+        if (collisionPoint != null)
+        {
+            cameraController.focusPoint.SetPosition(collisionPoint.Value);
+            cameraController.FollowObject(projectile.gameObject);
+            cameraController.Transition(CameraController.View.FirstPerson, 0.6f);
+        }
+
+        else
+        {
+            cameraController.focusPoint.FollowObject(projectile.gameObject);
         }
     }
 
@@ -226,7 +249,7 @@ public class Tank : MonoBehaviour
 
         currentFuel = maxFuel;
         fuelSlider.value = currentFuel / maxFuel;
-        hasShot = false;
+        hasFired = false;
         isSlowed = false;
         GetComponent<Renderer>().material.color = playerColor;
     }
@@ -260,10 +283,11 @@ public class Tank : MonoBehaviour
 
     public void CalculateShootForce()
     {
-        Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(cannon.transform.position);
-        currentShootForce = Math.Min(Vector3.Distance(cannonScreenPos, playerController.GetMousePosition()), maxShootForce);
-
-        shootForceSlider.value = currentShootForce / maxShootForce;
+        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(cannon.transform.position);
+        float percentage = Vector2.Distance(cannonScreenPos, playerController.GetMousePosition()) / aimRadius;
+        percentage = Mathf.Clamp01(percentage);
+        currentShootForce = percentage * maxShootForce;
+        shootForceSlider.value = percentage;
     }
 
     public void SwapProjectile()

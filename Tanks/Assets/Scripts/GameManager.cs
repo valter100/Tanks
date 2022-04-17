@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         currentTank = tanks[currentPlayerIndex];
         currentTank.ReadyTank();
     }
+
     public int GetCurrentPlayerIndex()
     {
         return currentPlayerIndex;
@@ -56,6 +57,12 @@ public class GameManager : MonoBehaviour
     public Tank GetCurrentTank()
     {
         return tanks[currentPlayerIndex];
+    }
+
+    public void Fire()
+    {
+        if (currentTank.CanFire())
+            currentTank.Fire();
     }
 
     public void RemoveTankFromList(Tank tank)
