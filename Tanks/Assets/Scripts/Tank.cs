@@ -136,7 +136,7 @@ public class Tank : MonoBehaviour
         if (!isSlowed)
             currentFuel -= playerController.GetMovement().magnitude;
         else
-            currentFuel -= playerController.GetMovement().magnitude * 2;
+            currentFuel -= playerController.GetMovement().magnitude * 3;
         fuelSlider.value = currentFuel / maxFuel;
     }
 
@@ -144,9 +144,6 @@ public class Tank : MonoBehaviour
     {
         Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(rotatePoint.transform.position);
         Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
-
-        //Quaternion newRotation = Quaternion.LookRotation(lookVector);
-        //rotatePoint.transform.rotation = newRotation;
 
         float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
 
@@ -227,8 +224,7 @@ public class Tank : MonoBehaviour
         currentFuel = maxFuel;
         fuelSlider.value = currentFuel / maxFuel;
         hasShot = false;
-        isSlowed = false;
-        GetComponent<Renderer>().material.color = playerColor;
+        
     }
 
     public void UnreadyTank()
@@ -236,6 +232,8 @@ public class Tank : MonoBehaviour
         fuelSlider.gameObject.SetActive(false);
         shootForceSlider.gameObject.SetActive(false);
         lineRenderer?.gameObject.SetActive(false);
+        isSlowed = false;
+        GetComponent<Renderer>().material.color = playerColor;
     }
 
     public string GetPlayerName()
@@ -286,6 +284,6 @@ public class Tank : MonoBehaviour
     public void SetIsSlowed(bool state)
     {
         isSlowed = state;
-        GetComponent<Renderer>().material.color = Color.blue;
+        GetComponent<Renderer>().material.color = Color.cyan;
     }
 }

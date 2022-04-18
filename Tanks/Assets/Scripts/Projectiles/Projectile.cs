@@ -15,25 +15,25 @@ public abstract class Projectile : MonoBehaviour
 
     protected Rigidbody rb;
     protected Tank ownTank;
+    protected bool endsRound = true;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         terrain = Terrain.activeTerrain;
-        Destroy(gameObject,lifeTime);
+        Destroy(gameObject, lifeTime);
     }
 
     protected virtual void OnDestroy()
     {
         Instantiate(particles, transform.position, Quaternion.identity, null);
-        
-        if(GetComponent<DestructableTerrain>())
-            GetComponent<DestructableTerrain>().Terraform(this);
 
         //Vector3 distance = transform.position - other.transform.position;
         //particles.transform.rotation = Quaternion.LookRotation(distance);
         ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
-        ownTank.GetGameManager().NextPlayer();
+
+        if (endsRound)
+            ownTank.GetGameManager().NextPlayer();
     }
 
     public void Shoot(Quaternion angle, float force)
@@ -59,7 +59,14 @@ public abstract class Projectile : MonoBehaviour
         return explosionRadius;
     }
     public abstract void Hit(GameObject other);
-    
-        
-    
+
+    public void SetDamage(int newDamage)
+    {
+        damage = newDamage;
+    }
+
+    public void SetEndsRound(bool state)
+    {
+        endsRound = state;
+    }
 }

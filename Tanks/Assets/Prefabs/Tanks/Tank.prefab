@@ -1279,11 +1279,14 @@ MonoBehaviour:
   - {fileID: 7936401087168736136, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
   - {fileID: 4666774405610918408, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
   - {fileID: 6481296158931651720, guid: d90d4454beadc314bba6b501d2b98a73, type: 3}
+  - {fileID: -8063847045595054941, guid: 3993da982c11aea4a83c040dbfad7e89, type: 3}
+  - {fileID: 5288328317349611985, guid: f970a4f8397fea14fa7c1f2a2b5f06cf, type: 3}
   ammo: 
   currentProjectile: {fileID: -1023275637233965037, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 3180057106955339533}
   tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
+  isSlowed: 0
   rotatePoint: {fileID: 2232384697090623839}
   cannon: {fileID: 2391059649131488606}
   firePoint: {fileID: 6354992861223454508}

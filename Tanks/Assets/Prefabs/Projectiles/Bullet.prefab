@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 7936401087168736136}
-  m_Layer: 0
-  m_Name: Gray Bullet
+  m_Layer: 7
+  m_Name: Bullet
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
-  damage: 5
-  lifeTime: 3
+  damage: 3
+  lifeTime: 2
   particles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
   startAmmoCount: 20
+  canDamageSelf: 0
+  terrain: {fileID: 0}
+  explosionRadius: 0
