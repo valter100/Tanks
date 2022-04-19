@@ -17,6 +17,14 @@ GameObject:
   m_Layer: 7
   m_Name: Bullet
   m_TagString: Projectile
+  - component: {fileID: 878865870302683584}
+  - component: {fileID: 536519707721593117}
+  - component: {fileID: 9173703228511428979}
+  - component: {fileID: 8461182153971407615}
+  - component: {fileID: -4263831780098415905}
+  m_Layer: 0
+  m_Name: SpecialCube
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,12 +106,14 @@ SphereCollider:
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5353926287226023679
+--- !u!54 &-4263831780098415905
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
+  m_GameObject: {fileID: 1169372525653062118}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
