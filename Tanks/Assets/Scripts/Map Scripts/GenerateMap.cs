@@ -6,7 +6,8 @@ namespace Tanks
 {
     public class GenerateMap : MonoBehaviour
     {
-        [SerializeField] private bool canGenerateNewMap;
+        [SerializeField] private bool generateNewMap;
+        [SerializeField] private bool drawDebugLines = true;
 
         [Min(0.1f)]
         [SerializeField] private float pointsPerWidth = 3;
@@ -33,14 +34,20 @@ namespace Tanks
 
         private void Update()
         {
-            if (canGenerateNewMap && Input.GetKeyDown(KeyCode.Space))
+            if (generateNewMap)
+            {
                 GenerateRandomMap();
-
-            DrawDebugLine(linePositions);
+                generateNewMap = false;
+            }
+                
+            if(drawDebugLines)
+                DrawDebugLine(linePositions);
         }
 
         private void GenerateRandomMap()
         {
+            if (height < amplitude * 2)
+                height = amplitude * 2;
             GenerateRandomHeights();
             SmoothenHeights();
             UpdatePositions();
