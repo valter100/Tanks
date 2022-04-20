@@ -19,8 +19,8 @@ namespace Tanks
         [SerializeField] private float width = 20f;
         [Range(5.0f, 25.0f)]
         [SerializeField] private float height = 6f;
-        [Range(5.0f, 20.0f)]
-        [SerializeField] private float depth = 7.5f;
+        [Range(1.0f, 10.0f)]
+        [SerializeField] private float depth = 3f;
         [Min(1)]
         [SerializeField] private int tileAmount = 1;
 
@@ -36,6 +36,8 @@ namespace Tanks
         {
             if (generateNewMap)
             {
+                foreach (Transform child in transform)
+                    Destroy(child.gameObject);
                 GenerateRandomMap();
                 generateNewMap = false;
             }
@@ -52,6 +54,7 @@ namespace Tanks
             SmoothenHeights();
             UpdatePositions();
             GenerateMesh();
+            GenerateEnvironmentalObjects();
         }
 
         private void DrawDebugLine(Vector3[] positions)
@@ -138,14 +141,18 @@ namespace Tanks
             collider.sharedMesh = mesh;
         }
 
-        //Unfolds the map so that both y and z are counted as height.
-        private Vector2[] CreateUV(List<Vector3> vertices)
+        private void GenerateEnvironmentalObjects()  
         {
+            GetComponent<GenerateDecor>().GenerateObjects(linePositions, width, depth);
+        }
+        
+        private Vector2[] CreateUV(List<Vector3> vertices)
+        {   //Unfolds the map to determine UV-coord
             Vector2[] uvs = new Vector2[vertices.Count];
             int divideMapSize = 2;
             for (int i = 0; i < vertices.Count; i++)
-            {
-                float vertexHeight = vertices[i].y + vertices[i].z;
+            {   
+                float vertexHeight = vertices[i].y + vertices[i].z;//both y and z are counted as height.
                 float fillPercentX = Mathf.InverseLerp(width / divideMapSize, -width / divideMapSize, vertices[i].x);
                 float fillPercentY = Mathf.InverseLerp((height + depth) / divideMapSize, -(height + depth) / divideMapSize, vertexHeight);
                 uvs[i] = new Vector2(fillPercentX, fillPercentY) * tileAmount;

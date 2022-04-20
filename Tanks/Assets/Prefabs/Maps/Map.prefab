@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9169650065926079914}
   - component: {fileID: 9169650065926079915}
+  - component: {fileID: 6797612445077828031}
   - component: {fileID: 9169650065926079919}
   - component: {fileID: 9169650065926079916}
   - component: {fileID: 9169650065926079917}
@@ -55,6 +56,22 @@ MonoBehaviour:
   height: 6
   depth: 7.5
   tileAmount: 1
+--- !u!114 &6797612445077828031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169650065926079912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd75978a22859bd43adf8a0b7fa49725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  environmentalObjects:
+  - {fileID: 5690398224678537628, guid: 4f0bf183128f34a46a0e2cf240d40847, type: 3}
+  - {fileID: 588183761583343122, guid: f2c3c220d36b6ca4381fb19f51a615d6, type: 3}
+  - {fileID: 3217225402457508355, guid: af999f051d0de3848ab496e3a9be6aeb, type: 3}
 --- !u!23 &9169650065926079919
 MeshRenderer:
   m_ObjectHideFlags: 0
