@@ -19,7 +19,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] bool transitioning;
 
     Dictionary<View, ViewSettings> viewSettings;
-    PlayerController playerController;
     Camera mainCamera;
     float maxDistanceToTarget;
 
@@ -37,7 +36,6 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
-        playerController = GetComponent<PlayerController>();
         transform.localScale = Vector3.one;
         transitioning = false;
         maxDistanceToTarget = Screen.currentResolution.height * 0.25f;
@@ -112,7 +110,7 @@ public class CameraController : MonoBehaviour
         // Approach target values
 
         if (transform.position != targetPosition)
-            ApproachTargetPosition(3.0f);
+            ApproachTargetPosition(5.0f);
 
         if (mainCamera.fieldOfView != targetFOV)
             ApproachTargetFOV(10.0f);
@@ -198,80 +196,68 @@ public class CameraController : MonoBehaviour
     /// </summary>
     /// <param name="view">View to transition to.</param>
     /// <param name="duration">The amount of seconds the transition takes. Enter null for instant transition.</param>
-    public void DelayedTransition(View view, float? duration, float delay)
+    public IEnumerator Coroutine_DelayedTransition(View view, float? duration, float delay)
     {
-        StartCoroutine(Coroutine_DelayedTransition(view, duration, delay));
-
-        IEnumerator Coroutine_DelayedTransition(View view, float? duration, float delay)
+        while (delay > 0.0f)
         {
-            while (delay > 0.0f)
-            {
-                delay -= Time.deltaTime;
-                yield return null;
-            }
-
-            Transition(view, duration);
-            yield return 0;
+            delay -= Time.deltaTime;
+            yield return null;
         }
+
+        Transition(view, duration);
+        yield return 0;
     }
 
     /// <summary>
     /// Starts a sequence of transitions.
     /// </summary>
-    public void StartKillCamSequence(Projectile.PrecomputedResult result, GameObject projectile)
+    public IEnumerator Coroutine_KillCamSequence(Projectile.PrecomputedResult result, GameObject projectile)
     {
-        StartCoroutine(Coroutine_KillCamSequence());
-
         /*
-        IEnumerator Coroutine_KillCamSequence()
+        focusPoint.SetPosition(result.raycastHit.point);
+        FollowObject(projectile);
+        Transition(View.FirstPerson, null);
+
+        float duration = result.timeBeforeHit;
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime / duration < 0.7f)
         {
-            focusPoint.SetPosition(result.raycastHit.point);
-            FollowObject(projectile);
-            Transition(View.FirstPerson, null);
-
-            float duration = result.timeBeforeHit;
-            float elapsedTime = 0.0f;
-
-            while (elapsedTime / duration < 0.7f)
-            {
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            focusPoint.FollowObject(projectile);
-            transform.position = targetPosition = result.tank.transform.position + new Vector3(0, 1, 0);
-            followObject = null;
-
-            while (elapsedTime / duration < 0.9f)
-            {
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            focusPoint.SetPosition(result.tank.transform.position);
-            Transition(View.Focus, 0.6f);
-            yield return 0;
-        }*/
-
-        IEnumerator Coroutine_KillCamSequence()
-        {
-            focusPoint.SetPosition(result.raycastHit.point);
-            FollowObject(projectile);
-            Transition(View.FirstPerson, null);
-
-            float duration = result.timeBeforeHit;
-            float elapsedTime = 0.0f;
-
-            while (elapsedTime / duration < 0.95f)
-            {
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-
-            focusPoint.SetPosition(result.tank.transform.position);
-            Transition(View.Focus, 0.2f);
-            yield return 0;
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        focusPoint.FollowObject(projectile);
+        transform.position = targetPosition = result.tank.transform.position + new Vector3(0, 1, 0);
+        followObject = null;
+
+        while (elapsedTime / duration < 0.9f)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        focusPoint.SetPosition(result.tank.transform.position);
+        Transition(View.Focus, 0.6f);
+        yield return 0; 
+        */
+
+        focusPoint.SetPosition(result.raycastHit.point);
+        FollowObject(projectile);
+        Transition(View.FirstPerson, null);
+
+        float duration = result.timeBeforeHit;
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime / duration < 0.95f)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        focusPoint.SetPosition(result.tank.transform.position);
+        Transition(View.Focus, 0.2f);
+        yield return 0;
     }
 
     private IEnumerator Coroutine_Transition(float duration, bool lookAtFocusPoint)

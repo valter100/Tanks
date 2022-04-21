@@ -141,14 +141,14 @@ public abstract class Projectile : MonoBehaviour
 
                 PrecomputedResult precomputedResult = new PrecomputedResult();
                 precomputedResult.raycastHit = raycastHit;
-                precomputedResult.tank = raycastHit.transform.gameObject.GetComponent<Tank>();
+                precomputedResult.tank = raycastHit.transform.GetComponent<Tank>();
                 precomputedResult.timeBeforeHit = elapsedTime;
                 precomputedResult.damageDealtToTank = damage;
 
                 Destroy(gameObject);
                 return precomputedResult;
             }
-
+            
             // Simulate frame
             rb.velocity *= 1.0f - Time.fixedDeltaTime * rb.drag;
             rb.velocity += Physics.gravity * Time.fixedDeltaTime;

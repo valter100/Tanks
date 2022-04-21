@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
         currentTank.UnreadyTank();
 
         currentPlayerIndex++;
-        if(currentPlayerIndex >= tanks.Count)
-            currentPlayerIndex=0;
+        if (currentPlayerIndex >= tanks.Count)
+            currentPlayerIndex = 0;
 
         currentTank = tanks[currentPlayerIndex];
         currentTank.ReadyTank();

@@ -100,12 +100,17 @@ public class Tank : MonoBehaviour
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
             Move();
 
-        Aim();
-
         if (playerController.GetNewWeapon() != 0)
             SwapProjectile();
 
+        Aim();
         CalculateShootForce();
+        
+        if (Input.GetKeyDown(KeyCode.Space) && CanFire())
+            Fire();
+
+        // Fire() must come before PreviewProjectileTrajectory()
+        // (For some reason ? )
         PreviewProjectileTrajectory();
     }
 
@@ -189,7 +194,6 @@ public class Tank : MonoBehaviour
 
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
-        Destroy(precomputedProjectile.gameObject);
 
         // Determine if the projectile hit a Tank which will be destroyed
 
@@ -216,14 +220,17 @@ public class Tank : MonoBehaviour
         // Update camera
 
         if (firstPersonView)
-            cameraController.StartKillCamSequence(result.Value, projectile.gameObject);
+            StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, projectile.gameObject));
 
         else if (result == null)
             cameraController.focusPoint.FollowObject(projectile.gameObject);
 
         else
         {
-            cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefulatOffset());
+            if (result.Value.tank != null)
+                cameraController.focusPoint.FollowObject(result.Value.tank.gameObject);
+            else
+                cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefulatOffset());
             cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
         }
     }
