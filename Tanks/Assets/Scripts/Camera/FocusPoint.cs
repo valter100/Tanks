@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class FocusPoint : MonoBehaviour
 {
+#pragma warning disable CS8632
+
+    [Header("Adjustable")]
     [SerializeField] Vector3 speed;
+    [SerializeField] Vector3 defaultOffset;
+
+    [Header("Information")]
+    [SerializeField] Vector3 offset;
     [SerializeField] GameObject? followObject;
     [SerializeField] CameraController cameraController;
+    [SerializeField] PlayerController playerController;
     Vector3 velocity;
-    PlayerController playerController;
+
+    public GameObject GetObject() => followObject;
+    public Vector3 GetDefulatOffset() => defaultOffset;
 
     // Start is called before the first frame update
     void Start()
     {
         transform.position = Vector3.zero;
         playerController = GetComponent<PlayerController>();
-        cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
     }
 
     // Update is called once per frame
@@ -27,9 +37,8 @@ public class FocusPoint : MonoBehaviour
         {
             if (!followObject.activeSelf)
                 DropObject();
-
             else
-                transform.position = followObject.transform.position;
+                GoToObject();
         }
 
         if (cameraController.inTransition || !cameraController.allowTranslation)
@@ -66,6 +75,7 @@ public class FocusPoint : MonoBehaviour
         velocity = (playerController.GetMousePosition() - rect.center).normalized;
         transform.position += velocity.Mul(speed) * Time.deltaTime;
         followObject = null;
+        offset = Vector3.zero;
     }
 
     /// <summary>
@@ -75,6 +85,7 @@ public class FocusPoint : MonoBehaviour
     {
         followObject = null;
         transform.position = position;
+        offset = Vector3.zero;
     }
 
     /// <summary>
@@ -86,8 +97,10 @@ public class FocusPoint : MonoBehaviour
         if (!gameObject.activeSelf)
             return false;
 
+        FocusPointOffset focusPointOffset = gameObject.GetComponent<FocusPointOffset>();
+        offset = focusPointOffset != null ? focusPointOffset.offset : Vector3.zero;
         followObject = gameObject;
-        transform.position = gameObject.transform.position;
+        GoToObject();
         return true;
     }
 
@@ -99,6 +112,12 @@ public class FocusPoint : MonoBehaviour
     {
         bool hasFollowObject = followObject != null;
         followObject = null;
+        offset = Vector3.zero;
         return hasFollowObject;
+    }
+
+    private void GoToObject()
+    {
+        transform.position = followObject.transform.position + offset;
     }
 }

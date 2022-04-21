@@ -603,7 +603,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6248430179650335935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd8c1d67fb767224b9728689e643ddd2, type: 3}
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6573387969950524924
@@ -916,7 +916,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7675723711677377564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd8c1d67fb767224b9728689e643ddd2, type: 3}
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7707607806569420765
@@ -1018,7 +1018,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7707607806569420765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd8c1d67fb767224b9728689e643ddd2, type: 3}
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7821293901002747522
@@ -1033,9 +1033,10 @@ GameObject:
   - component: {fileID: 7124004219641886832}
   - component: {fileID: 4141681218272620697}
   - component: {fileID: 5924593317816398068}
-  - component: {fileID: 8909102225199977872}
   - component: {fileID: 7572601582958746114}
   - component: {fileID: 5870459879730007234}
+  - component: {fileID: 8909102225199977872}
+  - component: {fileID: 537253056423713223}
   - component: {fileID: 320160469728459718}
   - component: {fileID: 3180057106955339533}
   m_Layer: 3
@@ -1125,18 +1126,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8909102225199977872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7821293901002747522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e126a5b97767a54c806759ac629b17b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7572601582958746114
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1249,6 +1238,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8909102225199977872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e126a5b97767a54c806759ac629b17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &537253056423713223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e486695d83bf4f54bdc7d2f65de0d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusPointOffset: {x: 0, y: 5, z: 0}
 --- !u!114 &320160469728459718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1262,6 +1276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+  cameraController: {fileID: 0}
   playerIndex: 0
   playerName: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
@@ -1284,6 +1299,7 @@ MonoBehaviour:
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 3180057106955339533}
   tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
+  isSlowed: 0
   rotatePoint: {fileID: 2232384697090623839}
   cannon: {fileID: 2391059649131488606}
   firePoint: {fileID: 6354992861223454508}
@@ -1297,7 +1313,6 @@ MonoBehaviour:
   shootForceSlider: {fileID: 1448159220805746562}
   projectileText: {fileID: 0}
   aimRadius: 250
-  currentShootForce: 0
 --- !u!95 &3180057106955339533
 Animator:
   serializedVersion: 3
