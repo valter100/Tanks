@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class Bullet : Projectile
 {
-    private void OnTriggerEnter(Collider other)
+    protected override void Update()
     {
-        if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
-            return;
-
-        Hit(other.gameObject);
+        base.Update();
     }
 
-    public override void Hit(GameObject other)
+    protected override void OnCollision(Collider other)
     {
-        if (other.GetComponent<Tank>())
+        base.OnCollision(other);
+        Detonate(other);
+    }
+
+    protected override void Detonate(Collider other)
+    {
+        if (other != null)
         {
-            other.GetComponent<Tank>().TakeDamage(damage);
+            Tank tank = other.gameObject.GetComponent<Tank>();
+
+            if (CanDamage(tank))
+                tank.TakeDamage(damage);
         }
 
-        Destroy(gameObject);
+        base.Detonate(other);
     }
-
 }

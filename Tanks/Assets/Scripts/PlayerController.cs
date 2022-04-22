@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         move = playerControls.Tank.Move.ReadValue<Vector3>();
-        Debug.Log(move);
+        //Debug.Log(move);
     }
 
     public Vector3 GetMovement()
