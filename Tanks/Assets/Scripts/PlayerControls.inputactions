@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "AutoFocusCamera",
+                    "type": "Button",
+                    "id": "3bcb4532-35d6-4245-b087-6db5300737b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -190,6 +199,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "FocusCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cc51e0fb-b2f6-4815-a8a1-95efb49563c8",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "AutoFocusCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

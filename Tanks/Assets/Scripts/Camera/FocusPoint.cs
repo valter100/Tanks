@@ -15,6 +15,7 @@ public class FocusPoint : MonoBehaviour
     [SerializeField] GameObject? followObject;
     [SerializeField] CameraController cameraController;
     [SerializeField] PlayerController playerController;
+    [SerializeField] GameManager gameManager;
     Vector3 velocity;
 
     public GameObject GetObject() => followObject;
@@ -25,7 +26,6 @@ public class FocusPoint : MonoBehaviour
     {
         transform.position = Vector3.zero;
         playerController = GetComponent<PlayerController>();
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
     }
 
     // Update is called once per frame
@@ -57,11 +57,19 @@ public class FocusPoint : MonoBehaviour
                 {
                     FollowObject(raycastHit.transform.gameObject);
                     cameraController.Transition(CameraController.View.Side, 0.8f);
+                    return;
                 }
 
                 else
                     DropObject();
             }
+        }
+
+        else if (playerController.IsAutoFocusing())
+        {
+            FollowObject(gameManager.GetCurrentTank().gameObject);
+            cameraController.Transition(CameraController.View.Side, 0.5f);
+            return;
         }
 
         // Move position manually

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -64,6 +65,7 @@ public class Tank : MonoBehaviour
     PlayerController playerController;
     Rigidbody rb;
     Ray ray;
+    TextMeshProUGUI projectileTMP;
 
     public string GetPlayerName() => playerName;
 
@@ -81,6 +83,7 @@ public class Tank : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
 
@@ -283,6 +286,8 @@ public class Tank : MonoBehaviour
 
         cameraController.focusPoint.FollowObject(gameObject);
         cameraController.Transition(CameraController.View.Side, 1.0f);
+
+        projectileTMP.text = "Current projectile: " + currentProjectile.name;
     }
 
     public void UnreadyTank()
@@ -311,6 +316,7 @@ public class Tank : MonoBehaviour
         projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
         projectileIndex %= projectiles.Count;
         currentProjectile = projectiles[projectileIndex];
+        projectileTMP.text = "Current projectile: " + currentProjectile.name;
     }
 
     public void SetIsSlowed(bool state)

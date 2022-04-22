@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         move = playerControls.Tank.Move.ReadValue<Vector3>();
-        //Debug.Log(move);
     }
 
     public Vector3 GetMovement()
@@ -41,6 +40,11 @@ public class PlayerController : MonoBehaviour
     public bool IsFocusing()
     {
         return playerControls.Tank.FocusCamera.triggered;
+    }
+
+    public bool IsAutoFocusing()
+    {
+        return playerControls.Tank.AutoFocusCamera.triggered;
     }
 
     public Vector2 GetMousePosition()
