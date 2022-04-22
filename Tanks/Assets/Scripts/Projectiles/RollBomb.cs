@@ -4,28 +4,32 @@ using UnityEngine;
 
 public class RollBomb : Projectile
 {
-    public override void Hit(GameObject other)
+    protected override void Update()
     {
-        other.GetComponent<Tank>().TakeDamage(damage);
+        base.Update();
     }
 
-    protected override void OnDestroy()
+    protected override void OnCollision(Collider other)
     {
-        base.OnDestroy();
+        base.OnCollision(other);
 
+        if (timeToLive > 2.0f)
+            timeToLive = 2.0f;
+    }
+
+    protected override void Detonate(Collider other)
+    {
         Collider[] colliderHits = Physics.OverlapSphere(transform.position, explosionRadius);
 
-        foreach (Collider collider in colliderHits)
+        Tank tank;
+        foreach (Collider colliderHit in colliderHits)
         {
-            if (collider.gameObject.tag == "Tank")
-            {
-                if (!canDamageSelf && collider.gameObject == ownTank.gameObject)
-                {
-                    continue;
-                }
+            tank = colliderHit.gameObject.GetComponent<Tank>();
 
-                Hit(collider.gameObject);
-            }
+            if (CanDamage(tank))
+                tank.TakeDamage(damage);
         }
+
+        base.Detonate(other);
     }
 }

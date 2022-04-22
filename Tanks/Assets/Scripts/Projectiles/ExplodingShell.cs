@@ -4,34 +4,30 @@ using UnityEngine;
 
 public class ExplodingShell : Projectile
 {
-    private void OnTriggerEnter(Collider other)
+    protected override void Update()
     {
-        if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
-            return;
-
-        Hit(other.gameObject);
+        base.Update();
     }
 
-    public override void Hit(GameObject other)
+    protected override void OnCollision(Collider other)
     {
-        Collider[] colliderHits = Physics.OverlapSphere(other.transform.position, explosionRadius);
+        base.OnCollision(other);
+        Detonate(other);
+    }
 
-        foreach (Collider collider in colliderHits)
+    protected override void Detonate(Collider other)
+    {
+        Collider[] colliderHits = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        Tank tank;
+        foreach (Collider colliderHit in colliderHits)
         {
-            if (collider.gameObject.tag == "Tank")
-            {
-                if (!canDamageSelf && collider.gameObject == ownTank.gameObject)
-                {
-                    continue;
-                }
+            tank = colliderHit.gameObject.GetComponent<Tank>();
 
-                collider.gameObject.GetComponent<Tank>().TakeDamage(damage);
-            }
+            if (CanDamage(tank))
+                tank.TakeDamage(damage);
         }
 
-        //Vector3 distance = transform.position - other.transform.position;
-        //particles.transform.rotation = Quaternion.LookRotation(distance);
-        ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
-        Destroy(gameObject);
+        base.Detonate(other);
     }
 }

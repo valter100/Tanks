@@ -92,7 +92,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -127,12 +127,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 2
-  lifeTime: 2
-  particles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
+  timeToLive: 3
+  trailParticles: {fileID: 0}
+  detonationParticles: {fileID: 0}
   startAmmoCount: 4
   canDamageSelf: 0
   terrain: {fileID: 0}
   explosionRadius: 0
+  ownTank: {fileID: 0}
   spreadTimer: 0.5
   spreadCount: 3
   spreadAngleRange: 30

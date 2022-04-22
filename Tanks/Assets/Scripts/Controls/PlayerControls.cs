@@ -37,15 +37,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""4ee16996-166f-46ae-9bdb-b949f50da1cc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""b28fb2a5-9aaa-4bb8-a9f6-7d1401bb4ea7"",
@@ -76,6 +67,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": ""PreviousProjectile"",
                     ""type"": ""Button"",
                     ""id"": ""ec214f1d-1fa0-47c9-a1ce-dd5ec020a188"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FocusCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f45b9c5-a57c-44ef-af9e-9bf4d3825d49"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -162,19 +162,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1ac36492-5d87-4408-8b57-6e8067968357"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Desktop"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""fc3e2364-d447-458d-bbd7-4f40fffe3c13"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
@@ -214,6 +203,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""PreviousProjectile"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c73fab3b-da34-439d-8dbd-2a39209bb79d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FocusCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -240,11 +240,11 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // Tank
         m_Tank = asset.FindActionMap("Tank", throwIfNotFound: true);
         m_Tank_Move = m_Tank.FindAction("Move", throwIfNotFound: true);
-        m_Tank_Jump = m_Tank.FindAction("Jump", throwIfNotFound: true);
         m_Tank_Shoot = m_Tank.FindAction("Shoot", throwIfNotFound: true);
         m_Tank_Aim = m_Tank.FindAction("Aim", throwIfNotFound: true);
         m_Tank_NextProjectile = m_Tank.FindAction("NextProjectile", throwIfNotFound: true);
         m_Tank_PreviousProjectile = m_Tank.FindAction("PreviousProjectile", throwIfNotFound: true);
+        m_Tank_FocusCamera = m_Tank.FindAction("FocusCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -305,21 +305,21 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Tank;
     private ITankActions m_TankActionsCallbackInterface;
     private readonly InputAction m_Tank_Move;
-    private readonly InputAction m_Tank_Jump;
     private readonly InputAction m_Tank_Shoot;
     private readonly InputAction m_Tank_Aim;
     private readonly InputAction m_Tank_NextProjectile;
     private readonly InputAction m_Tank_PreviousProjectile;
+    private readonly InputAction m_Tank_FocusCamera;
     public struct TankActions
     {
         private @PlayerControls m_Wrapper;
         public TankActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Tank_Move;
-        public InputAction @Jump => m_Wrapper.m_Tank_Jump;
         public InputAction @Shoot => m_Wrapper.m_Tank_Shoot;
         public InputAction @Aim => m_Wrapper.m_Tank_Aim;
         public InputAction @NextProjectile => m_Wrapper.m_Tank_NextProjectile;
         public InputAction @PreviousProjectile => m_Wrapper.m_Tank_PreviousProjectile;
+        public InputAction @FocusCamera => m_Wrapper.m_Tank_FocusCamera;
         public InputActionMap Get() { return m_Wrapper.m_Tank; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -332,9 +332,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_TankActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnMove;
-                @Jump.started -= m_Wrapper.m_TankActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnJump;
                 @Shoot.started -= m_Wrapper.m_TankActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnShoot;
@@ -347,6 +344,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @PreviousProjectile.started -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousProjectile;
                 @PreviousProjectile.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousProjectile;
                 @PreviousProjectile.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousProjectile;
+                @FocusCamera.started -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
+                @FocusCamera.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
+                @FocusCamera.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
             }
             m_Wrapper.m_TankActionsCallbackInterface = instance;
             if (instance != null)
@@ -354,9 +354,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
@@ -369,6 +366,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @PreviousProjectile.started += instance.OnPreviousProjectile;
                 @PreviousProjectile.performed += instance.OnPreviousProjectile;
                 @PreviousProjectile.canceled += instance.OnPreviousProjectile;
+                @FocusCamera.started += instance.OnFocusCamera;
+                @FocusCamera.performed += instance.OnFocusCamera;
+                @FocusCamera.canceled += instance.OnFocusCamera;
             }
         }
     }
@@ -385,10 +385,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface ITankActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnNextProjectile(InputAction.CallbackContext context);
         void OnPreviousProjectile(InputAction.CallbackContext context);
+        void OnFocusCamera(InputAction.CallbackContext context);
     }
 }

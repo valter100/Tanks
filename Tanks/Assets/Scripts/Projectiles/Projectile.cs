@@ -5,68 +5,157 @@ using UnityEngine;
 public abstract class Projectile : MonoBehaviour
 {
     [SerializeField] protected AudioClip clip;
-    [SerializeField] protected int damage;
-    [SerializeField] protected int lifeTime;
-    [SerializeField] protected ParticleSystem particles;
+    [SerializeField] protected float damage;
+    [SerializeField] protected float timeToLive;
+    [SerializeField] protected ParticleSystem trailParticles;
+    [SerializeField] protected ParticleSystem detonationParticles;
     [SerializeField] protected int startAmmoCount;
     [SerializeField] protected bool canDamageSelf;
     [SerializeField] protected Terrain terrain;
     [SerializeField] protected float explosionRadius;
 
     protected Rigidbody rb;
-    protected Tank ownTank;
-    protected bool endsRound = true;
+    public Tank ownTank;
+
+    public float GetTimeToLive() => timeToLive;
+    public int GetStartAmmoCount() => startAmmoCount;
+    public float GetExplosionRadius() => explosionRadius;
+    public float GetDamage() => damage;
+
+    public struct PrecomputedResult
+    {
+        public RaycastHit raycastHit;
+        public Tank tank;
+        public float timeBeforeHit;
+        public float damageDealtToTank;
+    }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         terrain = Terrain.activeTerrain;
-        Destroy(gameObject, lifeTime);
     }
 
-    protected virtual void OnDestroy()
+    void OnDestroy()
     {
-        Instantiate(particles, transform.position, Quaternion.identity, null);
+        // This method must not instantiate any GameObject, play sound, swap player,
+        // or affect the scene or game in any other way.
 
-        //Vector3 distance = transform.position - other.transform.position;
-        //particles.transform.rotation = Quaternion.LookRotation(distance);
-        ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
-
-        if (endsRound)
-            ownTank.GetGameManager().NextPlayer();
+        // This is because precomputed projectiles must be able to be instantiated
+        // and destroyed as if nothing ever happened.
     }
 
-    public void Shoot(Quaternion angle, float force)
+    protected virtual void Update()
+    {
+        // Visualize trail
+        //PointVisualizer.AddPoint(transform.position);
+
+        // Emitt trail particles
+        if (trailParticles != null)
+            Instantiate(trailParticles, transform.position, Quaternion.identity, null);
+
+        // Update timer
+        timeToLive -= Time.deltaTime;
+        if (timeToLive <= 0.0f)
+            Detonate(null);
+    }
+
+    /// <summary>
+    /// Gets called when this Projectile detects a collision, either through OnCollisionEnter() or OnTriggerEnter().
+    /// </summary>
+    protected virtual void OnCollision(Collider other)
+    {
+
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        OnCollision(other.collider);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        OnCollision(other);
+    }
+
+    /// <summary>
+    /// Detonates and destroys this Projectile.
+    /// </summary>
+    /// <param name="collider">Collider can be null. This must be handled by subclasses if utilized.</param>
+    protected virtual void Detonate(Collider collider)
+    {
+        if (detonationParticles != null)
+            Instantiate(detonationParticles, transform.position, Quaternion.identity, null);
+
+        ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
+        ownTank.GetGameManager().NextPlayer();
+        Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Returns whether or not the provided Tank is a Tank, and that it can be damanged
+    /// </summary>
+    protected bool CanDamage(Tank tank)
+    {
+        if (tank == null)
+            return false;
+
+        if (!canDamageSelf && tank == ownTank)
+            return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Fires this Projectile.
+    /// </summary>
+    public void Fire(Quaternion angle, float power)
     {
         transform.rotation = angle;
-        Vector3 shootVector = gameObject.transform. up * force;
+        Vector3 force = gameObject.transform.up * power;
+        rb.velocity += force / rb.mass;
 
-        rb.AddForce(shootVector);
+        // Equivalent to: rb.AddForce(force, ForceMode.Impulse)
+        // AddForce is not used since the Rigidbody requires an update before
+        // the applied force affects its velocity
     }
 
-    public void SetOwnTank(Tank tank)
+    /// <summary>
+    /// Precomputes the aerial trajectory of this Projectile before destorying the GameObject.
+    /// </summary>
+    public PrecomputedResult? PrecomputeTrajectory(float timeToVisualize = 0.0f)
     {
-        ownTank = tank;
-    }
+        RaycastHit raycastHit;
 
-    public int GetAmmoCount()
-    {
-        return startAmmoCount;
-    }
+        // For the duration of its life time
+        for (float elapsedTime = 0.0f; elapsedTime < timeToLive; elapsedTime += Time.fixedDeltaTime)
+        {
+            if (timeToVisualize != 0.0f)
+                PointVisualizer.AddPoint(rb.position, timeToVisualize);
 
-    public float GetExplosionRadius()
-    {
-        return explosionRadius;
-    }
-    public abstract void Hit(GameObject other);
+            // Check collision
+            if (rb.SweepTest(rb.velocity, out raycastHit, rb.velocity.magnitude * Time.fixedDeltaTime))
+            {
+                if (timeToVisualize != 0.0f)
+                    PointVisualizer.AddPoint(raycastHit.point, timeToVisualize);
 
-    public void SetDamage(int newDamage)
-    {
-        damage = newDamage;
-    }
+                PrecomputedResult precomputedResult = new PrecomputedResult();
+                precomputedResult.raycastHit = raycastHit;
+                precomputedResult.tank = raycastHit.transform.GetComponent<Tank>();
+                precomputedResult.timeBeforeHit = elapsedTime;
+                precomputedResult.damageDealtToTank = damage;
 
-    public void SetEndsRound(bool state)
-    {
-        endsRound = state;
+                Destroy(gameObject);
+                return precomputedResult;
+            }
+            
+            // Simulate frame
+            rb.velocity *= 1.0f - Time.fixedDeltaTime * rb.drag;
+            rb.velocity += Physics.gravity * Time.fixedDeltaTime;
+            rb.position += rb.velocity * Time.fixedDeltaTime;
+        }
+
+        Destroy(gameObject);
+        return null;
     }
 }
