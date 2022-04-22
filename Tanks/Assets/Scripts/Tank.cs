@@ -230,7 +230,8 @@ public class Tank : MonoBehaviour
             if (result.Value.tank != null)
                 cameraController.focusPoint.FollowObject(result.Value.tank.gameObject);
             else
-                cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefulatOffset());
+                cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefaultOffset());
+
             cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
         }
     }

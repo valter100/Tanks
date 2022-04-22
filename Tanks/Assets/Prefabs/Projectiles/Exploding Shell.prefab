@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 4666774405610918408}
   m_Layer: 0
-  m_Name: Red Bullet
+  m_Name: Exploding Shell
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -127,12 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 3
-  timeToLive: 10
-  trailParticles: {fileID: 0}
-  detonationParticles: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
+  lifeTime: 0
+  particles: {fileID: 0}
   startAmmoCount: 5
   canDamageSelf: 1
   terrain: {fileID: 0}
   explosionRadius: 3
-  ownTank: {fileID: 0}
-  precomputed: 0

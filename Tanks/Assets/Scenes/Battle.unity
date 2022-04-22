@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -301,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4599907907405362653, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 4599907907405362653, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1154,11 +1154,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4599907907405362653, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.32
+      value: 3.36
       objectReference: {fileID: 0}
     - target: {fileID: 4599907907405362653, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.23
+      value: 1.74
       objectReference: {fileID: 0}
     - target: {fileID: 4599907907405362653, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1196,8 +1196,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tank
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 537253056423713223, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
+--- !u!1 &1282559089 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7821293901002747522, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
+  m_PrefabInstance: {fileID: 1282559088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1282559090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282559089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0270e5095ce5dd64bafca14186072106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1288913756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,7 +1394,6 @@ GameObject:
   - component: {fileID: 1523037805}
   - component: {fileID: 1523037804}
   - component: {fileID: 1523037803}
-  - component: {fileID: 1523037806}
   m_Layer: 6
   m_Name: Terrain
   m_TagString: Terrain
@@ -1442,18 +1459,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1523037806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523037802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1572683779
 GameObject:
   m_ObjectHideFlags: 0

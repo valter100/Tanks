@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FreezeBullet : Bullet
+public class FreezeBullet : Projectile
 {
-    private void OnTriggerEnter(Collider other)
+    protected override void OnCollision(Collider other)
     {
-        if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
-            return;
-
-        Hit(other.gameObject);
+        base.OnCollision(other);
+        Detonate(other);
     }
 
-    public override void Hit(GameObject other)
+    protected override void Detonate(Collider other)
     {
-        other.GetComponent<Tank>().SetIsSlowed(true);
-        base.Hit(other);
+        if (other != null)
+        {
+            Tank tank = other.gameObject.GetComponent<Tank>();
+
+            if (CanDamage(tank))
+            {
+                other.GetComponent<Tank>().SetIsSlowed(true);
+                tank.TakeDamage(damage);
+            }
+        }
+
+        base.Detonate(other);
     }
 }

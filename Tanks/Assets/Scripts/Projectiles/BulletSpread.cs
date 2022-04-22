@@ -27,7 +27,7 @@ public class BulletSpread : Bullet
         if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
             return;
 
-        Hit(other.gameObject);
+        Detonate(other);
     }
 
     public void Spread()
@@ -36,12 +36,12 @@ public class BulletSpread : Bullet
         {
             float randomAngle = Random.Range(-spreadAngleRange, spreadAngleRange);
 
-            GameObject spreadBullet = Instantiate(bullet.gameObject, transform.position, transform.rotation );
-            spreadBullet.GetComponent<Projectile>().SetDamage(damage);
-            spreadBullet.GetComponent<Projectile>().SetOwnTank(ownTank);
-            spreadBullet.transform.Rotate(0, 0, randomAngle);
-            spreadBullet.GetComponent<Rigidbody>().AddForce(transform.right * GetComponent<Rigidbody>().velocity.magnitude * 15);
-            spreadBullet.GetComponent<Projectile>().SetEndsRound(false);
+            //GameObject spreadBullet = Instantiate(bullet.gameObject, transform.position, transform.rotation );
+            //spreadBullet.GetComponent<Projectile>().SetDamage(damage);
+            //spreadBullet.GetComponent<Projectile>().SetOwnTank(ownTank);
+            //spreadBullet.transform.Rotate(0, 0, randomAngle);
+            //spreadBullet.GetComponent<Rigidbody>().AddForce(transform.right * GetComponent<Rigidbody>().velocity.magnitude * 15);
+            //spreadBullet.GetComponent<Projectile>().SetEndsRound(false);
         }
     }
 }

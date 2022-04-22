@@ -1036,9 +1036,9 @@ GameObject:
   - component: {fileID: 7572601582958746114}
   - component: {fileID: 5870459879730007234}
   - component: {fileID: 8909102225199977872}
-  - component: {fileID: 537253056423713223}
   - component: {fileID: 320160469728459718}
   - component: {fileID: 3180057106955339533}
+  - component: {fileID: 1282559090}
   m_Layer: 3
   m_Name: Body
   m_TagString: Tank
@@ -1250,19 +1250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e126a5b97767a54c806759ac629b17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &537253056423713223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7821293901002747522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e486695d83bf4f54bdc7d2f65de0d26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focusPointOffset: {x: 0, y: 5, z: 0}
 --- !u!114 &320160469728459718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1334,6 +1321,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1282559090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0270e5095ce5dd64bafca14186072106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusPointOffset: {x: 0, y: 5, z: 0}
 --- !u!1 &8415975934351907783
 GameObject:
   m_ObjectHideFlags: 0

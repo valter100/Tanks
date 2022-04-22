@@ -18,7 +18,7 @@ public class FocusPoint : MonoBehaviour
     Vector3 velocity;
 
     public GameObject GetObject() => followObject;
-    public Vector3 GetDefulatOffset() => defaultOffset;
+    public Vector3 GetDefaultOffset() => defaultOffset;
 
     // Start is called before the first frame update
     void Start()
