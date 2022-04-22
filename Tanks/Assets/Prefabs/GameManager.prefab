@@ -57,3 +57,4 @@ MonoBehaviour:
   currentPlayerIndex: 0
   playerCount: 0
   currentTank: {fileID: 0}
+  cameraController: {fileID: 0}

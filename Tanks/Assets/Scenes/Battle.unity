@@ -855,10 +855,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1282559090, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
-      propertyPath: focusPointOffset.y
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1237393092497889244, guid: a35bfd2bcab217a45bf2da4e3f7b93f5, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1295,81 +1291,9 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 991688801}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: playerNames.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: playerNames.Array.data[0]
-      value: Player 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: playerNames.Array.data[1]
-      value: Player 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: playerNames.Array.data[2]
-      value: Player 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: playerNames.Array.data[3]
-      value: Player 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[0].b
-      value: 0.04999399
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[0].g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[0].r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[1].b
-      value: 0.11143541
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[1].g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[1].r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[2].b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[2].g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[2].r
-      value: 0.011263847
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[3].b
-      value: 0.7807932
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[3].g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2895342709248870957, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
-      propertyPath: tankColors.Array.data[3].r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3308871001368395685, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
       propertyPath: m_Name
-      value: Game Manager
+      value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 5823587278256482289, guid: 1863b2b6a5bb4364e9abd882633ca7fc, type: 3}
       propertyPath: m_RootOrder

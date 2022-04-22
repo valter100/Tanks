@@ -1404,7 +1404,7 @@ MonoBehaviour:
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 15
   maxShootForce: 20
-  maxFuel: 100
+  maxFuel: 50
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1430,7 +1430,6 @@ MonoBehaviour:
   - {fileID: 8636155333219838068}
   cannon: {fileID: 2391059649131488606}
   firePoint: {fileID: 6354992861223454508}
-  lineRenderer: {fileID: 6419159872918621317}
   rumbleSpot: {fileID: 8728410186248441756}
   nameText: {fileID: 1146354983146343757}
   healthText: {fileID: 0}

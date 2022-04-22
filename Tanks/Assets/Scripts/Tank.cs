@@ -43,7 +43,6 @@ public class Tank : MonoBehaviour
     [SerializeField] GameObject[] tankParts;
     [SerializeField] GameObject cannon;
     [SerializeField] Transform firePoint;
-    [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform rumbleSpot;
 
     [Header("UI")]
@@ -80,7 +79,7 @@ public class Tank : MonoBehaviour
 
     void Start()
     {
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
@@ -268,24 +267,16 @@ public class Tank : MonoBehaviour
         }
 
         nameText.text = playerName;
-
     }
 
     public void ReadyTank()
     {
         fuelSlider.gameObject.SetActive(true);
         shootForceSlider.gameObject.SetActive(true);
-        lineRenderer.gameObject.SetActive(true);
 
         currentFuel = maxFuel;
         fuelSlider.value = currentFuel / maxFuel;
         hasFired = false;
-        isSlowed = false;
-
-        foreach (GameObject go in tankParts)
-        {
-            go.GetComponent<Renderer>().material.color = playerColor;
-        }
 
         if (cameraController == null)
             cameraController = Camera.main.GetComponent<CameraController>();
@@ -298,7 +289,12 @@ public class Tank : MonoBehaviour
     {
         fuelSlider.gameObject.SetActive(false);
         shootForceSlider.gameObject.SetActive(false);
-        lineRenderer?.gameObject.SetActive(false);
+
+        foreach (GameObject go in tankParts)
+        {
+            go.GetComponent<Renderer>().material.color = playerColor;
+        }
+        isSlowed = false;
     }
 
     public void CalculateShootForce()
@@ -323,7 +319,7 @@ public class Tank : MonoBehaviour
 
         foreach (GameObject go in tankParts)
         {
-            go.GetComponent<MeshRenderer>().material.color = Color.blue;
+            go.GetComponent<MeshRenderer>().material.color = Color.cyan;
         }
     }
 

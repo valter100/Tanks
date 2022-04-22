@@ -11,7 +11,6 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected ParticleSystem detonationParticles;
     [SerializeField] protected int startAmmoCount;
     [SerializeField] protected bool canDamageSelf;
-    [SerializeField] protected Terrain terrain;
     [SerializeField] protected float explosionRadius;
 
     protected Rigidbody rb;
@@ -33,7 +32,6 @@ public abstract class Projectile : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        terrain = Terrain.activeTerrain;
     }
 
     void OnDestroy()

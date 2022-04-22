@@ -129,9 +129,8 @@ MonoBehaviour:
   damage: 3
   timeToLive: 10
   trailParticles: {fileID: 0}
-  detonationParticles: {fileID: 0}
+  detonationParticles: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
   startAmmoCount: 5
   canDamageSelf: 1
-  terrain: {fileID: 0}
   explosionRadius: 3
   ownTank: {fileID: 0}
