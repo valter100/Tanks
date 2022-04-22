@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 7936401087168736136}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bullet
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.18805405, w: 0.9821587}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
@@ -92,7 +92,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -127,9 +127,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 5
-  lifeTime: 0
-  particles: {fileID: 0}
+  timeToLive: 10
+  trailParticles: {fileID: 0}
+  detonationParticles: {fileID: 0}
   startAmmoCount: 20
   canDamageSelf: 1
   terrain: {fileID: 0}
   explosionRadius: 0
+  ownTank: {fileID: 0}

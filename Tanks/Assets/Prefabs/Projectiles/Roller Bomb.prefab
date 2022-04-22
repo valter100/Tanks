@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 6481296158931651720}
-  m_Layer: 0
-  m_Name: Blue Bullet
+  m_Layer: 7
+  m_Name: Roller Bomb
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,4 +135,3 @@ MonoBehaviour:
   terrain: {fileID: 0}
   explosionRadius: 5
   ownTank: {fileID: 0}
-  precomputed: 0

@@ -272,7 +272,7 @@ public class CameraController : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            lerpValue = (elapsedTime / duration).LerpValueSigmoidCurve();
+            lerpValue = (elapsedTime / duration).LerpValueSmoothstep();
 
             transform.position = Vector3.Lerp(startPosition, targetPosition, lerpValue);
             mainCamera.fieldOfView = Mathf.Lerp(startFOV, targetFOV, lerpValue);

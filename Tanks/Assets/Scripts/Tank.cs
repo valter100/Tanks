@@ -40,6 +40,7 @@ public class Tank : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject rotatePoint;
+    [SerializeField] GameObject[] tankParts;
     [SerializeField] GameObject cannon;
     [SerializeField] Transform firePoint;
     [SerializeField] LineRenderer lineRenderer;
@@ -106,7 +107,7 @@ public class Tank : MonoBehaviour
         Aim();
         CalculateShootForce();
         
-        if (Input.GetKeyDown(KeyCode.Space) && CanFire())
+            if (playerController.IsShooting() && CanFire())
             Fire();
 
         // Fire() must come before PreviewProjectileTrajectory()
@@ -116,11 +117,6 @@ public class Tank : MonoBehaviour
 
     public void Move()
     {
-        if (playerController.IsJumping())
-        {
-            rb.AddForce(new Vector3(0, jumpForce, 0));
-        }
-
         if (playerController.GetMovement().x > 0)
             transform.rotation = Quaternion.Euler(0, 0, 0);
         else if (playerController.GetMovement().x < 0)
@@ -181,9 +177,9 @@ public class Tank : MonoBehaviour
 
     private Projectile InstantiateProjectile()
     {
-        Projectile projectile = Instantiate(currentProjectile, firePoint);
-        projectile.transform.parent = null;
+        Projectile projectile = Instantiate(currentProjectile, firePoint);    
         projectile.ownTank = this;
+        projectile.transform.parent = null;
         projectile.Fire(cannon.transform.rotation, currentShootForce);
         return projectile;
     }
@@ -266,7 +262,13 @@ public class Tank : MonoBehaviour
         playerName = newName;
         playerColor = newColor;
 
-        GetComponent<MeshRenderer>().material.color = newColor;
+        foreach(GameObject go in tankParts)
+        {
+            go.GetComponent<MeshRenderer>().material.color = newColor;
+        }
+
+        nameText.text = playerName;
+
     }
 
     public void ReadyTank()
@@ -279,7 +281,11 @@ public class Tank : MonoBehaviour
         fuelSlider.value = currentFuel / maxFuel;
         hasFired = false;
         isSlowed = false;
-        GetComponent<Renderer>().material.color = playerColor;
+
+        foreach (GameObject go in tankParts)
+        {
+            go.GetComponent<Renderer>().material.color = playerColor;
+        }
 
         if (cameraController == null)
             cameraController = Camera.main.GetComponent<CameraController>();
@@ -314,7 +320,11 @@ public class Tank : MonoBehaviour
     public void SetIsSlowed(bool state)
     {
         isSlowed = state;
-        GetComponent<Renderer>().material.color = Color.blue;
+
+        foreach (GameObject go in tankParts)
+        {
+            go.GetComponent<MeshRenderer>().material.color = Color.blue;
+        }
     }
 
     private void PreviewProjectileTrajectory()

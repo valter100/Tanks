@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "4ee16996-166f-46ae-9bdb-b949f50da1cc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Shoot",
                     "type": "Button",
                     "id": "b28fb2a5-9aaa-4bb8-a9f6-7d1401bb4ea7",
@@ -54,6 +45,15 @@
                     "name": "PreviousProjectile",
                     "type": "Button",
                     "id": "ec214f1d-1fa0-47c9-a1ce-dd5ec020a188",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FocusCamera",
+                    "type": "Button",
+                    "id": "8f45b9c5-a57c-44ef-af9e-9bf4d3825d49",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -140,19 +140,8 @@
                 },
                 {
                     "name": "",
-                    "id": "1ac36492-5d87-4408-8b57-6e8067968357",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Desktop",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "fc3e2364-d447-458d-bbd7-4f40fffe3c13",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Desktop",
@@ -190,6 +179,17 @@
                     "processors": "",
                     "groups": "Desktop",
                     "action": "PreviousProjectile",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c73fab3b-da34-439d-8dbd-2a39209bb79d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FocusCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

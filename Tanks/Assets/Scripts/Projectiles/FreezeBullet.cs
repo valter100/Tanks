@@ -18,7 +18,7 @@ public class FreezeBullet : Projectile
 
             if (CanDamage(tank))
             {
-                other.GetComponent<Tank>().SetIsSlowed(true);
+                tank.SetIsSlowed(true);
                 tank.TakeDamage(damage);
             }
         }

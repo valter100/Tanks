@@ -46,7 +46,7 @@ public class FocusPoint : MonoBehaviour
 
         // Click object
 
-        if (playerController.IsShooting())
+        if (playerController.IsFocusing())
         {
             RaycastHit raycastHit;
             Ray ray = Camera.main.ScreenPointToRay(playerController.GetMousePosition());

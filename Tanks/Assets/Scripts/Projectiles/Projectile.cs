@@ -130,8 +130,8 @@ public abstract class Projectile : MonoBehaviour
         // For the duration of its life time
         for (float elapsedTime = 0.0f; elapsedTime < timeToLive; elapsedTime += Time.fixedDeltaTime)
         {
-            //if (timeToVisualize != 0.0f)
-                //PointVisualizer.AddPoint(rb.position, timeToVisualize);
+            if (timeToVisualize != 0.0f)
+                PointVisualizer.AddPoint(rb.position, timeToVisualize);
 
             // Check collision
             if (rb.SweepTest(rb.velocity, out raycastHit, rb.velocity.magnitude * Time.fixedDeltaTime))
