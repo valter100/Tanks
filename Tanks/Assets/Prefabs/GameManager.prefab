@@ -43,3 +43,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0620d4575497bb47bc4dfe7f6efcbbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNames:
+  - Player 1
+  - Player 2
+  - Player 3
+  - Player 4
+  tanks: []
+  tankColors:
+  - {r: 1, g: 0, b: 0.04999399, a: 0}
+  - {r: 0, g: 1, b: 0.11143541, a: 0}
+  - {r: 0.011263847, g: 0, b: 1, a: 0}
+  - {r: 1, g: 0, b: 0.7807932, a: 0}
+  currentPlayerIndex: 0
+  playerCount: 0
+  currentTank: {fileID: 0}

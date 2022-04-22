@@ -22,11 +22,6 @@ public class PlayerController : MonoBehaviour
         playerControls.Disable();
     }
 
-    private void Start()
-    {
-        
-    }
-
     void Update()
     {
         move = playerControls.Tank.Move.ReadValue<Vector3>();

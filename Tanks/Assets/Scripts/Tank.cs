@@ -38,9 +38,9 @@ public class Tank : MonoBehaviour
     [SerializeField] bool isSlowed;
 
     [Header("References")]
-    [SerializeField] GameObject rotatePoint;
-    [SerializeField] GameObject cannon;
-    [SerializeField] Transform firePoint;
+    [SerializeField] Gun gun;
+    [SerializeField] Tower tower;
+    [SerializeField] GameObject[] tankParts;
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform rumbleSpot;
 
@@ -66,7 +66,7 @@ public class Tank : MonoBehaviour
 
     void Start()
     {
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
@@ -90,8 +90,6 @@ public class Tank : MonoBehaviour
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
             Move();
 
-        Aim();
-
         if (playerController.GetNewWeapon() == 1 || playerController.GetNewWeapon() == -1)
             SwapProjectile();
 
@@ -108,10 +106,10 @@ public class Tank : MonoBehaviour
             rb.AddForce(new Vector3(0, jumpForce, 0));
         }
 
-        if (playerController.GetMovement().x > 0)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        else if (playerController.GetMovement().x < 0)
-            transform.rotation = Quaternion.Euler(0, -180, 0);
+        //if (playerController.GetMovement().x > 0)
+        //    transform.rotation = Quaternion.identity;
+        //else if (playerController.GetMovement().x < 0)
+        //    transform.rotation = Quaternion.Euler(0, -180, 0);
 
         Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
 
@@ -140,30 +138,17 @@ public class Tank : MonoBehaviour
         fuelSlider.value = currentFuel / maxFuel;
     }
 
-    public void Aim()
-    {
-        Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(rotatePoint.transform.position);
-        Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
 
-        float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
-
-        if (rotationZ < -90)
-            rotationZ = -90;
-        else if (rotationZ > 179)
-            rotationZ = 179;
-
-        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
-    }
 
     public void Shoot()
     {
         ammo[projectileIndex] -= 1;
-        Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
-        Projectile projectile = Instantiate(currentProjectile.gameObject, firePoint).GetComponent<Projectile>();
+        Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
+        Projectile projectile = Instantiate(currentProjectile.gameObject, gun.GetFirePoint()).GetComponent<Projectile>();
 
         projectile.transform.parent = null;
         projectile.SetOwnTank(this);
-        projectile.Shoot(cannon.transform.rotation, currentShootForce);
+        projectile.Shoot(gun.transform.rotation, currentShootForce);
 
         hasShot = true;
 
@@ -207,7 +192,10 @@ public class Tank : MonoBehaviour
         playerName = newName;
         playerColor = newColor;
 
-        GetComponent<MeshRenderer>().material.color = newColor;
+        foreach (GameObject go in tankParts)
+        {
+            go.GetComponent<MeshRenderer>().material.color = newColor;
+        }
     }
 
     public GameManager GetGameManager()
@@ -219,21 +207,24 @@ public class Tank : MonoBehaviour
     {
         fuelSlider.gameObject.SetActive(true);
         shootForceSlider.gameObject.SetActive(true);
-        lineRenderer.gameObject.SetActive(true);
+        //lineRenderer.gameObject.SetActive(true);
 
         currentFuel = maxFuel;
         fuelSlider.value = currentFuel / maxFuel;
         hasShot = false;
-        
+
     }
 
     public void UnreadyTank()
     {
         fuelSlider.gameObject.SetActive(false);
         shootForceSlider.gameObject.SetActive(false);
-        lineRenderer?.gameObject.SetActive(false);
+        //lineRenderer?.gameObject.SetActive(false);
         isSlowed = false;
-        GetComponent<Renderer>().material.color = playerColor;
+        foreach (GameObject go in tankParts)
+        {
+            go.GetComponent<MeshRenderer>().material.color = playerColor;
+        }
     }
 
     public string GetPlayerName()
@@ -258,7 +249,7 @@ public class Tank : MonoBehaviour
 
     public void CalculateShootForce()
     {
-        Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(cannon.transform.position);
+        Vector2 cannonScreenPos = mainCamera.WorldToScreenPoint(gun.transform.position);
         currentShootForce = Math.Min(Vector3.Distance(cannonScreenPos, playerController.GetMousePosition()), maxShootForce);
 
         shootForceSlider.value = currentShootForce / maxShootForce;

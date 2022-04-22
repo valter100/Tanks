@@ -39,7 +39,7 @@ public abstract class Projectile : MonoBehaviour
     public void Shoot(Quaternion angle, float force)
     {
         transform.rotation = angle;
-        Vector3 shootVector = gameObject.transform.up * force;
+        Vector3 shootVector = gameObject.transform. up * force;
 
         rb.AddForce(shootVector);
     }
