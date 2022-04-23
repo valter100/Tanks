@@ -80,6 +80,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AutoFocusCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""3bcb4532-35d6-4245-b087-6db5300737b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -214,6 +223,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""FocusCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc51e0fb-b2f6-4815-a8a1-95efb49563c8"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""AutoFocusCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -245,6 +265,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Tank_NextProjectile = m_Tank.FindAction("NextProjectile", throwIfNotFound: true);
         m_Tank_PreviousProjectile = m_Tank.FindAction("PreviousProjectile", throwIfNotFound: true);
         m_Tank_FocusCamera = m_Tank.FindAction("FocusCamera", throwIfNotFound: true);
+        m_Tank_AutoFocusCamera = m_Tank.FindAction("AutoFocusCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -310,6 +331,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Tank_NextProjectile;
     private readonly InputAction m_Tank_PreviousProjectile;
     private readonly InputAction m_Tank_FocusCamera;
+    private readonly InputAction m_Tank_AutoFocusCamera;
     public struct TankActions
     {
         private @PlayerControls m_Wrapper;
@@ -320,6 +342,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @NextProjectile => m_Wrapper.m_Tank_NextProjectile;
         public InputAction @PreviousProjectile => m_Wrapper.m_Tank_PreviousProjectile;
         public InputAction @FocusCamera => m_Wrapper.m_Tank_FocusCamera;
+        public InputAction @AutoFocusCamera => m_Wrapper.m_Tank_AutoFocusCamera;
         public InputActionMap Get() { return m_Wrapper.m_Tank; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -347,6 +370,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @FocusCamera.started -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
                 @FocusCamera.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
                 @FocusCamera.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
+                @AutoFocusCamera.started -= m_Wrapper.m_TankActionsCallbackInterface.OnAutoFocusCamera;
+                @AutoFocusCamera.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnAutoFocusCamera;
+                @AutoFocusCamera.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnAutoFocusCamera;
             }
             m_Wrapper.m_TankActionsCallbackInterface = instance;
             if (instance != null)
@@ -369,6 +395,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @FocusCamera.started += instance.OnFocusCamera;
                 @FocusCamera.performed += instance.OnFocusCamera;
                 @FocusCamera.canceled += instance.OnFocusCamera;
+                @AutoFocusCamera.started += instance.OnAutoFocusCamera;
+                @AutoFocusCamera.performed += instance.OnAutoFocusCamera;
+                @AutoFocusCamera.canceled += instance.OnAutoFocusCamera;
             }
         }
     }
@@ -390,5 +419,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnNextProjectile(InputAction.CallbackContext context);
         void OnPreviousProjectile(InputAction.CallbackContext context);
         void OnFocusCamera(InputAction.CallbackContext context);
+        void OnAutoFocusCamera(InputAction.CallbackContext context);
     }
 }

@@ -15,6 +15,7 @@ public class FocusPoint : MonoBehaviour
     [SerializeField] GameObject? followObject;
     [SerializeField] CameraController cameraController;
     [SerializeField] PlayerController playerController;
+    [SerializeField] GameManager gameManager;
     Vector3 velocity;
 
     public GameObject GetObject() => followObject;
@@ -25,7 +26,6 @@ public class FocusPoint : MonoBehaviour
     {
         transform.position = Vector3.zero;
         playerController = GetComponent<PlayerController>();
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
     }
 
     // Update is called once per frame
@@ -57,11 +57,19 @@ public class FocusPoint : MonoBehaviour
                 {
                     FollowObject(raycastHit.transform.gameObject);
                     cameraController.Transition(CameraController.View.Side, 0.8f);
+                    return;
                 }
 
                 else
                     DropObject();
             }
+        }
+
+        else if (playerController.IsAutoFocusing())
+        {
+            FollowObject(gameManager.GetCurrentTank().gameObject);
+            cameraController.Transition(CameraController.View.Side, 0.5f);
+            return;
         }
 
         // Move position manually
@@ -102,6 +110,27 @@ public class FocusPoint : MonoBehaviour
         followObject = gameObject;
         GoToObject();
         return true;
+    }
+
+    /// <summary>
+    /// Set the GameObject which this FocusPoint should follow, after a delay.
+    /// </summary>
+    public IEnumerator Coroutine_DelayedFollowObject(GameObject gameObject, float delay)
+    {
+        if (!gameObject.activeSelf)
+            yield break;
+
+        while (delay > 0.0f)
+        {
+            delay -= Time.deltaTime;
+            yield return null;
+        }
+
+        FocusPointOffset focusPointOffset = gameObject.GetComponent<FocusPointOffset>();
+        offset = focusPointOffset != null ? focusPointOffset.offset : Vector3.zero;
+        followObject = gameObject;
+        GoToObject();
+        yield return 0;
     }
 
     /// <summary>
