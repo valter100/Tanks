@@ -49,8 +49,9 @@ public static class Extensions
     {
         // Custom sigmoid curve
 
-        float b = 0.008f;
-        return Mathf.Clamp01((-1.0f + 2.0f * b) / (1.0f + Mathf.Pow(2.0f, 14.0f * (x - 0.5f))) + 1.0f + b);
+        float b = 0.007875f;
+        float y = -(1.0f + 2.0f * b) / (1.0f + Mathf.Pow(2.0f, 14.0f * (x - 0.5f))) + 1.0f + b;
+        return Mathf.Clamp01(y);
     }
 
     /// <summary>

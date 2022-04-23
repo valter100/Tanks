@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] public FocusPoint focusPoint;
     [SerializeField] GameObject? followObject;
     [SerializeField] bool transitioning;
+    [SerializeField] Vector3 translationalApproachSpeed;
+    [SerializeField] float FOVApproachSpeed;
 
     Dictionary<View, ViewSettings> viewSettings;
     Camera mainCamera;
@@ -110,21 +112,15 @@ public class CameraController : MonoBehaviour
         // Approach target values
 
         if (transform.position != targetPosition)
-            ApproachTargetPosition(5.0f);
+            ApproachTargetPosition();
 
         if (mainCamera.fieldOfView != targetFOV)
-            ApproachTargetFOV(10.0f);
+            ApproachTargetFOV();
     }
 
-    private void ApproachTargetPosition(float speed)
+    private void ApproachTargetPosition()
     {
-        Vector3 delta = targetPosition - transform.position;
-        Vector3 change = delta * Time.deltaTime * speed;
-
-        if (change.magnitude >= delta.magnitude || delta.magnitude < 0.001f)
-            transform.position = targetPosition;
-        else
-            transform.position += change;
+        Vector3 delta, change;
 
         float percentageOfMaxDistance = Vector2.Distance(
             mainCamera.WorldToScreenPoint(focusPoint.transform.position).ToV2(),
@@ -135,13 +131,22 @@ public class CameraController : MonoBehaviour
         {
             delta = targetPosition - transform.position;
             transform.position += delta * (percentageOfMaxDistance - 1.0f);
+            return;
         }
+
+        delta = targetPosition - transform.position;
+        change = delta.Mul(translationalApproachSpeed) * Time.deltaTime;
+
+        if (change.magnitude >= delta.magnitude || delta.magnitude < 0.001f)
+            transform.position = targetPosition;
+        else
+            transform.position += change;
     }
 
-    private void ApproachTargetFOV(float speed)
+    private void ApproachTargetFOV()
     {
         float delta = targetFOV - mainCamera.fieldOfView;
-        float change = delta * Time.deltaTime * speed;
+        float change = delta * Time.deltaTime * FOVApproachSpeed;
 
         if (Math.Abs(change) >= Math.Abs(delta) || Math.Abs(delta) < 0.001f)
             mainCamera.fieldOfView = targetFOV;

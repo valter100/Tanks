@@ -221,7 +221,8 @@ public class Tank : MonoBehaviour
             StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, projectile.gameObject));
 
         else if (result == null)
-            cameraController.focusPoint.FollowObject(projectile.gameObject);
+            StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(projectile.gameObject, 0.2f));
+            
 
         else
         {

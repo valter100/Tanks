@@ -113,6 +113,27 @@ public class FocusPoint : MonoBehaviour
     }
 
     /// <summary>
+    /// Set the GameObject which this FocusPoint should follow, after a delay.
+    /// </summary>
+    public IEnumerator Coroutine_DelayedFollowObject(GameObject gameObject, float delay)
+    {
+        if (!gameObject.activeSelf)
+            yield break;
+
+        while (delay > 0.0f)
+        {
+            delay -= Time.deltaTime;
+            yield return null;
+        }
+
+        FocusPointOffset focusPointOffset = gameObject.GetComponent<FocusPointOffset>();
+        offset = focusPointOffset != null ? focusPointOffset.offset : Vector3.zero;
+        followObject = gameObject;
+        GoToObject();
+        yield return 0;
+    }
+
+    /// <summary>
     /// Drop the Gameobject which this FocusPoint is following.
     /// </summary>
     /// <returns> Whether or not there was a GameObject to drop.</returns>
