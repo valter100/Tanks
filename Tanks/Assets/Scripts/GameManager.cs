@@ -12,6 +12,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] Tank currentTank;
     [SerializeField] CameraController cameraController;
 
+    float timeUntilNextPlayer;
+    float nextPlayerTimer;
+
+    //enum GameState
+    //{
+    //    Start,
+    //    Turn,
+    //    Transition,
+    //    End
+    //}
+
     void Start()
     {
         GameObject[] allTanksInScene = GameObject.FindGameObjectsWithTag("Tank");
@@ -44,6 +55,31 @@ public class GameManager : MonoBehaviour
         yield return 0;
     }
 
+    private IEnumerator Coroutine_NextPlayer()
+    {
+        float delay = currentTank.GetCurrentProjectile().GetTimeToLive();
+
+        while (delay > 0.0f)
+        {
+            GameObject firedProjectile = GameObject.FindGameObjectWithTag("Projectile");
+            delay -= Time.deltaTime;
+
+            if (firedProjectile == null && delay > 2)
+                delay = 1.5f;
+
+            yield return null;
+        }
+
+        currentPlayerIndex++;
+        if (currentPlayerIndex >= tanks.Count)
+            currentPlayerIndex = 0;
+
+        currentTank = tanks[currentPlayerIndex];
+
+        currentTank.ReadyTank();
+        yield return 0;
+    }
+
     public void NextPlayer()
     {
         if (tanks.Count == 1)
@@ -53,14 +89,10 @@ public class GameManager : MonoBehaviour
             //End game
         }
 
-        currentTank.UnreadyTank();
+        if(currentTank)
+            currentTank.UnreadyTank();
 
-        currentPlayerIndex++;
-        if (currentPlayerIndex >= tanks.Count)
-            currentPlayerIndex = 0;
-
-        currentTank = tanks[currentPlayerIndex];
-        currentTank.ReadyTank();
+        StartCoroutine(Coroutine_NextPlayer());
     }
 
     public int GetCurrentPlayerIndex()

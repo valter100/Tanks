@@ -17,7 +17,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] public FocusPoint focusPoint;
     [SerializeField] GameObject? followObject;
     [SerializeField] bool transitioning;
-
+    
+    GameManager gameManager;
     Dictionary<View, ViewSettings> viewSettings;
     Camera mainCamera;
     float maxDistanceToTarget;
@@ -69,6 +70,8 @@ public class CameraController : MonoBehaviour
         // Transition instantly to side view
         Transition(View.Side, null);
         mainCamera.fieldOfView = targetFOV = viewSettings[view].maxFOV;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -295,6 +298,11 @@ public class CameraController : MonoBehaviour
         transform.position = targetPosition;
         transform.rotation = targetRotation;
         mainCamera.fieldOfView = targetFOV;
+
+        //GameObject followedObject = followObject.GetComponent<FocusPoint>().GetObject();
+
+        //if (followedObject.GetType() == typeof(Tank))
+        //    followObject.GetComponent<Tank>().SetHasFired(false);
     }
 
     /// <summary>

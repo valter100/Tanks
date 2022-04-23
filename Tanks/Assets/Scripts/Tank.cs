@@ -114,6 +114,15 @@ public class Tank : MonoBehaviour
         PreviewProjectileTrajectory();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Water")
+        {
+            TakeDamage(currentHealth);
+            gameManager.NextPlayer();
+        }
+    }
+
     public void Move()
     {
         if (playerController.GetMovement().x > 0)
@@ -229,6 +238,8 @@ public class Tank : MonoBehaviour
 
             cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
         }
+
+        gameManager.NextPlayer();
     }
 
     public void TakeDamage(float damage)
@@ -311,6 +322,11 @@ public class Tank : MonoBehaviour
         projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
         projectileIndex %= projectiles.Count;
         currentProjectile = projectiles[projectileIndex];
+    }
+
+    public void SetHasFired(bool state)
+    {
+        hasFired = state;
     }
 
     public void SetIsSlowed(bool state)

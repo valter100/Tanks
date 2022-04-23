@@ -63,16 +63,27 @@ public abstract class Projectile : MonoBehaviour
     /// </summary>
     protected virtual void OnCollision(Collider other)
     {
-
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.tag == "Water")
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         OnCollision(other.collider);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Water")
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         OnCollision(other);
     }
 
@@ -86,7 +97,7 @@ public abstract class Projectile : MonoBehaviour
             Instantiate(detonationParticles, transform.position, Quaternion.identity, null);
 
         ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
-        ownTank.GetGameManager().NextPlayer();
+        //ownTank.GetGameManager().NextPlayer();
         Destroy(gameObject);
     }
 
