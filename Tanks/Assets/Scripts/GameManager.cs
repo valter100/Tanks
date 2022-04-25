@@ -100,10 +100,17 @@ public class GameManager : MonoBehaviour
         if (currentPlayerIndex >= tanks.Count)
             currentPlayerIndex = 0;
 
-        currentTank = tanks[currentPlayerIndex];
-
-        playerNameText.text = "Current player: " + currentTank.GetPlayerName();
-        currentTank.ReadyTank();
+        for(int i = currentPlayerIndex; i < tanks.Count; i++)
+        {
+            if (tanks[i].gameObject.activeInHierarchy)
+            {
+                currentPlayerIndex = i;
+                currentTank = tanks[currentPlayerIndex];
+                playerNameText.text = "Current player: " + currentTank.GetPlayerName();
+                currentTank.ReadyTank();
+                return;
+            }
+        }
     }
 
     public int GetCurrentPlayerIndex()
@@ -125,6 +132,5 @@ public class GameManager : MonoBehaviour
     public void RemoveTankFromList(Tank tank)
     {
         tanks.Remove(tank);
-        Destroy(tank.gameObject);
     }
 }

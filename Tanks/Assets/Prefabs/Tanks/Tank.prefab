@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   cameraController: {fileID: 0}
-  playerIndex: 0
+  isActive: 0
   playerName: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 15
@@ -1422,6 +1422,7 @@ MonoBehaviour:
   currentProjectile: {fileID: -1023275637233965037, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 3180057106955339533}
+  tankDamagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
   tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
   isSlowed: 0
   rotatePoint: {fileID: 2232384697090623839}

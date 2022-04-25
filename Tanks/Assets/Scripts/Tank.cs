@@ -35,6 +35,7 @@ public class Tank : MonoBehaviour
     [SerializeField] Projectile currentProjectile;
     [SerializeField] ParticleSystem fireParticles;
     [SerializeField] Animator animator;
+    [SerializeField] ParticleSystem tankDamagedParticles;
     [SerializeField] ParticleSystem tankDestroyedParticles;
 
     [Header("Status Effects")]
@@ -254,6 +255,7 @@ public class Tank : MonoBehaviour
         if (currentHealth > 0.0f)
         {
             animator.SetTrigger("Damaged");
+            Instantiate(tankDamagedParticles, transform.position, Quaternion.identity, null);
         }
         else
         {
@@ -263,10 +265,9 @@ public class Tank : MonoBehaviour
         healthSlider.value = currentHealth / maxHealth;
     }
 
-    public void RemoveTank()
+    public void DeactivateTank()
     {
-        gameManager.RemoveTankFromList(this);
-
+        gameObject.SetActive(false);
     }
 
     public void SpawnDestroyedParticles()
