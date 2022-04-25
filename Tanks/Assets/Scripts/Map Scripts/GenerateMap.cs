@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Tanks
 {
@@ -24,9 +25,12 @@ namespace Tanks
         [Min(1)]
         [SerializeField] private int tileAmount = 1;
 
+        [SerializeField] private float overhangHeight;
         private float[] heights;
         private Vector3[] linePositions;
 
+        List<int> triangleIndices = new List<int>();
+        List<Vector3> vertices;
         void Start()
         {
             GenerateRandomMap();
@@ -53,8 +57,8 @@ namespace Tanks
             GenerateRandomHeights();
             SmoothenHeights();
             UpdatePositions();
-            GenerateMesh();
-            GenerateEnvironmentalObjects();
+            GenerateQuads();
+            GenerateObjects();
         }
 
         private void DrawDebugLine(Vector3[] positions)
@@ -94,45 +98,68 @@ namespace Tanks
                 heights[i] = Mathf.Lerp(heights[i], heights[i - 1], smoothFactor);
         }
 
-        private void GenerateMesh()
+        private void GenerateQuads()
         {
-            List<Vector3> vertices = new List<Vector3>();
+            vertices = new List<Vector3>();
+            triangleIndices = new List<int>();
             List<Quad> quads = new List<Quad>();
-            List<int> triangleIndices = new List<int>();
+            int verticesPerPosition = 4;
 
             for (int i = 0; i < linePositions.Length; i++)
             {
                 int vertexIndex = AddVertex(linePositions[i]);
-                int verticesPerPosition = 3;
                 if (i < 1) continue;
                 int pastIndex = vertexIndex - verticesPerPosition;
-                quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1));
-                quads.Add(new Quad(pastIndex + 2, pastIndex, vertexIndex + 2, vertexIndex));
+                for (int j = 0; j < verticesPerPosition - 1; j++)
+                    AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
             }
 
-            foreach (Quad quad in quads)
-                foreach (int index in quad.GetTriangleIndices())
-                    triangleIndices.Add(index);
+            CreateMesh(CreateSubMeshDescriptors(quads));
 
-            CreateMesh(vertices, triangleIndices);
+            void AddToQuad(int pastIndex, int vertexIndex, bool isTopside){
+                quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+            }
 
             int AddVertex(Vector3 vertex)
             {
                 int index = vertices.Count;
-                vertices.Add(vertex);
-                vertices.Add(new Vector3(vertex.x, 0));
                 vertices.Add(new Vector3(vertex.x, vertex.y, depth));
+                vertices.Add(vertex);
+                vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight));
+                vertices.Add(new Vector3(vertex.x, 0));
                 return index;
             }
         }
 
-        private void CreateMesh(List<Vector3> vertices, List<int> triangleIndices)
+        private List<SubMeshDescriptor> CreateSubMeshDescriptors(List<Quad> quads)
+        {
+            List<SubMeshDescriptor> descriptors = new List<SubMeshDescriptor>();
+
+            IndexQuads(true);
+            int lastIndex = triangleIndices.Count - 1;
+            descriptors.Add(new SubMeshDescriptor(0, lastIndex));
+            IndexQuads(false);
+            descriptors.Add(new SubMeshDescriptor(lastIndex + 1, triangleIndices.Count - lastIndex - 1));
+
+            return descriptors;
+
+            void IndexQuads(bool isTopside)
+            {
+                foreach (Quad quad in quads)
+                    if (quad.isTopside == isTopside)
+                        foreach (int index in quad.GetTriangleIndices())
+                            triangleIndices.Add(index);
+            }
+        }
+
+        private void CreateMesh(List<SubMeshDescriptor> descriptors)
         {
             Mesh mesh = new Mesh();
             mesh.SetVertices(vertices);
             mesh.triangles = triangleIndices.ToArray();
             mesh.RecalculateNormals();
-            mesh.uv = CreateUV(vertices);
+            mesh.SetSubMeshes(descriptors);
+            CreateUVs(vertices, mesh);
 
             MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
             meshFilter.mesh = mesh;
@@ -141,36 +168,38 @@ namespace Tanks
             collider.sharedMesh = mesh;
         }
 
-        private void GenerateEnvironmentalObjects()  
+        private void GenerateObjects()  
         {
             GetComponent<GenerateDecor>().GenerateObjects(linePositions, width, depth);
+            GetComponent<GenerateSpawnpoints>().GenerateObjects(linePositions, width, depth);
         }
         
-        private Vector2[] CreateUV(List<Vector3> vertices)
+        private void CreateUVs(List<Vector3> vertices, Mesh mesh)
         {   //Unfolds the map to determine UV-coord
             Vector2[] uvs = new Vector2[vertices.Count];
             int divideMapSize = 2;
             for (int i = 0; i < vertices.Count; i++)
-            {   
-                float vertexHeight = vertices[i].y + vertices[i].z;//both y and z are counted as height.
+            {
+                float vertexHeight = vertices[i].y + vertices[i].z;//both y and z are counted as height. 
                 float fillPercentX = Mathf.InverseLerp(width / divideMapSize, -width / divideMapSize, vertices[i].x);
                 float fillPercentY = Mathf.InverseLerp((height + depth) / divideMapSize, -(height + depth) / divideMapSize, vertexHeight);
                 uvs[i] = new Vector2(fillPercentX, fillPercentY) * tileAmount;
             }
-
-            return uvs;
+            mesh.uv = uvs;         
         }
     }
 
     public struct Quad
     {
         private readonly int upperLeftIndex, lowerLeftIndex, upperRightIndex, lowerRightIndex;
-        public Quad(int upperLeftIndex, int lowerLeftIndex, int upperRightIndex, int lowerRightIndex)
+        public readonly bool isTopside;
+        public Quad(int upperLeftIndex, int lowerLeftIndex, int upperRightIndex, int lowerRightIndex, bool isTopside = false)
         {
             this.upperLeftIndex = upperLeftIndex;
             this.lowerLeftIndex = lowerLeftIndex;
             this.upperRightIndex = upperRightIndex;
             this.lowerRightIndex = lowerRightIndex;
+            this.isTopside = isTopside;
         }
 
         public int[] GetTriangleIndices()

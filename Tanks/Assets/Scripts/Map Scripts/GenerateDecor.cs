@@ -5,25 +5,18 @@ using UnityEngine;
 
 namespace Tanks
 {
-    public class GenerateDecor : MonoBehaviour
+    public class GenerateDecor : ObjectGenerator
     {
-        [SerializeReference] GameObject[] objects;
-        [SerializeReference] float objectsPerWidth;
-        [SerializeReference] float minimumObjectDistance;
+        [SerializeField] GameObject[] objects;
+        [SerializeField] float objectsPerWidth;
 
-        [SerializeReference] float depthAdjustment;
-        [SerializeReference] float heightAdjustment;
+        [SerializeField] float depthAdjustment;
 
-        private Vector3[] linePositions;
-        private float depth;
 
-        private List<Vector3> usedPositions;
 
-        public void GenerateObjects(Vector3[] linePositions, float width, float depth)
+        public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
-            this.linePositions = linePositions;
-            this.depth = depth;
-            usedPositions = new List<Vector3>();
+            base.GenerateObjects(linePositions, width, depth);
 
             int numberOfObjects = (int)(width * objectsPerWidth);
             for (int i = 0; i < numberOfObjects; i++)
@@ -37,17 +30,11 @@ namespace Tanks
             Vector3 randomizedVector = Vector3.zero;
             while (attemptsBeforeExit > 0)
             {
-                bool noConflicts = true;
                 randomizedVector = linePositions[RandomInt(linePositions.Length)];
                 randomizedVector.z = RandomBool() ? depth - zDepthAdjustment : zDepthAdjustment;
                 randomizedVector.y += heightAdjustment;
 
-                
-                foreach (Vector3 position in usedPositions)
-                    if ((position - randomizedVector).magnitude <= minimumObjectDistance)
-                        noConflicts = false;
-
-                if (noConflicts)
+                if (ValidDistanceFromObjects(randomizedVector))
                     break;
 
                 --attemptsBeforeExit;
@@ -58,16 +45,6 @@ namespace Tanks
         }
 
         private GameObject PickRandomObject() => objects[RandomInt(objects.Length)];
-
-        private int RandomInt(int max) => (int)(Random.value * max);
-
-        private bool RandomBool() => Random.value > 0.5f;
-
-        private void CreateObjectAtPosition(Vector3 position, GameObject gameObject)
-        {
-            gameObject.transform.position = position;
-            Instantiate(gameObject, transform, true);
-        }
     }
 }
 

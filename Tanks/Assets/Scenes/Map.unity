@@ -340,6 +340,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3036856133504881423, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: minimumObjectDistance
+      value: 3.04
+      objectReference: {fileID: 0}
     - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: depthAdjustment
       value: 0.49
@@ -436,5 +440,21 @@ PrefabInstance:
       propertyPath: smoothFactor
       value: 0.9
       objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: overhangHeight
+      value: 0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079919, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079919, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 601699f97e078b243ac3043a958c904b, type: 2}
+    - target: {fileID: 9169650065926079919, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 281385750605c2d45b840efdfdb0a6c9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 979e555061338e84ba069951e0ddae66, type: 3}
