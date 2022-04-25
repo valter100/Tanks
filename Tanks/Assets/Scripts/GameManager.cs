@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Tank currentTank;
     [SerializeField] CameraController cameraController;
 
+    [SerializeField] TMP_Text playerNameText;
     float timeUntilNextPlayer;
     float nextPlayerTimer;
 
@@ -26,7 +28,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         GameObject[] allTanksInScene = GameObject.FindGameObjectsWithTag("Tank");
-        
+        playerNameText = GameObject.Find("GUI").transform.Find("CurrentPlayer").GetComponent<TMP_Text>();
+
+
         foreach (GameObject tank in allTanksInScene)
         {
             tanks.Add(tank.GetComponent<Tank>());
@@ -51,11 +55,24 @@ public class GameManager : MonoBehaviour
 
         currentPlayerIndex = 0;
         currentTank = tanks[currentPlayerIndex];
+        playerNameText.text = "Current player: " + currentTank.GetPlayerName();
         currentTank.ReadyTank();
         yield return 0;
     }
 
-    private IEnumerator Coroutine_NextPlayer()
+
+    public void StartPlayerTransition()
+    {
+        if (tanks.Count == 1)
+        {
+            Debug.Log(currentTank.GetPlayerName() + " Wins!");
+            //current tank wins
+            //End game
+        }
+
+        StartCoroutine(Coroutine_PlayerTransition());
+    }
+    private IEnumerator Coroutine_PlayerTransition()
     {
         float delay = currentTank.GetCurrentProjectile().GetTimeToLive();
 
@@ -70,29 +87,23 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        SetNextPlayer();
+        yield return 0;
+    }
+
+    public void SetNextPlayer()
+    {
+        if (currentTank)
+            currentTank.UnreadyTank();
+
         currentPlayerIndex++;
         if (currentPlayerIndex >= tanks.Count)
             currentPlayerIndex = 0;
 
         currentTank = tanks[currentPlayerIndex];
 
+        playerNameText.text = "Current player: " + currentTank.GetPlayerName();
         currentTank.ReadyTank();
-        yield return 0;
-    }
-
-    public void NextPlayer()
-    {
-        if (tanks.Count == 1)
-        {
-            Debug.Log(currentTank.GetPlayerName() + " Wins!");
-            //current tank wins
-            //End game
-        }
-
-        if(currentTank)
-            currentTank.UnreadyTank();
-
-        StartCoroutine(Coroutine_NextPlayer());
     }
 
     public int GetCurrentPlayerIndex()

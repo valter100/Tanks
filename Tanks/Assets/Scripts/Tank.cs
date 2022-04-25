@@ -12,7 +12,8 @@ public class Tank : MonoBehaviour
     [Header("Player")]
     [SerializeField] GameManager gameManager;
     [SerializeField] CameraController cameraController;
-    [SerializeField] int playerIndex;
+    [SerializeField] bool isActive;
+    //[SerializeField] int playerIndex;
     [SerializeField] string playerName;
     [SerializeField] Color playerColor;
 
@@ -65,7 +66,7 @@ public class Tank : MonoBehaviour
     PlayerController playerController;
     Rigidbody rb;
     Ray ray;
-    TextMeshProUGUI projectileTMP;
+    TMP_Text projectileTMP;
 
     public string GetPlayerName() => playerName;
 
@@ -97,7 +98,7 @@ public class Tank : MonoBehaviour
 
     void Update()
     {
-        if (gameManager.GetCurrentPlayerIndex() != playerIndex || hasFired || currentHealth <= 0)
+        if (!isActive)
             return;
 
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
@@ -108,8 +109,8 @@ public class Tank : MonoBehaviour
 
         Aim();
         CalculateShootForce();
-        
-            if (playerController.IsShooting() && CanFire())
+
+        if (playerController.IsShooting() && CanFire())
             Fire();
 
         // Fire() must come before PreviewProjectileTrajectory()
@@ -119,10 +120,10 @@ public class Tank : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Water")
+        if (collision.gameObject.tag == "Water" && currentHealth > 0)
         {
             TakeDamage(currentHealth);
-            gameManager.NextPlayer();
+            gameManager.StartPlayerTransition();
         }
     }
 
@@ -182,13 +183,13 @@ public class Tank : MonoBehaviour
     {
         return HasAmmo()
             && !hasFired
-            && gameManager.GetCurrentPlayerIndex() == playerIndex
+            && isActive
             && currentHealth > 0.0f;
     }
 
     private Projectile InstantiateProjectile()
     {
-        Projectile projectile = Instantiate(currentProjectile, firePoint);    
+        Projectile projectile = Instantiate(currentProjectile, firePoint);
         projectile.ownTank = this;
         projectile.transform.parent = null;
         projectile.Fire(cannon.transform.rotation, currentShootForce);
@@ -231,7 +232,6 @@ public class Tank : MonoBehaviour
 
         else if (result == null)
             StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(projectile.gameObject, 0.2f));
-            
 
         else
         {
@@ -243,17 +243,20 @@ public class Tank : MonoBehaviour
             cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
         }
 
-        gameManager.NextPlayer();
+        isActive = false;
+        gameManager.StartPlayerTransition();
     }
 
     public void TakeDamage(float damage)
     {
-        animator.SetTrigger("Damaged");
         currentHealth -= damage;
 
-        if (currentHealth <= 0.0f)
+        if (currentHealth > 0.0f)
         {
-            currentHealth = 0.0f;
+            animator.SetTrigger("Damaged");
+        }
+        else
+        {
             animator.SetTrigger("Destroyed");
         }
 
@@ -263,6 +266,7 @@ public class Tank : MonoBehaviour
     public void RemoveTank()
     {
         gameManager.RemoveTankFromList(this);
+
     }
 
     public void SpawnDestroyedParticles()
@@ -272,11 +276,10 @@ public class Tank : MonoBehaviour
 
     public void AssignPlayer(int newIndex, string newName, Color newColor)
     {
-        playerIndex = newIndex;
         playerName = newName;
         playerColor = newColor;
 
-        foreach(GameObject go in tankParts)
+        foreach (GameObject go in tankParts)
         {
             go.GetComponent<MeshRenderer>().material.color = newColor;
         }
@@ -291,6 +294,7 @@ public class Tank : MonoBehaviour
 
         currentFuel = maxFuel;
         fuelSlider.value = currentFuel / maxFuel;
+        isActive = true;
         hasFired = false;
 
         if (cameraController == null)
@@ -299,7 +303,8 @@ public class Tank : MonoBehaviour
         cameraController.focusPoint.FollowObject(gameObject);
         cameraController.Transition(CameraController.View.Side, 1.0f);
 
-        projectileTMP.text = "Current projectile: " + currentProjectile.name;
+        if (projectileTMP)
+            projectileTMP.text = "Current projectile: " + currentProjectile.name;
     }
 
     public void UnreadyTank()
@@ -328,7 +333,9 @@ public class Tank : MonoBehaviour
         projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
         projectileIndex %= projectiles.Count;
         currentProjectile = projectiles[projectileIndex];
-        projectileTMP.text = "Current projectile: " + currentProjectile.name;
+
+        if (projectileTMP)
+            projectileTMP.text = "Current projectile: " + currentProjectile.name;
     }
 
     public void SetHasFired(bool state)
@@ -336,6 +343,10 @@ public class Tank : MonoBehaviour
         hasFired = state;
     }
 
+    //public void SetIsActive(bool state)
+    //{
+    //    isActive = state;
+    //}
     public void SetIsSlowed(bool state)
     {
         isSlowed = state;
