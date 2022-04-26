@@ -9,11 +9,7 @@ public class MoveState : ActiveState
     private float fuel;
     public override ActiveState DoState(AiManager thisBehaviour, Transform thisTankPosition,Transform enemyTankPosition, Tank thisTank)
     {
-        distanceToEnemy = Vector3.Distance(thisTankPosition.position, enemyTankPosition.position);
-        fuel = thisTank.GetFuelPercentage();
-        maxShootingRange = thisTank.GetMaxShootForce();
-
-        if (distanceToEnemy < maxShootingRange || fuel < 1f)
+        if (thisBehaviour.GetDistanceToEnemy() < thisBehaviour.GetMaxShootingRange() || thisBehaviour.GetFuel() <= 0)
         {
             return thisBehaviour.shootState;
         }
