@@ -22,6 +22,7 @@ namespace Tanks
         [SerializeField] private float height = 6f;
         [Range(1.0f, 10.0f)]
         [SerializeField] private float depth = 3f;
+        [SerializeField] private float bottomDepth = 1f;
         [Min(1)]
         [SerializeField] private int tileAmount = 1;
 
@@ -126,7 +127,7 @@ namespace Tanks
                 vertices.Add(new Vector3(vertex.x, vertex.y, depth));
                 vertices.Add(vertex);
                 vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight));
-                vertices.Add(new Vector3(vertex.x, 0));
+                vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
                 return index;
             }
         }
