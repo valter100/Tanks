@@ -12,7 +12,7 @@ namespace Tanks
 
         [SerializeField] float depthAdjustment;
 
-
+        //TODO slumpa föremålens rotationer i y-led
 
         public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
