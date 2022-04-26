@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,10 +13,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] Tank currentTank;
     [SerializeField] CameraController cameraController;
 
+    [SerializeField] TMP_Text playerNameText;
+    float timeUntilNextPlayer;
+    float nextPlayerTimer;
+
+    //enum GameState
+    //{
+    //    Start,
+    //    Turn,
+    //    Transition,
+    //    End
+    //}
+
     void Start()
     {
         GameObject[] allTanksInScene = GameObject.FindGameObjectsWithTag("Tank");
-        
+        playerNameText = GameObject.Find("GUI").transform.Find("CurrentPlayer").GetComponent<TMP_Text>();
+
+
         foreach (GameObject tank in allTanksInScene)
         {
             tanks.Add(tank.GetComponent<Tank>());
@@ -40,11 +55,13 @@ public class GameManager : MonoBehaviour
 
         currentPlayerIndex = 0;
         currentTank = tanks[currentPlayerIndex];
+        playerNameText.text = "Current player: " + currentTank.GetPlayerName();
         currentTank.ReadyTank();
         yield return 0;
     }
 
-    public void NextPlayer()
+
+    public void StartPlayerTransition()
     {
         if (tanks.Count == 1)
         {
@@ -53,14 +70,47 @@ public class GameManager : MonoBehaviour
             //End game
         }
 
-        currentTank.UnreadyTank();
+        StartCoroutine(Coroutine_PlayerTransition());
+    }
+    private IEnumerator Coroutine_PlayerTransition()
+    {
+        float delay = currentTank.GetCurrentProjectile().GetTimeToLive();
+
+        while (delay > 0.0f)
+        {
+            GameObject firedProjectile = GameObject.FindGameObjectWithTag("Projectile");
+            delay -= Time.deltaTime;
+
+            if (firedProjectile == null && delay > 2)
+                delay = 1.5f;
+
+            yield return null;
+        }
+
+        SetNextPlayer();
+        yield return 0;
+    }
+
+    public void SetNextPlayer()
+    {
+        if (currentTank)
+            currentTank.UnreadyTank();
 
         currentPlayerIndex++;
         if (currentPlayerIndex >= tanks.Count)
             currentPlayerIndex = 0;
 
-        currentTank = tanks[currentPlayerIndex];
-        currentTank.ReadyTank();
+        for(int i = currentPlayerIndex; i < tanks.Count; i++)
+        {
+            if (tanks[i].gameObject.activeInHierarchy)
+            {
+                currentPlayerIndex = i;
+                currentTank = tanks[currentPlayerIndex];
+                playerNameText.text = "Current player: " + currentTank.GetPlayerName();
+                currentTank.ReadyTank();
+                return;
+            }
+        }
     }
 
     public int GetCurrentPlayerIndex()
@@ -82,6 +132,5 @@ public class GameManager : MonoBehaviour
     public void RemoveTankFromList(Tank tank)
     {
         tanks.Remove(tank);
-        Destroy(tank.gameObject);
     }
 }
