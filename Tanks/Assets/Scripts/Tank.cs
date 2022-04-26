@@ -75,6 +75,8 @@ public class Tank : MonoBehaviour
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
 
+    public float GetMaxShootForce() => maxShootForce;
+
     public GameManager GetGameManager() => gameManager;
 
     public bool HasAmmo() => ammo[projectileIndex] > 0;
