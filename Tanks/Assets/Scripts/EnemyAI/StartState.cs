@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartState : ActiveState
+public class StartState : State
 {
-    public override ActiveState DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, Tank thisTank)
+    public override void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, Tank thisTank)
     {
         if (thisBehaviour.GetDistanceToEnemy() >= thisBehaviour.GetMaxShootingRange() && thisBehaviour.GetFuel() >= 1f)
         {
-            return thisBehaviour.moveState;
+           thisBehaviour.SetMoveState();
+           return;
         }
         else if (thisBehaviour.GetDistanceToEnemy() < thisBehaviour.GetMaxShootingRange() || thisBehaviour.GetFuel() <= 0)
         {
-            return thisBehaviour.shootState;
+           thisBehaviour.SetFireState();
+           return;
         }
-        else return null;
     }
 }
