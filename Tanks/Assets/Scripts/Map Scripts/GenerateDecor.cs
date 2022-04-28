@@ -12,15 +12,13 @@ namespace Tanks
 
         [SerializeField] float depthAdjustment;
 
-        //TODO slumpa föremålens rotationer i y-led
-
         public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
             base.GenerateObjects(linePositions, width, depth);
 
             int numberOfObjects = (int)(width * objectsPerWidth);
             for (int i = 0; i < numberOfObjects; i++)
-                CreateObjectAtPosition(RandomizePosition(), PickRandomObject());
+                CreateObjectAtPosition(RandomizePosition(), PickRandomObject(), RandomAngle());
         }
 
         private Vector3 RandomizePosition()
@@ -41,7 +39,7 @@ namespace Tanks
             }
 
             usedPositions.Add(randomizedVector);
-            return randomizedVector;
+            return randomizedVector + transform.position;
         }
 
         private GameObject PickRandomObject() => objects[RandomInt(objects.Length)];

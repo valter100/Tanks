@@ -398,11 +398,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079914, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5.25
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079914, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.94
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079914, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_LocalPosition.z
@@ -438,7 +438,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: depth
-      value: 3.18
+      value: 5.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: height
+      value: 6.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: amplitude
+      value: 2.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: slopeWidth
+      value: 4.12
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: tileAmount
@@ -446,11 +458,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: smoothFactor
-      value: 0.9
+      value: 0.77
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: overhangHeight
-      value: 0.44
+      value: 0.64
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079919, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_Materials.Array.size
