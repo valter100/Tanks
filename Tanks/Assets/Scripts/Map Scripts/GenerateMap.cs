@@ -8,34 +8,26 @@ namespace Tanks
     public class GenerateMap : MonoBehaviour
     {
         [SerializeField] private bool generateNewMap;
-        [SerializeField] private bool drawDebugLines = true;
 
         [Min(0.1f)]
         [SerializeField] private float pointsPerWidth = 3;
-        [Range(0.0f, 5.0f)]
         [SerializeField] private float amplitude = 1.75f;
         [Range(0.0f, 1.0f)]
         [SerializeField] private float smoothFactor = 0.9f;
-
         [SerializeField] private float width = 20f;
-        [Range(5.0f, 25.0f)]
         [SerializeField] private float height = 6f;
-        [Range(1.0f, 10.0f)]
         [SerializeField] private float depth = 3f;
         [SerializeField] private float bottomDepth = 1f;
-        [Min(1)]
-        [SerializeField] private int tileAmount = 1;
-
         [SerializeField] private float overhangHeight;
+        [SerializeField] private float slopeWidth;
+        
         private float[] heights;
         private Vector3[] linePositions;
 
-        List<int> triangleIndices = new List<int>();
+        List<int> triangleIndices;
         List<Vector3> vertices;
-        void Start()
-        {
-            GenerateRandomMap();
-        }
+        List<Quad> quads;
+        void Start() => GenerateRandomMap();
 
         private void Update()
         {
@@ -46,9 +38,6 @@ namespace Tanks
                 GenerateRandomMap();
                 generateNewMap = false;
             }
-                
-            if(drawDebugLines)
-                DrawDebugLine(linePositions);
         }
 
         private void GenerateRandomMap()
@@ -57,23 +46,10 @@ namespace Tanks
                 height = amplitude * 2;
             GenerateRandomHeights();
             SmoothenHeights();
-            UpdatePositions();
+            AddSideSlopes();
+            CreatePositions();
             GenerateQuads();
             GenerateObjects();
-        }
-
-        private void DrawDebugLine(Vector3[] positions)
-        {
-            if (positions.Length <= 1)
-                return;
-
-            for (int i = 1; i < positions.Length; i++)
-                Debug.DrawLine(positions[i - 1] + transform.position, positions[i] , Color.green);
-
-            //Height
-            Debug.DrawLine(new Vector3(-width / 2.0f, 0) + transform.position, new Vector3(-width / 2.0f, height) + transform.position, Color.red);
-            //Width
-            Debug.DrawLine(new Vector3(-width / 2.0f, 0) + transform.position, new Vector3(width / 2.0f - 1.0f / pointsPerWidth, 0) + transform.position, Color.red);
         }
 
         private float GetRandomHeight() => Random.value * 2.0f - 1.0f;
@@ -85,34 +61,68 @@ namespace Tanks
                 heights[i] = GetRandomHeight();
         }
 
-        private void UpdatePositions()
-        {
-            float widthPerPoint = 1.0f / pointsPerWidth;
-            linePositions = new Vector3[heights.Length];
-            for (int i = 0; i < heights.Length; i++)
-                linePositions[i] = new Vector3(i * widthPerPoint - width / 2.0f, height - amplitude + heights[i] * amplitude);
-        }
-
         private void SmoothenHeights()
         {
             for (int i = 1; i < heights.Length; i++)
                 heights[i] = Mathf.Lerp(heights[i], heights[i - 1], smoothFactor);
         }
 
+        private void AddSideSlopes()
+        {
+            float baseAmplitude = -0.9f;
+            int numberOfPoints = (int)(slopeWidth * pointsPerWidth);
+            List<float> heightList = new List<float>();
+            var firstSlope = GetSlope(heights[0]);
+            var lastSlope = GetSlope(heights[heights.Length - 1]);
+
+            for (int i = 0; i < firstSlope.Length; i++)
+                heightList.Add(firstSlope[i]);
+            for (int i = 0; i < heights.Length; i++)
+                heightList.Add(heights[i]);
+            for (int i = lastSlope.Length - 1; i >= 0; i--)
+                heightList.Add(lastSlope[i]);
+
+            heights = heightList.ToArray();
+
+            float[] GetSlope(float height)
+            {
+                float[] slopeHeights = new float[numberOfPoints];
+                for (int i = 0; i < numberOfPoints; i++)
+                    slopeHeights[i] = Mathf.Lerp(baseAmplitude, height, Mathf.Log(i + 1.0f, numberOfPoints));
+                return slopeHeights;
+            }
+        }
+
+        private void CreatePositions()
+        {
+            float widthPerPoint = 1.0f / pointsPerWidth;
+            float trueWidth = width + slopeWidth * 2;
+            linePositions = new Vector3[heights.Length];
+            for (int i = 0; i < heights.Length; i++)
+                linePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
+        }
+
         private void GenerateQuads()
         {
             vertices = new List<Vector3>();
             triangleIndices = new List<int>();
-            List<Quad> quads = new List<Quad>();
+            quads = new List<Quad>();
             int verticesPerPosition = 4;
 
             for (int i = 0; i < linePositions.Length; i++)
             {
-                int vertexIndex = AddVertex(linePositions[i]);
-                if (i < 1) continue;
+                if (i < 1)
+                {
+                    AddFirstSide(linePositions[i]);
+                    continue;
+                }
+                int vertexIndex = i+1 != linePositions.Length ? AddVertex(linePositions[i]) : AddLastSide(linePositions[i]);
                 int pastIndex = vertexIndex - verticesPerPosition;
                 for (int j = 0; j < verticesPerPosition - 1; j++)
                     AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
+
+
+
             }
 
             CreateMesh(CreateSubMeshDescriptors(quads));
@@ -120,16 +130,35 @@ namespace Tanks
             void AddToQuad(int pastIndex, int vertexIndex, bool isTopside){
                 quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
             }
+        }
 
-            int AddVertex(Vector3 vertex)
-            {
-                int index = vertices.Count;
-                vertices.Add(new Vector3(vertex.x, vertex.y, depth));
-                vertices.Add(vertex);
-                vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight));
-                vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
-                return index;
-            }
+        int AddVertex(Vector3 vertex)
+        {
+            int index = vertices.Count;
+            vertices.Add(new Vector3(vertex.x, vertex.y, depth));
+            vertices.Add(vertex);
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight));
+            vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
+            return index;
+        }
+
+        void AddFirstSide(Vector3 vertex)
+        {
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, depth));
+            vertices.Add(new Vector3(vertex.x, 0, depth));
+            int index = AddVertex(vertex);
+            quads.Add(new Quad(index, index - 2, index + 1, index + 2, true));
+            quads.Add(new Quad(index - 2, index - 1, index + 2, index + 3));
+        }
+
+        int AddLastSide(Vector3 vertex)
+        {
+            int index = AddVertex(vertex);
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, depth));
+            vertices.Add(new Vector3(vertex.x, 0, depth));
+            quads.Add(new Quad(index + 1, index + 2, index + 0, index + 4, true));
+            quads.Add(new Quad(index + 2, index + 3, index + 4, index + 5));
+            return index;
         }
 
         private List<SubMeshDescriptor> CreateSubMeshDescriptors(List<Quad> quads)
@@ -138,7 +167,7 @@ namespace Tanks
 
             IndexQuads(true);
             int lastIndex = triangleIndices.Count - 1;
-            descriptors.Add(new SubMeshDescriptor(0, lastIndex));
+            descriptors.Add(new SubMeshDescriptor(0, lastIndex + 1));
             IndexQuads(false);
             descriptors.Add(new SubMeshDescriptor(lastIndex + 1, triangleIndices.Count - lastIndex - 1));
 
@@ -150,6 +179,7 @@ namespace Tanks
                     if (quad.isTopside == isTopside)
                         foreach (int index in quad.GetTriangleIndices())
                             triangleIndices.Add(index);
+
             }
         }
 
@@ -160,7 +190,6 @@ namespace Tanks
             mesh.triangles = triangleIndices.ToArray();
             mesh.RecalculateNormals();
             mesh.SetSubMeshes(descriptors);
-            CreateUVs(vertices, mesh);
 
             MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
             meshFilter.mesh = mesh;
@@ -175,19 +204,19 @@ namespace Tanks
             GetComponent<GenerateSpawnpoints>().GenerateObjects(linePositions, width, depth);
         }
         
-        private void CreateUVs(List<Vector3> vertices, Mesh mesh)
-        {   //Unfolds the map to determine UV-coord
-            Vector2[] uvs = new Vector2[vertices.Count];
-            int divideMapSize = 2;
-            for (int i = 0; i < vertices.Count; i++)
-            {
-                float vertexHeight = vertices[i].y + vertices[i].z;//both y and z are counted as height. 
-                float fillPercentX = Mathf.InverseLerp(width / divideMapSize, -width / divideMapSize, vertices[i].x);
-                float fillPercentY = Mathf.InverseLerp((height + depth) / divideMapSize, -(height + depth) / divideMapSize, vertexHeight);
-                uvs[i] = new Vector2(fillPercentX, fillPercentY) * tileAmount;
-            }
-            mesh.uv = uvs;         
-        }
+        //private void CreateUVs(List<Vector3> vertices, Mesh mesh)
+        //{   //Unfolds the map to determine UV-coord
+        //    Vector2[] uvs = new Vector2[vertices.Count];
+        //    int divideMapSize = 2;
+        //    for (int i = 0; i < vertices.Count; i++)
+        //    {
+        //        float vertexHeight = vertices[i].y + vertices[i].z;//both y and z are counted as height. 
+        //        float fillPercentX = Mathf.InverseLerp(width / divideMapSize, -width / divideMapSize, vertices[i].x);
+        //        float fillPercentY = Mathf.InverseLerp((height + depth) / divideMapSize, -(height + depth) / divideMapSize, vertexHeight);
+        //        uvs[i] = new Vector2(fillPercentX, fillPercentY);
+        //    }
+        //    mesh.uv = uvs;         
+        //}
     }
 
     public struct Quad

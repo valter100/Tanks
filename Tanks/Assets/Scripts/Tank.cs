@@ -36,7 +36,10 @@ public class Tank : MonoBehaviour
     [SerializeField] ParticleSystem fireParticles;
     [SerializeField] Animator animator;
     [SerializeField] ParticleSystem tankDamagedParticles;
-    [SerializeField] ParticleSystem tankDestroyedParticles;
+
+    [Header("Explosion")]
+    [SerializeField] Explosion explosion;
+    [SerializeField] float explosionDamage;
 
     [Header("Status Effects")]
     [SerializeField] bool isSlowed;
@@ -50,12 +53,9 @@ public class Tank : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] TMP_Text nameText;
-    [SerializeField] TMP_Text healthText;
     [SerializeField] Slider healthSlider;
-    [SerializeField] TMP_Text fuelText;
     [SerializeField] Slider fuelSlider;
     [SerializeField] Slider shootForceSlider;
-    [SerializeField] TMP_Text projectileText;
     [SerializeField] float aimRadius;
 
     float timeSinceLastEffect;
@@ -81,14 +81,18 @@ public class Tank : MonoBehaviour
 
     public bool HasAmmo() => ammo[projectileIndex] > 0;
 
-    void Start()
+    private void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager.AddInstantiatedTank(this);
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
+    }
 
+    void Start()
+    {
         currentHealth = maxHealth;
         currentFuel = maxFuel;
         currentProjectile = projectiles[0];
@@ -135,19 +139,19 @@ public class Tank : MonoBehaviour
         else if (playerController.GetMovement().x < 0)
             transform.rotation = Quaternion.Euler(0, -180, 0);
 
-        Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
+        //Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-        {
-            //Debug.DrawLine(transform.position + new Vector3(0,1,0) * 0.66f + localDirection, hit.point);
-            //Debug.Log(hit.normal.y);
-            if (hit.normal.y < 0.85f)
-                return;
-        }
+        //RaycastHit hit;
+        //if (Physics.Raycast(transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
+        //{
+        //    //Debug.DrawLine(transform.position + new Vector3(0,1,0) * 0.66f + localDirection, hit.point);
+        //    //Debug.Log(hit.normal.y);
+        //    if (hit.normal.y < 0.85f)
+        //        return;
+        //}
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
-        //rb.AddForce(playerController.GetMovement() * movementSpeed);
+
         timeSinceLastEffect += Time.deltaTime;
         if (timeSinceLastEffect > timeBetweenEffectSpawn)
         {
@@ -166,9 +170,6 @@ public class Tank : MonoBehaviour
     {
         Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
         Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
-
-        //Quaternion newRotation = Quaternion.LookRotation(lookVector);
-        //rotatePoint.transform.rotation = newRotation;
 
         float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
 
@@ -214,7 +215,10 @@ public class Tank : MonoBehaviour
 
         ammo[projectileIndex] -= 1;
         hasFired = true;
-        animator.SetTrigger("Fire");
+
+        if (animator)
+            animator.SetTrigger("Fire");
+
         Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
 
         Projectile projectile = InstantiateProjectile();
@@ -270,19 +274,15 @@ public class Tank : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SpawnDestroyedParticles()
+    public void AssignPlayer()
     {
-        Instantiate(tankDestroyedParticles, transform.position, Quaternion.Euler(-90, 0, 0), null);
-    }
+        playerName = gameManager.AssignName();
+        playerColor = gameManager.AssignColor();
 
-    public void AssignPlayer(int newIndex, string newName, Color newColor)
-    {
-        playerName = newName;
-        playerColor = newColor;
 
         foreach (GameObject go in tankParts)
         {
-            go.GetComponent<MeshRenderer>().material.color = newColor;
+            go.GetComponent<Renderer>().material.color = playerColor;
         }
 
         nameText.text = playerName;
@@ -344,10 +344,6 @@ public class Tank : MonoBehaviour
         hasFired = state;
     }
 
-    //public void SetIsActive(bool state)
-    //{
-    //    isActive = state;
-    //}
     public void SetIsSlowed(bool state)
     {
         isSlowed = state;
@@ -362,5 +358,11 @@ public class Tank : MonoBehaviour
     {
         Projectile projectile = InstantiateProjectile();
         projectile.PrecomputeTrajectory(0.05f);
+    }
+
+    public void Explode()
+    {
+        explosion.SetDamage(explosionDamage);
+        explosion.Explode();
     }
 }

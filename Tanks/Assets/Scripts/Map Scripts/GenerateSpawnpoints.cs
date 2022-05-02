@@ -2,37 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenerateSpawnpoints : ObjectGenerator
+namespace Tanks
 {
-    [SerializeField] GameObject spawnPointPrefab;
-    [Range(2, 4)]
-    [SerializeField] int numberOfTanks;
-
-    public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
+    public class GenerateSpawnpoints : ObjectGenerator
     {
-        base.GenerateObjects(linePositions, width, depth);
-        for (int i = 0; i < numberOfTanks; i++)
-            InstantiateAtPosition(GetRandomSpawnPosition());
-    }
+        [SerializeField] GameObject spawnPointPrefab;
+        [Range(2, 4)]
+        [SerializeField] int numberOfTanks;
 
-    private Vector3 GetRandomSpawnPosition()
-    {
-        int attemptsBeforeExit = 10;
-        Vector3 randomizedVector = Vector3.zero;
-        while (attemptsBeforeExit > 0)
+        public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
-            randomizedVector = linePositions[RandomInt(linePositions.Length)];
-            randomizedVector.z = depth / 2.0f;
-            randomizedVector.y += heightAdjustment;
-
-            if (ValidDistanceFromObjects(randomizedVector))
-                break;
-
-            --attemptsBeforeExit;
+            base.GenerateObjects(linePositions, width, depth);
+            for (int i = 0; i < numberOfTanks; i++)
+                InstantiateAtPosition(GetRandomSpawnPosition());
         }
-        usedPositions.Add(randomizedVector);
-        return randomizedVector;
-    }
 
-    private void InstantiateAtPosition(Vector3 position) => CreateObjectAtPosition(position, spawnPointPrefab);
+        private Vector3 GetRandomSpawnPosition()
+        {
+            int attemptsBeforeExit = 10;
+            Vector3 randomizedVector = Vector3.zero;
+            while (attemptsBeforeExit > 0)
+            {
+                randomizedVector = linePositions[RandomInt(linePositions.Length)];
+                randomizedVector.z = depth / 2.0f;
+                randomizedVector.y += heightAdjustment;
+
+                if (ValidDistanceFromObjects(randomizedVector))
+                    break;
+
+                --attemptsBeforeExit;
+            }
+            usedPositions.Add(randomizedVector);
+            return randomizedVector;
+        }
+
+        private void InstantiateAtPosition(Vector3 position) => CreateObjectAtPosition(position, spawnPointPrefab);
+    }
 }
+
