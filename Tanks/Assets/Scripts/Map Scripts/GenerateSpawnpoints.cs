@@ -2,46 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenerateSpawnpoints : ObjectGenerator
+namespace Tanks
 {
-    int numberOfTanks;
-
-    GameManager gameManager;
-
-    private void Start()
+    public class GenerateSpawnpoints : ObjectGenerator
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        numberOfTanks = gameManager.GetTankList().Count;
-    }
+        [SerializeField] GameObject spawnPointPrefab;
+        [Range(2, 4)]
+        [SerializeField] int numberOfTanks;
 
-    public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
-    {
-        base.GenerateObjects(linePositions, width, depth);
-
-        for (int i = 0; i < numberOfTanks; i++)
+        public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
-            InstantiateAtPosition(GetRandomSpawnPosition(), gameManager.GetTankList()[i].gameObject);
+            base.GenerateObjects(linePositions, width, depth);
+            for (int i = 0; i < numberOfTanks; i++)
+                InstantiateAtPosition(GetRandomSpawnPosition());
         }
-    }
 
-    private Vector3 GetRandomSpawnPosition()
-    {
-        int attemptsBeforeExit = 10;
-        Vector3 randomizedVector = Vector3.zero;
-        while (attemptsBeforeExit > 0)
+        private Vector3 GetRandomSpawnPosition()
         {
-            randomizedVector = linePositions[RandomInt(linePositions.Length)];
-            randomizedVector.z = depth / 2.0f;
-            randomizedVector.y += heightAdjustment;
+            int attemptsBeforeExit = 10;
+            Vector3 randomizedVector = Vector3.zero;
+            while (attemptsBeforeExit > 0)
+            {
+                randomizedVector = linePositions[RandomInt(linePositions.Length)];
+                randomizedVector.z = depth / 2.0f;
+                randomizedVector.y += heightAdjustment;
 
-            if (ValidDistanceFromObjects(randomizedVector))
-                break;
+                if (ValidDistanceFromObjects(randomizedVector))
+                    break;
 
-            --attemptsBeforeExit;
+                --attemptsBeforeExit;
+            }
+            usedPositions.Add(randomizedVector);
+            return randomizedVector;
         }
-        usedPositions.Add(randomizedVector);
-        return randomizedVector;
-    }
 
-    private void InstantiateAtPosition(Vector3 position, GameObject tank) => CreateObjectAtPosition(position, tank);
+        private void InstantiateAtPosition(Vector3 position) => CreateObjectAtPosition(position, spawnPointPrefab);
+    }
 }
+

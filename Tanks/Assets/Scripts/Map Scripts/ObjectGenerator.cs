@@ -2,41 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectGenerator : MonoBehaviour
+namespace Tanks
 {
-    [SerializeField] protected float minimumObjectDistance;
-    [SerializeField] protected float heightAdjustment;
-
-    protected Vector3[] linePositions;
-    protected float depth;
-    protected List<Vector3> usedPositions;
-
-    public virtual void GenerateObjects(Vector3[] linePositions, float width, float depth)
+    public class ObjectGenerator : MonoBehaviour
     {
-        this.linePositions = linePositions;
-        this.depth = depth;
-        usedPositions = new List<Vector3>();
-    }
+        [SerializeField] protected float minimumObjectDistance;
+        [SerializeField] protected float heightAdjustment;
 
-    protected int RandomInt(int max) => (int)(Random.value * max);
+        protected Vector3[] linePositions;
+        protected float depth;
+        protected List<Vector3> usedPositions;
 
-    protected bool RandomBool() => Random.value > 0.5f;
+        public virtual void GenerateObjects(Vector3[] linePositions, float width, float depth)
+        {
+            this.linePositions = linePositions;
+            this.depth = depth;
+            usedPositions = new List<Vector3>();
+        }
 
-    protected bool ValidDistanceFromObjects(Vector3 vector)
-    {
-        foreach (Vector3 position in usedPositions)
-            if ((position - vector).magnitude <= minimumObjectDistance)
-                return false;
+        protected int RandomInt(int max) => (int)(Random.value * max);
 
-        return true;
-    }
+        protected bool RandomBool() => Random.value > 0.5f;
 
-    protected void CreateObjectAtPosition(Vector3 position, GameObject gameObject)
-    {
-        GameObject instantiatedObject = Instantiate(gameObject, transform, true);
-        instantiatedObject.transform.position = position;
+        protected float RandomAngle() => Random.value * 360.0f;
 
-        if (gameObject.GetComponent<Tank>())
-            gameObject.GetComponent<Tank>().AssignPlayer();
+        protected bool ValidDistanceFromObjects(Vector3 vector)
+        {
+            foreach (Vector3 position in usedPositions)
+                if ((position - vector).magnitude <= minimumObjectDistance)
+                    return false;
+
+            return true;
+        }
+
+        protected void CreateObjectAtPosition(Vector3 position, GameObject gameObject, float rotation = 0.0f)
+        {
+            GameObject instantiatedObject = Instantiate(gameObject, transform, true);
+            instantiatedObject.transform.position = position;
+            instantiatedObject.transform.Rotate(0.0f, 0.0f, rotation);
+        }
     }
 }
