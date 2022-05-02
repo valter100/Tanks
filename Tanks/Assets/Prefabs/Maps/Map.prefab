@@ -49,15 +49,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateNewMap: 0
-  pointsPerWidth: 1.35
+  drawDebugLines: 1
+  pointsPerWidth: 3
   amplitude: 1.75
-  smoothFactor: 0.81
+  smoothFactor: 0.9
   width: 20
   height: 6
-  depth: 3
-  bottomDepth: 1
-  overhangHeight: 1.11
-  slopeWidth: 2.52
+  depth: 7.5
+  tileAmount: 1
 --- !u!114 &6797612445077828031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,9 +72,9 @@ MonoBehaviour:
   minimumObjectDistance: 0.39
   heightAdjustment: 0.18
   objects:
-  - {fileID: 5690398224678537628, guid: 4f0bf183128f34a46a0e2cf240d40847, type: 3}
   - {fileID: 588183761583343122, guid: f2c3c220d36b6ca4381fb19f51a615d6, type: 3}
   - {fileID: 3217225402457508355, guid: af999f051d0de3848ab496e3a9be6aeb, type: 3}
+  - {fileID: 5690398224678537628, guid: 4f0bf183128f34a46a0e2cf240d40847, type: 3}
   objectsPerWidth: 0.27
   depthAdjustment: 0.43
 --- !u!114 &3036856133504881423
@@ -114,7 +113,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 601699f97e078b243ac3043a958c904b, type: 2}
-  - {fileID: 2100000, guid: 281385750605c2d45b840efdfdb0a6c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

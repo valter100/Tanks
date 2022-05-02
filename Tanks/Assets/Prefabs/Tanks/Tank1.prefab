@@ -188,7 +188,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779970979675739416}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.3333325, y: 10.614883, z: 3.75}
+  m_LocalPosition: {x: 2.9642043, y: 0.37062502, z: 0.4866619}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8645730460041738812}
@@ -222,10 +222,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  cameraController: {fileID: 0}
-  isActive: 0
-  playerName: Player 1
-  playerColor: {r: 1, g: 0, b: 0.04999399, a: 0}
+  playerIndex: 0
+  playerName: 
+  playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 15
   maxShootForce: 250
   maxFuel: 200
@@ -246,18 +245,17 @@ MonoBehaviour:
   currentProjectile: {fileID: 0}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 0}
-  tankDamagedParticles: {fileID: 0}
   tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
   isSlowed: 0
-  rotatePoint: {fileID: 0}
+  gun: {fileID: 0}
+  tower: {fileID: 0}
   tankParts:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  cannon: {fileID: 0}
-  firePoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
   rumbleSpot: {fileID: 0}
   nameText: {fileID: 0}
   healthText: {fileID: 0}
@@ -266,7 +264,7 @@ MonoBehaviour:
   fuelSlider: {fileID: 0}
   shootForceSlider: {fileID: 0}
   projectileText: {fileID: 0}
-  aimRadius: 0
+  currentShootForce: 0
 --- !u!1 &3788372176355013523
 GameObject:
   m_ObjectHideFlags: 0

@@ -48,8 +48,7 @@ MonoBehaviour:
   - Player 2
   - Player 3
   - Player 4
-  tanks:
-  - {fileID: 1456219737200762294, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
+  tanks: []
   tankColors:
   - {r: 1, g: 0, b: 0.04999399, a: 0}
   - {r: 0, g: 1, b: 0.11143541, a: 0}
@@ -59,4 +58,3 @@ MonoBehaviour:
   playerCount: 0
   currentTank: {fileID: 0}
   cameraController: {fileID: 0}
-  playerNameText: {fileID: 0}

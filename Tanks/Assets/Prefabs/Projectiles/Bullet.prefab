@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725691630527340521}
-  m_Mesh: {fileID: -4436863061088633788, guid: 5629c4cf007b1444ca9ff1e9c305c513, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1672302495151344001
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   detonationParticles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
   startAmmoCount: 20
   canDamageSelf: 1
+  explosionRadius: 0
   ownTank: {fileID: 0}
 --- !u!114 &4733216876846786093
 MonoBehaviour:

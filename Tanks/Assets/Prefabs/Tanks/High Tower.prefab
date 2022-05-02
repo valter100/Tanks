@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 2734829186380917276}
   - component: {fileID: 528629065948729892}
   - component: {fileID: 2893103238822009603}
-  - component: {fileID: 6966359629255667410}
   m_Layer: 0
   m_Name: High Tower
   m_TagString: Tank
@@ -130,10 +129,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  cameraController: {fileID: 0}
-  isActive: 1
-  playerName: Player 1
-  playerColor: {r: 1, g: 0, b: 0, a: 0}
+  playerIndex: 0
+  playerName: 
+  playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 15
   maxShootForce: 250
   maxFuel: 200
@@ -153,21 +151,27 @@ MonoBehaviour:
   ammo: 
   currentProjectile: {fileID: 0}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
-  animator: {fileID: 6966359629255667410}
-  tankDamagedParticles: {fileID: 0}
+  animator: {fileID: 0}
   tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
   isSlowed: 0
-  rotatePoint: {fileID: 1351948662712958291}
+  gun: {fileID: 2795436973530085746}
+  tower: {fileID: 1848800873331147564}
   tankParts:
   - {fileID: 8570822009657182938}
-  cannon: {fileID: 8774895672611205886}
-  firePoint: {fileID: 7543899234432422185}
+  - {fileID: 1162843625709840223}
+  - {fileID: 145450734678045011}
+  - {fileID: 8011928270492312336}
+  - {fileID: 8774895672611205886}
+  lineRenderer: {fileID: 0}
   rumbleSpot: {fileID: 5717380332599890181}
-  nameText: {fileID: 6279552936121861830}
+  nameText: {fileID: 0}
+  healthText: {fileID: 0}
   healthSlider: {fileID: 5835119531109009351}
+  fuelText: {fileID: 0}
   fuelSlider: {fileID: 2492651224548250288}
   shootForceSlider: {fileID: 8956813474744843370}
-  aimRadius: 250
+  projectileText: {fileID: 0}
+  currentShootForce: 0
 --- !u!54 &2734829186380917276
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -182,7 +186,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 48
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!65 &528629065948729892
 BoxCollider:
@@ -209,25 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e126a5b97767a54c806759ac629b17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &6966359629255667410
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 694820345919734862}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c5a5d9061c12823409f3b083e1c547ad, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1162843625709840223
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 9202155746107596418}
-  controller: {fileID: 2893103238822009603}
+  controller: {fileID: 0}
   cam: {fileID: 0}
   firePoint: {fileID: 7543899234432422185}
 --- !u!1001 &5268390288366807792
@@ -818,14 +803,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7416315104764816234}
     m_Modifications:
-    - target: {fileID: 2177597150407863350, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
-      propertyPath: m_text
-      value: Player 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2177597150407863350, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
-      propertyPath: m_VerticalAlignment
-      value: 512
-      objectReference: {fileID: 0}
     - target: {fileID: 3049102817173278899, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -845,10 +822,6 @@ PrefabInstance:
     - target: {fileID: 4118651240290460164, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5458330031080980165, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5461925460376421636, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_IsActive
@@ -948,6 +921,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+--- !u!224 &3240640730768937098 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7341998373167020666, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+  m_PrefabInstance: {fileID: 5268390288366807792}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5835119531109009351 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1866626879848115511, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
@@ -981,19 +959,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6279552936121861830 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2177597150407863350, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
-  m_PrefabInstance: {fileID: 5268390288366807792}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!224 &3240640730768937098 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7341998373167020666, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
-  m_PrefabInstance: {fileID: 5268390288366807792}
-  m_PrefabAsset: {fileID: 0}
