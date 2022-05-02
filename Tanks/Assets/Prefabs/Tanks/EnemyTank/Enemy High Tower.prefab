@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe4e1de0dfeb524a835fb110ee04a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisGameObject: {fileID: 1466718380711322333}
   thisTank: {fileID: 705697169857100581}
   thisPosition: {fileID: 2238575112127641703}
 --- !u!1 &2304177630583904192

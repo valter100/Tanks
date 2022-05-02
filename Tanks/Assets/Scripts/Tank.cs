@@ -79,9 +79,39 @@ public class Tank : MonoBehaviour
 
     public float GetMaxShootForce() => maxShootForce;
 
+    public float GetMovementSpeed() => movementSpeed;
+
+    public float GetTimeBetweenEffectSpawn() => timeBetweenEffectSpawn;
+
+    public float GetTimeSinceLastEffect() => timeSinceLastEffect;
+
+    public ParticleSystem GetMovementEffect() => movementEffect;
+    
+    public void SetTimeSinceLastEffect(float amount)
+    {
+        timeSinceLastEffect += amount;
+    }
+
+    public bool GetIsSlowed() => isSlowed;
+
     public GameManager GetGameManager() => gameManager;
 
     public bool HasAmmo() => ammo[projectileIndex] > 0;
+
+    public void LowerFuelPercentage(float amount)
+    {
+        currentFuel = currentFuel - amount;
+    }
+
+    public void UpdateFuelSlider()
+    {
+        fuelSlider.value = currentFuel / maxFuel;
+    }
+
+    public void LowerAmmo(int projectileIndex)
+    {
+        ammo[projectileIndex] = -1;
+    }
 
     void Start()
     {
