@@ -1,9 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public static class Extensions
 {
+    private static readonly Regex regex = new Regex("([A-Z]+(?=$|[A-Z][a-z])|[A-Z]?[a-z0-9]+)", RegexOptions.Compiled);
+
+    /// <summary>
+    /// Splits a PascalCase string using Regex. Splits numbers as well.
+    /// </summary>
+    public static string SplitPascalCase(this string value)
+    {
+        return regex.Replace(value, " $1").Trim();
+    }
+
     /// <summary>
     /// Returns the result of memberwise multiplication
     /// between this and the provided Vector2.
@@ -65,5 +77,50 @@ public static class Extensions
         x = Mathf.Clamp01(x);
         return x * x * (3.0f - 2.0f * x);
     }
+
+    /// <summary>
+    /// Returns the next value of this enum.
+    /// </summary>
+    public static T GetNext<T>(this T value) where T : struct
+    {
+        if (!typeof(T).IsEnum)
+            throw new ArgumentException(string.Format("Argument {0} is not an Enum", typeof(T).FullName));
+
+        T[] array = (T[])Enum.GetValues(value.GetType());
+        int i = Array.IndexOf(array, value) + 1;
+
+        return (i == array.Length) ? array[0] : array[i];
+    }
+
+    /// <summary>
+    /// Returns the previous value of this enum.
+    /// </summary>
+    public static T GetPrevious<T>(this T value) where T : struct
+    {
+        if (!typeof(T).IsEnum)
+            throw new ArgumentException(string.Format("Argument {0} is not an Enum", typeof(T).FullName));
+
+        T[] array = (T[])Enum.GetValues(value.GetType());
+        int i = Array.IndexOf(array, value) - 1;
+
+        return (i == -1) ? array[array.Length - 1] : array[i];
+    }
+
+    /// <summary>
+    /// Sets the value of this enum to the next value and returns it.
+    /// </summary>
+    public static T SetNext<T>(this ref T value) where T : struct
+    {
+        return value = value.GetNext();
+    }
+
+    /// <summary>
+    /// Sets the value of this enum to the previous value and returns it.
+    /// </summary>
+    public static T SetPrevious<T>(this ref T value) where T : struct
+    {
+        return value = value.GetPrevious();
+    }
+
 
 }

@@ -14,7 +14,7 @@ public class Tank : MonoBehaviour
     [SerializeField] CameraController cameraController;
     [SerializeField] int playerIndex;
     [SerializeField] string playerName;
-    [SerializeField] Color playerColor;
+    [SerializeField] public Color playerColor;
 
     [Header("Stats")]
     [SerializeField] float maxHealth;
