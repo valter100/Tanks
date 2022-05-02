@@ -10,12 +10,12 @@ public class BulletSpread : Bullet
     [SerializeField] Projectile bullet;
 
     bool hasSpread = false;
-    float timeSinceSpawn;
 
-    private void Update()
+    protected override void Update()
     {
-        timeSinceSpawn += Time.deltaTime;
-        if (timeSinceSpawn > spreadTimer && !hasSpread)
+        base.Update();
+
+        if (GetStartTime() - GetTimeToLive() > spreadTimer && !hasSpread)
         {
             Spread();
             hasSpread = true;

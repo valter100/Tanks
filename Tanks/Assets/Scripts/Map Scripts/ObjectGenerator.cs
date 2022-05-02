@@ -33,7 +33,10 @@ public class ObjectGenerator : MonoBehaviour
 
     protected void CreateObjectAtPosition(Vector3 position, GameObject gameObject)
     {
-        gameObject.transform.position = position;
-        Instantiate(gameObject, transform, true);
+        GameObject instantiatedObject = Instantiate(gameObject, transform, true);
+        instantiatedObject.transform.position = position;
+
+        if (gameObject.GetComponent<Tank>())
+            gameObject.GetComponent<Tank>().AssignPlayer();
     }
 }

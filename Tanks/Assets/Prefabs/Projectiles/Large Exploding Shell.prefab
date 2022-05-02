@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4666774405610918408}
   - component: {fileID: -1507804714081709414}
   m_Layer: 7
-  m_Name: Exploding Shell
+  m_Name: Large Exploding Shell
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 725691630527340521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.625, y: 0.625, z: 0.625}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -127,11 +127,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
-  damage: 3
+  damage: 4
   timeToLive: 10
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 5
+  startAmmoCount: 3
   canDamageSelf: 1
   ownTank: {fileID: 0}
   explosion: {fileID: -1507804714081709414}
@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
-  explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
+  radius: 7
+  explosionEffect: {fileID: 5509785784624008221, guid: 2ff44e8969298f74fb784b77712bafbe, type: 3}

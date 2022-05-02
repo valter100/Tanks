@@ -57,6 +57,7 @@ MonoBehaviour:
   height: 6
   depth: 7.5
   tileAmount: 1
+  overhangHeight: 0
 --- !u!114 &6797612445077828031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +114,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 601699f97e078b243ac3043a958c904b, type: 2}
+  - {fileID: 2100000, guid: 281385750605c2d45b840efdfdb0a6c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

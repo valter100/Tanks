@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1672302495151344001}
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
-  - component: {fileID: 4666774405610918408}
-  - component: {fileID: -1507804714081709414}
+  - component: {fileID: 2010923922042384439}
+  - component: {fileID: 5804621341593681060}
   m_Layer: 7
-  m_Name: Exploding Shell
+  m_Name: Drop Bomb
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06be7cff8ccf0d241975f2def0481a3a, type: 2}
+  - {fileID: -3846018093981099296, guid: 3b71e219abd323244b9b6d06c9ab3886, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -114,7 +114,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!114 &4666774405610918408
+--- !u!114 &2010923922042384439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,19 +123,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 725691630527340521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6690a147b03725745a125d3932b275df, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a5be7a3ac6c6f14886abd1ed2581478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
+  clip: {fileID: 0}
   damage: 3
   timeToLive: 10
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 5
+  startAmmoCount: 2
   canDamageSelf: 1
   ownTank: {fileID: 0}
-  explosion: {fileID: -1507804714081709414}
---- !u!114 &-1507804714081709414
+  explosion: {fileID: 5804621341593681060}
+  dropTime: 1.5
+--- !u!114 &5804621341593681060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1174,6 +1174,7 @@ GameObject:
   - component: {fileID: 320160469728459718}
   - component: {fileID: 3180057106955339533}
   - component: {fileID: 1282559090}
+  - component: {fileID: 1137752461921261543}
   m_Layer: 3
   m_Name: Body
   m_TagString: Tank
@@ -1402,7 +1403,7 @@ MonoBehaviour:
   isActive: 0
   playerName: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
-  maxHealth: 15
+  maxHealth: 3
   maxShootForce: 20
   maxFuel: 50
   groundLayerMask:
@@ -1417,13 +1418,18 @@ MonoBehaviour:
   - {fileID: 4666774405610918408, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
   - {fileID: 6481296158931651720, guid: d90d4454beadc314bba6b501d2b98a73, type: 3}
   - {fileID: -8063847045595054941, guid: 3993da982c11aea4a83c040dbfad7e89, type: 3}
+  - {fileID: 4666774405610918408, guid: 8e98790f6a261f04a819d6bca196c43d, type: 3}
   - {fileID: 5288328317349611985, guid: f970a4f8397fea14fa7c1f2a2b5f06cf, type: 3}
+  - {fileID: 2010923922042384439, guid: 55ef6006a2889ca4f8e05e3e4a17fc74, type: 3}
+  - {fileID: 2485305547307765608, guid: 45a7ad875c0428544a76c1f7ab59a7e3, type: 3}
+  - {fileID: -5739045232068466832, guid: d6f425a57b481464d8b0bf0189fb6fe7, type: 3}
   ammo: 
   currentProjectile: {fileID: -1023275637233965037, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 3180057106955339533}
   tankDamagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
-  tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
+  explosion: {fileID: 1137752461921261543}
+  explosionDamage: 3
   isSlowed: 0
   rotatePoint: {fileID: 2232384697090623839}
   tankParts:
@@ -1433,12 +1439,9 @@ MonoBehaviour:
   firePoint: {fileID: 6354992861223454508}
   rumbleSpot: {fileID: 8728410186248441756}
   nameText: {fileID: 1146354983146343757}
-  healthText: {fileID: 0}
   healthSlider: {fileID: 4084370176785400879}
-  fuelText: {fileID: 0}
   fuelSlider: {fileID: 5387350034312859992}
   shootForceSlider: {fileID: 1448159220805746562}
-  projectileText: {fileID: 0}
   aimRadius: 250
 --- !u!95 &3180057106955339533
 Animator:
@@ -1472,6 +1475,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focusPointOffset: {x: 0, y: 5, z: 0}
+--- !u!114 &1137752461921261543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  explosionEffect: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
 --- !u!1 &8415975934351907783
 GameObject:
   m_ObjectHideFlags: 0

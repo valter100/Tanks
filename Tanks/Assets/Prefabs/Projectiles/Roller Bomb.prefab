@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 6481296158931651720}
+  - component: {fileID: 5804621341593681060}
   m_Layer: 7
   m_Name: Roller Bomb
   m_TagString: Projectile
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3fa8f48d335e65440ad5cb12c728174f, type: 2}
+  - {fileID: 2100000, guid: 55c183dc45153be48a45c4e530127fb3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,9 +130,22 @@ MonoBehaviour:
   damage: 7
   timeToLive: 10
   trailParticles: {fileID: 0}
-  detonationParticles: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
+  detonationParticles: {fileID: 0}
   startAmmoCount: 3
   canDamageSelf: 1
-  terrain: {fileID: 0}
-  explosionRadius: 5
   ownTank: {fileID: 0}
+  explosion: {fileID: 5804621341593681060}
+--- !u!114 &5804621341593681060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}

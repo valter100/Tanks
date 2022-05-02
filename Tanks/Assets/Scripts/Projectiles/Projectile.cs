@@ -11,14 +11,14 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected ParticleSystem detonationParticles;
     [SerializeField] protected int startAmmoCount;
     [SerializeField] protected bool canDamageSelf;
-    [SerializeField] protected float explosionRadius;
 
+    float startTime;
     protected Rigidbody rb;
     public Tank ownTank;
 
+    public float GetStartTime() => startTime;
     public float GetTimeToLive() => timeToLive;
     public int GetStartAmmoCount() => startAmmoCount;
-    public float GetExplosionRadius() => explosionRadius;
     public float GetDamage() => damage;
 
     public struct PrecomputedResult
@@ -32,6 +32,7 @@ public abstract class Projectile : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        startTime = timeToLive;
     }
 
     void OnDestroy()
@@ -97,7 +98,6 @@ public abstract class Projectile : MonoBehaviour
             Instantiate(detonationParticles, transform.position, Quaternion.identity, null);
 
         ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
-        //ownTank.GetGameManager().NextPlayer();
         Destroy(gameObject);
     }
 

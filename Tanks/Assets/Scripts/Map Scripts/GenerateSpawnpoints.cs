@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class GenerateSpawnpoints : ObjectGenerator
 {
-    [SerializeField] GameObject spawnPointPrefab;
-    [Range(2, 4)]
-    [SerializeField] int numberOfTanks;
+    int numberOfTanks;
+
+    GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        numberOfTanks = gameManager.GetTankList().Count;
+    }
 
     public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
     {
         base.GenerateObjects(linePositions, width, depth);
+
         for (int i = 0; i < numberOfTanks; i++)
-            InstantiateAtPosition(GetRandomSpawnPosition());
+        {
+            InstantiateAtPosition(GetRandomSpawnPosition(), gameManager.GetTankList()[i].gameObject);
+        }
     }
 
     private Vector3 GetRandomSpawnPosition()
@@ -34,5 +43,5 @@ public class GenerateSpawnpoints : ObjectGenerator
         return randomizedVector;
     }
 
-    private void InstantiateAtPosition(Vector3 position) => CreateObjectAtPosition(position, spawnPointPrefab);
+    private void InstantiateAtPosition(Vector3 position, GameObject tank) => CreateObjectAtPosition(position, tank);
 }
