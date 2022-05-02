@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour
 {
+    [SerializeField] protected AttackPattern attackPattern;
     [SerializeField] protected AudioClip clip;
     [SerializeField] protected float damage;
     [SerializeField] protected float timeToLive;
@@ -16,6 +17,7 @@ public abstract class Projectile : MonoBehaviour
     protected Rigidbody rb;
     public Tank ownTank;
 
+    public AttackPattern GetAttackPattern() => attackPattern;
     public float GetStartTime() => startTime;
     public float GetTimeToLive() => timeToLive;
     public int GetStartAmmoCount() => startAmmoCount;

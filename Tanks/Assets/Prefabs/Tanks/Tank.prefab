@@ -1175,6 +1175,10 @@ GameObject:
   - component: {fileID: 3180057106955339533}
   - component: {fileID: 1282559090}
   - component: {fileID: 1137752461921261543}
+  - component: {fileID: 4132798923826517249}
+  - component: {fileID: 1509856756570915926}
+  - component: {fileID: 1810740781969487581}
+  - component: {fileID: 8462045447040173007}
   m_Layer: 3
   m_Name: Body
   m_TagString: Tank
@@ -1423,6 +1427,10 @@ MonoBehaviour:
   - {fileID: 2010923922042384439, guid: 55ef6006a2889ca4f8e05e3e4a17fc74, type: 3}
   - {fileID: 2485305547307765608, guid: 45a7ad875c0428544a76c1f7ab59a7e3, type: 3}
   - {fileID: -5739045232068466832, guid: d6f425a57b481464d8b0bf0189fb6fe7, type: 3}
+  attackPatterns:
+  - {fileID: 1509856756570915926}
+  - {fileID: 4132798923826517249}
+  - {fileID: 1810740781969487581}
   ammo: 
   currentProjectile: {fileID: -1023275637233965037, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
@@ -1489,6 +1497,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 5
   explosionEffect: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
+--- !u!114 &4132798923826517249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc06553d5dbf5f04b9306d5e68b36170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenBullets: 0
+  bulletAmount: 0
+  angleSpread: 0
+--- !u!114 &1509856756570915926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8fc088663db964291e835a6a19ff2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1810740781969487581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2454f36872263241a543322b1e5e3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8462045447040173007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821293901002747522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d563c8b3e41b14c8800aebbf48089a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8415975934351907783
 GameObject:
   m_ObjectHideFlags: 0

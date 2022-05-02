@@ -13,7 +13,6 @@ public class Tank : MonoBehaviour
     [SerializeField] GameManager gameManager;
     [SerializeField] CameraController cameraController;
     [SerializeField] bool isActive;
-    //[SerializeField] int playerIndex;
     [SerializeField] string playerName;
     [SerializeField] Color playerColor;
 
@@ -31,6 +30,7 @@ public class Tank : MonoBehaviour
 
     [Header("Combat")]
     [SerializeField] List<Projectile> projectiles;
+    //[SerializeField] List<AttackPattern> attackPatterns;
     [SerializeField] List<int> ammo;
     [SerializeField] Projectile currentProjectile;
     [SerializeField] ParticleSystem fireParticles;
@@ -65,6 +65,7 @@ public class Tank : MonoBehaviour
     float currentHealth;
     float currentShootForce;
     PlayerController playerController;
+    GameObject followProjectile;
     Rigidbody rb;
     Ray ray;
     TMP_Text projectileTMP;
@@ -189,12 +190,13 @@ public class Tank : MonoBehaviour
             && currentHealth > 0.0f;
     }
 
-    private Projectile InstantiateProjectile()
+    public Projectile InstantiateProjectile()
     {
         Projectile projectile = Instantiate(currentProjectile, firePoint);
         projectile.ownTank = this;
         projectile.transform.parent = null;
         projectile.Fire(cannon.transform.rotation, currentShootForce);
+        followProjectile = projectile.gameObject;
         return projectile;
     }
 
@@ -219,24 +221,27 @@ public class Tank : MonoBehaviour
         if (animator)
             animator.SetTrigger("Fire");
 
+        //foreach (AttackPattern attackPattern in attackPatterns)
+        //{
+        //    if (attackPattern == currentProjectile.GetAttackPattern())
+        //    {
+        //        attackPattern.Fire(this);
+        //    }
+        //}
+
         Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
+        currentProjectile.GetAttackPattern().Fire(this);
 
-        Projectile projectile = InstantiateProjectile();
+        //Projectile projectile = InstantiateProjectile();
 
-        if (ammo[projectileIndex] <= 0)
-        {
-            projectiles.RemoveAt(projectileIndex);
-            ammo.RemoveAt(projectileIndex);
-            SwapProjectile();
-        }
 
         // Update camera
 
         if (firstPersonView)
-            StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, projectile.gameObject));
+            StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, followProjectile));
 
         else if (result == null)
-            StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(projectile.gameObject, 0.2f));
+            StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(followProjectile, 0.2f));
 
         else
         {
@@ -248,6 +253,12 @@ public class Tank : MonoBehaviour
             cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
         }
 
+        if (ammo[projectileIndex] <= 0)
+        {
+            projectiles.RemoveAt(projectileIndex);
+            ammo.RemoveAt(projectileIndex);
+            SwapProjectile();
+        }
         isActive = false;
         gameManager.StartPlayerTransition();
     }
@@ -364,5 +375,10 @@ public class Tank : MonoBehaviour
     {
         explosion.SetDamage(explosionDamage);
         explosion.Explode();
+    }
+
+    public void SetFollowProjectile(GameObject projectile)
+    {
+        followProjectile = projectile;
     }
 }

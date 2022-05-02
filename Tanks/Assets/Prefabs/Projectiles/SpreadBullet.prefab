@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 5288328317349611985}
+  - component: {fileID: -1178211308454573183}
   m_Layer: 7
   m_Name: SpreadBullet
   m_TagString: Projectile
@@ -125,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 430d903c75e0fc245a290c4a68478494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPattern: {fileID: -1178211308454573183}
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 2
   timeToLive: 3
@@ -132,10 +134,20 @@ MonoBehaviour:
   detonationParticles: {fileID: 0}
   startAmmoCount: 4
   canDamageSelf: 0
-  terrain: {fileID: 0}
-  explosionRadius: 0
   ownTank: {fileID: 0}
   spreadTimer: 0.5
   spreadCount: 3
   spreadAngleRange: 30
   bullet: {fileID: 7936401087168736136, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
+--- !u!114 &-1178211308454573183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8fc088663db964291e835a6a19ff2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

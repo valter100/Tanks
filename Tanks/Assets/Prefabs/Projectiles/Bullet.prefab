@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 7936401087168736136}
+  - component: {fileID: 4733216876846786093}
+  - component: {fileID: 3054445459071675555}
   m_Layer: 7
   m_Name: Bullet
   m_TagString: Projectile
@@ -125,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60c7507583308f943a875996c5459831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPattern: {fileID: 4733216876846786093}
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 5
   timeToLive: 10
@@ -133,3 +136,30 @@ MonoBehaviour:
   startAmmoCount: 20
   canDamageSelf: 1
   ownTank: {fileID: 0}
+--- !u!114 &4733216876846786093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8fc088663db964291e835a6a19ff2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3054445459071675555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc06553d5dbf5f04b9306d5e68b36170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenBullets: 0.5
+  bulletAmount: 3
+  angleSpread: 0

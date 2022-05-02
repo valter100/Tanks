@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 6481296158931651720}
   - component: {fileID: 5804621341593681060}
+  - component: {fileID: 737783228704338201}
   m_Layer: 7
   m_Name: Roller Bomb
   m_TagString: Projectile
@@ -126,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ffe96743909840b5ecae3bfd2e427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPattern: {fileID: 737783228704338201}
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 7
   timeToLive: 10
@@ -149,3 +151,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 5
   explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
+--- !u!114 &737783228704338201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8fc088663db964291e835a6a19ff2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

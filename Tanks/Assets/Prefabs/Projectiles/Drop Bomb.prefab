@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 2010923922042384439}
   - component: {fileID: 5804621341593681060}
+  - component: {fileID: 8159165948748337676}
   m_Layer: 7
   m_Name: Drop Bomb
   m_TagString: Projectile
@@ -126,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5be7a3ac6c6f14886abd1ed2581478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPattern: {fileID: 8159165948748337676}
   clip: {fileID: 0}
   damage: 3
   timeToLive: 10
@@ -150,3 +152,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 4
   explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
+--- !u!114 &8159165948748337676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8fc088663db964291e835a6a19ff2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
