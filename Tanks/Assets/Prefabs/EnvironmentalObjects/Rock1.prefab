@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -4481443574747406481}
   - component: {fileID: -1998093450310188350}
   - component: {fileID: -6358535078499609951}
-  - component: {fileID: 6673675245260419307}
+  - component: {fileID: 6970764144293096804}
   m_Layer: 0
   m_Name: Rock1
   m_TagString: Untagged
@@ -99,7 +99,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!136 &6673675245260419307
+--- !u!136 &6970764144293096804
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
