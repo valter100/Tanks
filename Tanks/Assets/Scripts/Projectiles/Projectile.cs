@@ -49,6 +49,8 @@ public abstract class Projectile : MonoBehaviour
         // Visualize trail
         //PointVisualizer.AddPoint(transform.position);
 
+        transform.rotation = Quaternion.LookRotation(rb.velocity);
+
         // Emitt trail particles
         if (trailParticles != null)
             Instantiate(trailParticles, transform.position, Quaternion.identity, null);
