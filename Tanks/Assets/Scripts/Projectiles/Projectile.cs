@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public abstract class Projectile : MonoBehaviour
+namespace Tanks
 {
+<<<<<<< Updated upstream
     [SerializeField] protected AudioClip clip;
     [SerializeField] protected float damage;
     [SerializeField] protected float timeToLive;
@@ -28,145 +28,177 @@ public abstract class Projectile : MonoBehaviour
         public float timeBeforeHit;
         public float damageDealtToTank;
     }
+=======
+>>>>>>> Stashed changes
 
-    void Awake()
+    public abstract class Projectile : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-        startTime = timeToLive;
-    }
+        [SerializeField] protected AttackPattern attackPattern;
+        [SerializeField] protected AudioClip clip;
+        [SerializeField] protected float damage;
+        [SerializeField] protected float timeToLive;
+        [SerializeField] protected ParticleSystem trailParticles;
+        [SerializeField] protected ParticleSystem detonationParticles;
+        [SerializeField] protected int startAmmoCount;
+        [SerializeField] protected bool canDamageSelf;
 
-    void OnDestroy()
-    {
-        // This method must not instantiate any GameObject, play sound, swap player,
-        // or affect the scene or game in any other way.
+        float startTime;
+        protected Rigidbody rb;
+        public Tank ownTank;
 
-        // This is because precomputed projectiles must be able to be instantiated
-        // and destroyed as if nothing ever happened.
-    }
+        public AttackPattern GetAttackPattern() => attackPattern;
+        public float GetStartTime() => startTime;
+        public float GetTimeToLive() => timeToLive;
+        public int GetStartAmmoCount() => startAmmoCount;
+        public float GetDamage() => damage;
 
-    protected virtual void Update()
-    {
-        // Visualize trail
-        //PointVisualizer.AddPoint(transform.position);
-
-        transform.rotation = Quaternion.LookRotation(rb.velocity);
-
-        // Emitt trail particles
-        if (trailParticles != null)
-            Instantiate(trailParticles, transform.position, Quaternion.identity, null);
-
-        // Update timer
-        timeToLive -= Time.deltaTime;
-        if (timeToLive <= 0.0f)
-            Detonate(null);
-    }
-
-    /// <summary>
-    /// Gets called when this Projectile detects a collision, either through OnCollisionEnter() or OnTriggerEnter().
-    /// </summary>
-    protected virtual void OnCollision(Collider other)
-    {
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Water")
+        public struct PrecomputedResult
         {
-            Destroy(gameObject);
-            return;
+            public RaycastHit raycastHit;
+            public Tank tank;
+            public float timeBeforeHit;
+            public float damageDealtToTank;
         }
 
-        OnCollision(other.collider);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Water")
+        void Awake()
         {
-            Destroy(gameObject);
-            return;
+            rb = GetComponent<Rigidbody>();
+            startTime = timeToLive;
         }
 
-        OnCollision(other);
-    }
-
-    /// <summary>
-    /// Detonates and destroys this Projectile.
-    /// </summary>
-    /// <param name="collider">Collider can be null. This must be handled by subclasses if utilized.</param>
-    protected virtual void Detonate(Collider collider)
-    {
-        if (detonationParticles != null)
-            Instantiate(detonationParticles, transform.position, Quaternion.identity, null);
-
-        ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
-        Destroy(gameObject);
-    }
-
-    /// <summary>
-    /// Returns whether or not the provided Tank is a Tank, and that it can be damanged
-    /// </summary>
-    protected bool CanDamage(Tank tank)
-    {
-        if (tank == null)
-            return false;
-
-        if (!canDamageSelf && tank == ownTank)
-            return false;
-
-        return true;
-    }
-
-    /// <summary>
-    /// Fires this Projectile.
-    /// </summary>
-    public void Fire(Quaternion angle, float power)
-    {
-        transform.rotation = angle;
-        Vector3 force = gameObject.transform.up * power;
-        rb.velocity += force / rb.mass;
-
-        // Equivalent to: rb.AddForce(force, ForceMode.Impulse)
-        // AddForce is not used since the Rigidbody requires an update before
-        // the applied force affects its velocity
-    }
-
-    /// <summary>
-    /// Precomputes the aerial trajectory of this Projectile before destorying the GameObject.
-    /// </summary>
-    public PrecomputedResult? PrecomputeTrajectory(float timeToVisualize = 0.0f)
-    {
-        RaycastHit raycastHit;
-
-        // For the duration of its life time
-        for (float elapsedTime = 0.0f; elapsedTime < timeToLive; elapsedTime += Time.fixedDeltaTime)
+        void OnDestroy()
         {
-            if (timeToVisualize != 0.0f)
-                PointVisualizer.AddPoint(rb.position, timeToVisualize);
+            // This method must not instantiate any GameObject, play sound, swap player,
+            // or affect the scene or game in any other way.
 
-            // Check collision
-            if (rb.SweepTest(rb.velocity, out raycastHit, rb.velocity.magnitude * Time.fixedDeltaTime))
+            // This is because precomputed projectiles must be able to be instantiated
+            // and destroyed as if nothing ever happened.
+        }
+
+        protected virtual void Update()
+        {
+            // Visualize trail
+            //PointVisualizer.AddPoint(transform.position);
+
+            transform.rotation = Quaternion.LookRotation(rb.velocity);
+
+            // Emitt trail particles
+            if (trailParticles != null)
+                Instantiate(trailParticles, transform.position, Quaternion.identity, null);
+
+            // Update timer
+            timeToLive -= Time.deltaTime;
+            if (timeToLive <= 0.0f)
+                Detonate(null);
+        }
+
+        /// <summary>
+        /// Gets called when this Projectile detects a collision, either through OnCollisionEnter() or OnTriggerEnter().
+        /// </summary>
+        protected virtual void OnCollision(Collider other)
+        {
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.tag == "Water")
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            OnCollision(other.collider);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "Water")
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            OnCollision(other);
+        }
+
+        /// <summary>
+        /// Detonates and destroys this Projectile.
+        /// </summary>
+        /// <param name="collider">Collider can be null. This must be handled by subclasses if utilized.</param>
+        protected virtual void Detonate(Collider collider)
+        {
+            if (detonationParticles != null)
+                Instantiate(detonationParticles, transform.position, Quaternion.identity, null);
+
+            ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
+            Destroy(gameObject);
+        }
+
+        /// <summary>
+        /// Returns whether or not the provided Tank is a Tank, and that it can be damanged
+        /// </summary>
+        protected bool CanDamage(Tank tank)
+        {
+            if (tank == null)
+                return false;
+
+            if (!canDamageSelf && tank == ownTank)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Fires this Projectile.
+        /// </summary>
+        public void Fire(Quaternion angle, float power)
+        {
+            transform.rotation = angle;
+            Vector3 force = gameObject.transform.up * power;
+            rb.velocity += force / rb.mass;
+
+            // Equivalent to: rb.AddForce(force, ForceMode.Impulse)
+            // AddForce is not used since the Rigidbody requires an update before
+            // the applied force affects its velocity
+        }
+
+        /// <summary>
+        /// Precomputes the aerial trajectory of this Projectile before destorying the GameObject.
+        /// </summary>
+        public PrecomputedResult? PrecomputeTrajectory(float timeToVisualize = 0.0f)
+        {
+            RaycastHit raycastHit;
+
+            // For the duration of its life time
+            for (float elapsedTime = 0.0f; elapsedTime < timeToLive; elapsedTime += Time.fixedDeltaTime)
             {
                 if (timeToVisualize != 0.0f)
-                    PointVisualizer.AddPoint(raycastHit.point, timeToVisualize);
+                    PointVisualizer.AddPoint(rb.position, timeToVisualize);
 
-                PrecomputedResult precomputedResult = new PrecomputedResult();
-                precomputedResult.raycastHit = raycastHit;
-                precomputedResult.tank = raycastHit.transform.GetComponent<Tank>();
-                precomputedResult.timeBeforeHit = elapsedTime;
-                precomputedResult.damageDealtToTank = damage;
+                // Check collision
+                if (rb.SweepTest(rb.velocity, out raycastHit, rb.velocity.magnitude * Time.fixedDeltaTime))
+                {
+                    if (timeToVisualize != 0.0f)
+                        PointVisualizer.AddPoint(raycastHit.point, timeToVisualize);
 
-                Destroy(gameObject);
-                return precomputedResult;
+                    PrecomputedResult precomputedResult = new PrecomputedResult();
+                    precomputedResult.raycastHit = raycastHit;
+                    precomputedResult.tank = raycastHit.transform.GetComponent<Tank>();
+                    precomputedResult.timeBeforeHit = elapsedTime;
+                    precomputedResult.damageDealtToTank = damage;
+
+                    Destroy(gameObject);
+                    return precomputedResult;
+                }
+
+                // Simulate frame
+                rb.velocity *= 1.0f - Time.fixedDeltaTime * rb.drag;
+                rb.velocity += Physics.gravity * Time.fixedDeltaTime;
+                rb.position += rb.velocity * Time.fixedDeltaTime;
             }
-            
-            // Simulate frame
-            rb.velocity *= 1.0f - Time.fixedDeltaTime * rb.drag;
-            rb.velocity += Physics.gravity * Time.fixedDeltaTime;
-            rb.position += rb.velocity * Time.fixedDeltaTime;
-        }
 
-        Destroy(gameObject);
-        return null;
+            Destroy(gameObject);
+            return null;
+        }
     }
 }

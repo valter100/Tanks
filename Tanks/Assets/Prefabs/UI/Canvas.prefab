@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4880428668580554432}
   - component: {fileID: 8109469240536875847}
   - component: {fileID: 7010108365460513517}
-  - component: {fileID: 895577502303667919}
   m_Layer: 3
   m_Name: Canvas
   m_TagString: Untagged
@@ -104,18 +103,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &895577502303667919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3049102817173278899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3375441989756256177
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +189,7 @@ GameObject:
   - component: {fileID: 2985731997544999752}
   - component: {fileID: 7601834137986441212}
   - component: {fileID: 2177597150407863350}
+  - component: {fileID: 6300282654139847697}
   m_Layer: 3
   m_Name: Name
   m_TagString: Untagged
@@ -256,7 +244,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "Valter\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -291,7 +279,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -325,6 +313,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6300282654139847697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3445347997468011881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5458330031080980165
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5735169334039579691}
   - component: {fileID: 3842110804965037722}
+  - component: {fileID: 8362431013037914906}
   m_Layer: 3
   m_Name: ForceBar
   m_TagString: Untagged
@@ -414,6 +415,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8362431013037914906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5458330031080980165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5461925460376421636
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5223377037871639860}
   - component: {fileID: 7749208525688846400}
+  - component: {fileID: 1558387792350857453}
   m_Layer: 3
   m_Name: FuelBar
   m_TagString: Untagged
@@ -503,6 +517,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1558387792350857453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461925460376421636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6161632156935041759
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7193846880656973514}
   - component: {fileID: 1866626879848115511}
+  - component: {fileID: 9009761289366611237}
   m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
@@ -817,6 +844,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9009761289366611237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646889759351233959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e490e1abc916d40559d750a62970abd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8822643757545327844
 GameObject:
   m_ObjectHideFlags: 0

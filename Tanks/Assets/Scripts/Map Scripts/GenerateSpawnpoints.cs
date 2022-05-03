@@ -7,14 +7,19 @@ namespace Tanks
     public class GenerateSpawnpoints : ObjectGenerator
     {
         [SerializeField] GameObject spawnPointPrefab;
-        [Range(2, 4)]
-        [SerializeField] int numberOfTanks;
+        //[Range(2, 4)]
+        //[SerializeField] int numberOfTanks;
 
         public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
             base.GenerateObjects(linePositions, width, depth);
+            
+        }
+
+        public void GenerateTanks(int numberOfTanks, GameObject tank)
+        {
             for (int i = 0; i < numberOfTanks; i++)
-                InstantiateAtPosition(GetRandomSpawnPosition());
+                InstantiateAtPosition(GetRandomSpawnPosition(), tank);
         }
 
         private Vector3 GetRandomSpawnPosition()
@@ -36,7 +41,7 @@ namespace Tanks
             return randomizedVector;
         }
 
-        private void InstantiateAtPosition(Vector3 position) => CreateObjectAtPosition(position, spawnPointPrefab);
+        private void InstantiateAtPosition(Vector3 position, GameObject tank) => CreateObjectAtPosition(position, tank);
     }
 }
 

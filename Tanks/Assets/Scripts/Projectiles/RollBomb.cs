@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RollBomb : ExplodingProjectile
+namespace Tanks
 {
-    protected override void Update()
-    {
-        base.Update();
-    }
 
-    protected override void OnCollision(Collider other)
+    public class RollBomb : ExplodingProjectile
     {
-        if (timeToLive > 2.0f)
-            timeToLive = 2.0f;
+        protected override void Update()
+        {
+            base.Update();
+        }
+
+        protected override void OnCollision(Collider other)
+        {
+            if (timeToLive > 2.0f)
+                timeToLive = 2.0f;
+        }
     }
 }

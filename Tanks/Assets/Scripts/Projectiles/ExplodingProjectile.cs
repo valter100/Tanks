@@ -2,30 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplodingProjectile : Projectile
+namespace Tanks
 {
-    [Header("Exploding Projectile Specifics")]
-    [SerializeField] protected Explosion explosion;
 
-    private void Start()
+    public class ExplodingProjectile : Projectile
     {
-        explosion.SetDamage(damage);
-    }
+        [Header("Exploding Projectile Specifics")]
+        [SerializeField] protected Explosion explosion;
 
-    // Update is called once per frame
-    override protected void Update()
-    {
-        base.Update();
-    }
-    protected override void OnCollision(Collider other)
-    {
-        base.OnCollision(other);
-        Detonate(other);
-    }
+        private void Start()
+        {
+            explosion.SetDamage(damage);
+        }
 
-    protected override void Detonate(Collider other)
-    {
-        explosion.Explode();
-        base.Detonate(other);
+        // Update is called once per frame
+        override protected void Update()
+        {
+            base.Update();
+        }
+        protected override void OnCollision(Collider other)
+        {
+            base.OnCollision(other);
+            Detonate(other);
+        }
+
+        protected override void Detonate(Collider other)
+        {
+            explosion.Explode();
+            base.Detonate(other);
+        }
     }
 }

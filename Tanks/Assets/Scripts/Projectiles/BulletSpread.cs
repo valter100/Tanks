@@ -2,46 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletSpread : Bullet
+namespace Tanks
 {
-    [SerializeField] float spreadTimer;
-    [SerializeField] int spreadCount;
-    [SerializeField] float spreadAngleRange;
-    [SerializeField] Projectile bullet;
 
-    bool hasSpread = false;
-
-    protected override void Update()
+    public class BulletSpread : Bullet
     {
-        base.Update();
+        [SerializeField] float spreadTimer;
+        [SerializeField] int spreadCount;
+        [SerializeField] float spreadAngleRange;
+        [SerializeField] Projectile bullet;
 
-        if (GetStartTime() - GetTimeToLive() > spreadTimer && !hasSpread)
+        bool hasSpread = false;
+
+        protected override void Update()
         {
-            Spread();
-            hasSpread = true;
+            base.Update();
+
+            if (GetStartTime() - GetTimeToLive() > spreadTimer && !hasSpread)
+            {
+                Spread();
+                hasSpread = true;
+            }
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
-            return;
-
-        Detonate(other);
-    }
-
-    public void Spread()
-    {
-        for(int i = 0; i < spreadCount; i++)
+        private void OnTriggerEnter(Collider other)
         {
-            float randomAngle = Random.Range(-spreadAngleRange, spreadAngleRange);
+            if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
+                return;
 
-            //GameObject spreadBullet = Instantiate(bullet.gameObject, transform.position, transform.rotation );
-            //spreadBullet.GetComponent<Projectile>().SetDamage(damage);
-            //spreadBullet.GetComponent<Projectile>().SetOwnTank(ownTank);
-            //spreadBullet.transform.Rotate(0, 0, randomAngle);
-            //spreadBullet.GetComponent<Rigidbody>().AddForce(transform.right * GetComponent<Rigidbody>().velocity.magnitude * 15);
-            //spreadBullet.GetComponent<Projectile>().SetEndsRound(false);
+            Detonate(other);
+        }
+
+        public void Spread()
+        {
+            for (int i = 0; i < spreadCount; i++)
+            {
+                float randomAngle = Random.Range(-spreadAngleRange, spreadAngleRange);
+
+                //GameObject spreadBullet = Instantiate(bullet.gameObject, transform.position, transform.rotation );
+                //spreadBullet.GetComponent<Projectile>().SetDamage(damage);
+                //spreadBullet.GetComponent<Projectile>().SetOwnTank(ownTank);
+                //spreadBullet.transform.Rotate(0, 0, randomAngle);
+                //spreadBullet.GetComponent<Rigidbody>().AddForce(transform.right * GetComponent<Rigidbody>().velocity.magnitude * 15);
+                //spreadBullet.GetComponent<Projectile>().SetEndsRound(false);
+            }
         }
     }
 }

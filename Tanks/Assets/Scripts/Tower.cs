@@ -2,41 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+namespace Tanks
 {
-    [SerializeField] Transform rotatePoint;
-    [SerializeField] PlayerController controller;
-    [SerializeField] Camera cam;
 
-    bool facingRight;
-
-    private void Start()
+    public class Tower : MonoBehaviour
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-    }
+        [SerializeField] Transform rotatePoint;
+        [SerializeField] PlayerController controller;
+        [SerializeField] Camera cam;
 
-    private void Update()
-    {
-        Aim();
-    }
+        bool facingRight;
 
-    public void Aim()
-    {
-        Vector2 mousePosition = controller.GetMousePosition();
-
-        float xValue = cam.WorldToScreenPoint(rotatePoint.transform.position).x - mousePosition.x;
-
-        Debug.Log(xValue);
-
-        if (xValue < 0 && !facingRight)
+        private void Start()
         {
-            rotatePoint.transform.rotation = Quaternion.Euler(0, 0, 0);
-            facingRight = true;
+            cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         }
-        else if (xValue > 0 && facingRight)
+
+        private void Update()
         {
-            rotatePoint.transform.rotation = Quaternion.Euler(0, -180, 0);
-            facingRight = false;
+            Aim();
+        }
+
+        public void Aim()
+        {
+            Vector2 mousePosition = controller.GetMousePosition();
+
+            float xValue = cam.WorldToScreenPoint(rotatePoint.transform.position).x - mousePosition.x;
+
+            Debug.Log(xValue);
+
+            if (xValue < 0 && !facingRight)
+            {
+                rotatePoint.transform.rotation = Quaternion.Euler(0, 0, 0);
+                facingRight = true;
+            }
+            else if (xValue > 0 && facingRight)
+            {
+                rotatePoint.transform.rotation = Quaternion.Euler(0, -180, 0);
+                facingRight = false;
+            }
         }
     }
 }

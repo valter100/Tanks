@@ -40,6 +40,9 @@ namespace Tanks
             GameObject instantiatedObject = Instantiate(gameObject, transform, true);
             instantiatedObject.transform.position = position;
             instantiatedObject.transform.Rotate(0.0f, 0.0f, rotation);
+
+            if (instantiatedObject.GetComponent<Tank>())
+                instantiatedObject.GetComponent<Tank>().AssignPlayer();
         }
     }
 }

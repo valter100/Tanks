@@ -2,63 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Tanks
 {
-    PlayerControls playerControls;
-    Vector3 move;
 
-    void Awake()
+    public class PlayerController : MonoBehaviour
     {
-        playerControls = new PlayerControls();
-    }
+        PlayerControls playerControls;
+        Vector3 move;
 
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
+        void Awake()
+        {
+            playerControls = new PlayerControls();
+        }
 
-    private void OnDisable()
-    {
-        playerControls.Disable();
-    }
+        private void OnEnable()
+        {
+            playerControls.Enable();
+        }
 
-    void Update()
-    {
-        move = playerControls.Tank.Move.ReadValue<Vector3>();
-    }
+        private void OnDisable()
+        {
+            playerControls.Disable();
+        }
 
-    public Vector3 GetMovement()
-    {
-        return move;
-    }
+        void Update()
+        {
+            move = playerControls.Tank.Move.ReadValue<Vector3>();
+        }
 
-    public bool IsShooting()
-    {
-        return playerControls.Tank.Shoot.triggered;
-    }
+        public Vector3 GetMovement()
+        {
+            return move;
+        }
 
-    public bool IsFocusing()
-    {
-        return playerControls.Tank.FocusCamera.triggered;
-    }
+        public bool IsShooting()
+        {
+            return playerControls.Tank.Shoot.triggered;
+        }
 
-    public bool IsAutoFocusing()
-    {
-        return playerControls.Tank.AutoFocusCamera.triggered;
-    }
+        public bool IsFocusing()
+        {
+            return playerControls.Tank.FocusCamera.triggered;
+        }
 
-    public Vector2 GetMousePosition()
-    {
-        return playerControls.Tank.Aim.ReadValue<Vector2>();
-    }
+        public bool IsAutoFocusing()
+        {
+            return playerControls.Tank.AutoFocusCamera.triggered;
+        }
 
-    public int GetNewWeapon()
-    {
-        if (playerControls.Tank.NextProjectile.triggered)
-            return 1;
-        else if (playerControls.Tank.PreviousProjectile.triggered)
-            return -1;
+        public Vector2 GetMousePosition()
+        {
+            return playerControls.Tank.Aim.ReadValue<Vector2>();
+        }
 
-        else return 0;
+        public int GetNewWeapon()
+        {
+            if (playerControls.Tank.NextProjectile.triggered)
+                return 1;
+            else if (playerControls.Tank.PreviousProjectile.triggered)
+                return -1;
+
+            else return 0;
+        }
     }
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Tanks
 {
 
-    public class ExplodingShell : ExplodingProjectile
+    public class Spread : AttackPattern
     {
-        protected override void Update()
+        public override void Fire(Tank tank)
         {
-            base.Update();
+
         }
     }
 }

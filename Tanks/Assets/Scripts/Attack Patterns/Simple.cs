@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 namespace Tanks
 {
 
-    public class ExplodingShell : ExplodingProjectile
+    public class Simple : AttackPattern
     {
-        protected override void Update()
+        public override void Fire(Tank tank)
         {
-            base.Update();
+            tank.InstantiateProjectile();
         }
     }
 }

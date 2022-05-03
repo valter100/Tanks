@@ -2,36 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shockwave : Projectile
+namespace Tanks
 {
-    [Header("Shockwave specific")]
-    [SerializeField] float pushbackRadius;
-    [SerializeField] float pushbackForce;
 
-    protected override void OnCollision(Collider other)
+    public class Shockwave : Projectile
     {
-        base.OnCollision(other);
-        Detonate(other);
-    }
+        [Header("Shockwave specific")]
+        [SerializeField] float pushbackRadius;
+        [SerializeField] float pushbackForce;
 
-    protected override void Detonate(Collider other)
-    {
-        base.Detonate(other);
-        PushbackExplosion();
-    }
-
-    public void PushbackExplosion()
-    {
-        Instantiate(detonationParticles, transform.position, Quaternion.Euler(-90, 0, 0));
-
-        Collider[] tankColliders = Physics.OverlapSphere(transform.position, pushbackRadius);
-
-        foreach (Collider collider in tankColliders)
+        protected override void OnCollision(Collider other)
         {
-            Tank tank = collider.GetComponent<Tank>();
+            base.OnCollision(other);
+            Detonate(other);
+        }
 
-            if (tank)
-                tank.GetComponent<Rigidbody>().AddExplosionForce(pushbackForce, transform.position, pushbackRadius);
+        protected override void Detonate(Collider other)
+        {
+            base.Detonate(other);
+            PushbackExplosion();
+        }
+
+        public void PushbackExplosion()
+        {
+            Instantiate(detonationParticles, transform.position, Quaternion.Euler(-90, 0, 0));
+
+            Collider[] tankColliders = Physics.OverlapSphere(transform.position, pushbackRadius);
+
+            foreach (Collider collider in tankColliders)
+            {
+                Tank tank = collider.GetComponent<Tank>();
+
+                if (tank)
+                    tank.GetComponent<Rigidbody>().AddExplosionForce(pushbackForce, transform.position, pushbackRadius);
+            }
         }
     }
 }

@@ -2,41 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BounceBomb : ExplodingProjectile
+namespace Tanks
 {
-    [Header("Bounce Bomb Specifics")]
-    [SerializeField] int bouncesLeft;
-    [SerializeField] float elasticity;
-    [SerializeField] float addedRadius;
 
-    float yVelocityBefore;
-
-    protected override void Update()
+    public class BounceBomb : ExplodingProjectile
     {
-        yVelocityBefore = rb.velocity.y;
+        [Header("Bounce Bomb Specifics")]
+        [SerializeField] int bouncesLeft;
+        [SerializeField] float elasticity;
+        [SerializeField] float addedRadius;
 
-        base.Update();
-    }
+        float yVelocityBefore;
 
-    protected override void OnCollision(Collider other)
-    {
-        if (bouncesLeft <= 0)
-            base.OnCollision(other);
-        else if (yVelocityBefore < 0)
-            Bounce();
-    }
+        protected override void Update()
+        {
+            yVelocityBefore = rb.velocity.y;
 
-    void Bounce()
-    {
-        explosion.SetRadius(bouncesLeft + addedRadius);
-        explosion.Explode();
+            base.Update();
+        }
 
-        bouncesLeft--;
+        protected override void OnCollision(Collider other)
+        {
+            if (bouncesLeft <= 0)
+                base.OnCollision(other);
+            else if (yVelocityBefore < 0)
+                Bounce();
+        }
 
-        float newYVelocity = yVelocityBefore * -1 * elasticity;
+        void Bounce()
+        {
+            explosion.SetRadius(bouncesLeft + addedRadius);
+            explosion.Explode();
 
-        rb.velocity = new Vector3(rb.velocity.x, newYVelocity, 0);
+            bouncesLeft--;
 
-        //play bounce animation?
+            float newYVelocity = yVelocityBefore * -1 * elasticity;
+
+            rb.velocity = new Vector3(rb.velocity.x, newYVelocity, 0);
+
+            //play bounce animation?
+        }
     }
 }
