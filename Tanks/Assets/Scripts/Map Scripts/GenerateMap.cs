@@ -121,28 +121,80 @@ namespace Tanks
                 LinePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
         }
 
+        private Point[] PositionsToPoints()
+        {
+            Point[] points = new Point[LinePositions.Length];
+            for (int i = 0; i < points.Length; i++)
+                    points[i] = new Point(LinePositions[i]);
+
+            for (int i = 0; i < points.Length; i++)
+                for (int j = 0; j < points.Length; j++)
+                    if (ConflictWithEarlierPoint(i, j) || ConflictWithLaterPoint(i, j))
+                    {
+                        points[i].CanReachFloor = false;
+                        break;
+                    }
+
+            return points;
+
+            bool ConflictWithEarlierPoint(int i, int j) => i > j && !IsToTheLeft(i, j) && IsBelow(i, j);
+            bool ConflictWithLaterPoint(int i, int j) => i < j && !IsToTheRight(i, j) && IsBelow(i, j);
+
+            bool IsToTheRight(int i, int j) => points[i].position.x < points[j].position.x;
+            bool IsToTheLeft(int i, int j) => points[i].position.x > points[j].position.x;
+            bool IsBelow(int i, int j) => points[i].position.y > points[j].position.y;
+        }
+
         private void GenerateQuads()
         {
             //TODO Skapa punktklass som kan spara information om att ha blivit kopplad och om de har öppen väg till marken.
             //TODO Kolla om punkterna inte har en öppen väg vänta tills efter alla giltiga punktet gjorts del av quads
             //TODO Sedan gör quads eller trianglar från de närmsta punkterna som kopplats
+            Point[] points = PositionsToPoints();
 
             vertices = new List<Vector3>();
             triangleIndices = new List<int>();
             quads = new List<Quad>();
             int verticesPerPosition = 4;
 
-            for (int i = 0; i < LinePositions.Length; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 if (i < 1)
                 {
-                    AddFirstSide(LinePositions[i]);
+                    AddFirstSide(points[i].position);
+                    points[i].IsConnected = true;
                     continue;
                 }
-                int vertexIndex = i+1 != LinePositions.Length ? AddVertex(LinePositions[i]) : AddLastSide(LinePositions[i]);
+                if (!points[i].CanReachFloor)
+                    continue;
+                
+                int vertexIndex = i+1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
                 int pastIndex = vertexIndex - verticesPerPosition;
                 for (int j = 0; j < verticesPerPosition - 1; j++)
                     AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
+                points[i].IsConnected = true;
+                points[i].vertexIndex = vertexIndex;
+            }
+
+            //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
+            int previousIndex, nextIndex = 0;
+            for (int i = 0; i < points.Length; i++)
+            {
+                if (!points[i].IsConnected)
+                {
+                    previousIndex = points[i - 1].vertexIndex;
+                    points[i].vertexIndex = AddVertex(points[i].position, true);
+                    if (nextIndex < i)
+                        nextIndex = GetNextConnectedPoint(i);
+                    AddToQuad(previousIndex, points[i].vertexIndex, true);
+                    quads.Add(new Quad(points[i].vertexIndex + 1, previousIndex + 1, points[nextIndex].vertexIndex + 1, -1, true));
+
+                    if (nextIndex == i + 1)
+                        AddToQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+
+                    points[i].IsConnected = true;
+                }
+
             }
 
             CreateMesh(CreateSubMeshDescriptors(quads));
@@ -150,13 +202,56 @@ namespace Tanks
             void AddToQuad(int pastIndex, int vertexIndex, bool isTopside){
                 quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
             }
+
+            int GetNextConnectedPoint(int startIndex)
+            {
+                int index = startIndex + 1;
+                while (!points[++index].IsConnected)
+                    if (index >= points.Length)
+                    {
+                        index = -1;
+                        break;
+                    }
+                return index;
+            }
         }
 
-        int AddVertex(Vector3 vertex)
+        //private void GenerateQuads()
+        //{
+        //    vertices = new List<Vector3>();
+        //    triangleIndices = new List<int>();
+        //    quads = new List<Quad>();
+        //    int verticesPerPosition = 4;
+
+        //    for (int i = 0; i < LinePositions.Length; i++)
+        //    {
+        //        if (i < 1)
+        //        {
+        //            AddFirstSide(LinePositions[i]);
+        //            continue;
+        //        }
+        //        int vertexIndex = i + 1 != LinePositions.Length ? AddVertex(LinePositions[i]) : AddLastSide(LinePositions[i]);
+        //        int pastIndex = vertexIndex - verticesPerPosition;
+        //        for (int j = 0; j < verticesPerPosition - 1; j++)
+        //            AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
+        //    }
+
+        //    CreateMesh(CreateSubMeshDescriptors(quads));
+
+        //    void AddToQuad(int pastIndex, int vertexIndex, bool isTopside)
+        //    {
+        //        quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+        //    }
+        //}
+
+        int AddVertex(Vector3 vertex, bool onlyTop = false)
         {
             int index = vertices.Count;
+            
             vertices.Add(new Vector3(vertex.x, vertex.y, depth));
             vertices.Add(vertex);
+            if (onlyTop)
+                return index;
             vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth()));
             vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
             return index;
@@ -229,6 +324,21 @@ namespace Tanks
         }
     }
 
+    public struct Point
+    {
+        public readonly Vector3 position;
+        public int vertexIndex;
+        public bool IsConnected { get; set; }
+        public bool CanReachFloor { get; set; }
+        public Point(Vector3 position)
+        {
+            this.position = position;
+            IsConnected = false;
+            CanReachFloor = true;
+            vertexIndex = -1;
+        }
+    }
+
     public struct Quad
     {
         private readonly int upperLeftIndex, lowerLeftIndex, upperRightIndex, lowerRightIndex;
@@ -244,6 +354,12 @@ namespace Tanks
 
         public int[] GetTriangleIndices()
         {
+            if (lowerRightIndex < 0)
+            {
+                int[] triangle = { lowerLeftIndex, upperLeftIndex, upperRightIndex };
+                return triangle;
+            }
+
             int[] indices = { lowerLeftIndex, upperLeftIndex, upperRightIndex,
                               lowerLeftIndex, upperRightIndex, lowerRightIndex};
             return indices;
