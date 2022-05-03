@@ -6,7 +6,7 @@ public class StartState : State
 {
     public override void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, Tank thisTank)
     {
-        if (thisBehaviour.GetDistanceToEnemy() >= thisBehaviour.GetMaxShootingRange() && thisBehaviour.GetFuel() >= 1f)
+        if (thisBehaviour.GetDistanceToEnemy() >= 1 && thisBehaviour.GetFuel() >= 1f)
         {
            thisBehaviour.SetMoveState();
            return;

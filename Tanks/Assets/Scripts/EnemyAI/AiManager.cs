@@ -11,15 +11,10 @@ public class AiManager : MonoBehaviour
     private FireState fireState = new FireState();
 
     [SerializeField]
-    GameObject thisGameObject;
-    [SerializeField]
     Tank thisTank;
-    [SerializeField]
-    protected Transform thisTransform;
-
-    List<Transform> targetPositions;
+    
     Transform activeTargetPosition;
-    GameObject[] targetTanks;
+    List<GameObject> targetTanks;
 
     private float distanceToEnemy;
     private float maxShootingRange;
@@ -30,17 +25,20 @@ public class AiManager : MonoBehaviour
     void Start()
     {
         activeState = startState;
-        
+        targetTanks = new List<GameObject>();
+
         UpdateTargetsList();
     }
 
     private void Update()
     {
-        distanceToEnemy = Vector3.Distance(thisTransform.position, activeTargetPosition.position);
+        ChooseTarget();
+
+        distanceToEnemy = Vector3.Distance(gameObject.transform.position, activeTargetPosition.position);
         fuel = thisTank.GetFuelPercentage();
         maxShootingRange = thisTank.GetMaxShootForce();
 
-        activeState.DoState(this, thisTransform, activeTargetPosition, thisTank);
+        activeState.DoState(this, gameObject.transform, activeTargetPosition, thisTank);
     }
 
     public float GetFuel() => fuel;
@@ -55,51 +53,55 @@ public class AiManager : MonoBehaviour
     {
         UpdateTargetsList();
 
-        if (lowHealthTarget)
-        {
+        //if (lowHealthTarget)
+        //{
 
-        }
-        else if (highHealthTarget)
-        {
+        //}
+        //else if (highHealthTarget)
+        //{
 
-        }
-        else if (closestTarget)
-        {
-            float distance = 100f;
+        //}
+        //else if (closestTarget)
+        //{
+        //    float distance = 100f;
 
-            foreach(GameObject tank in targetTanks)
-            {
-                if (tank == thisGameObject) continue;
+        //    foreach(GameObject tank in targetTanks)
+        //    {
+        //        if (tank == gameObject) continue;
 
-                if(Vector3.Distance(tank.transform.position, thisTransform.position) < distance)
-                {
-                    activeTargetPosition = tank.transform;
-                    distance = Vector3.Distance(tank.transform.position, thisTransform.position);
-                }
-            }
-        }
-        else if (furthestTarget)
-        {
-            float distance = 100f;
-            foreach (GameObject tank in targetTanks)
-            {
-                if (tank == thisGameObject) continue;
+        //        if(Vector3.Distance(tank.transform.position, gameObject.transform.position) < distance)
+        //        {
+        //            activeTargetPosition = tank.transform;
+        //            distance = Vector3.Distance(tank.transform.position, gameObject.transform.position);
+        //        }
+        //    }
+        //}
+        //else if (furthestTarget)
+        //{
+        //    float distance = 100f;
+        //    foreach (GameObject tank in targetTanks)
+        //    {
+        //        if (tank == gameObject) continue;
 
-                if (Vector3.Distance(tank.transform.position, thisTransform.position) > distance)
-                {
-                    activeTargetPosition = tank.transform;
-                    distance = Vector3.Distance(tank.transform.position, thisTransform.position);
-                }
-            }
-        }
-        else
-        {
-            int random = Random.Range(0, targetPositions.Count);
+        //        if (Vector3.Distance(tank.transform.position, gameObject.transform.position) > distance)
+        //        {
+        //            activeTargetPosition = tank.transform;
+        //            distance = Vector3.Distance(tank.transform.position, gameObject.transform.position);
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    int random = Random.Range(0, targetTanks.Count);
 
-            activeTargetPosition = targetPositions[random];
-        }
+        //    if(gameObject == targetTanks[random]) 
 
-        
+        //    activeTargetPosition = targetTanks[random].transform;
+        //}
+
+        int random = Random.Range(0, targetTanks.Count);
+
+        activeTargetPosition = targetTanks[random].transform;
 
         //choose a target from the list of targets. 
         //should we choose at random? (pick a random index from the list)
@@ -110,15 +112,17 @@ public class AiManager : MonoBehaviour
 
     public void UpdateTargetsList()
     {
-        targetPositions.Clear();
+        GameObject[] tempArray = GameObject.FindGameObjectsWithTag("Tank");
 
-        targetTanks = GameObject.FindGameObjectsWithTag("Tank");
+        targetTanks.Clear();
 
-        foreach(GameObject tank in targetTanks)
+        foreach(GameObject tank in tempArray)
         {
-            if (tank == thisGameObject) continue;
+            if (gameObject == tank) continue;
 
-            targetPositions.Add(tank.transform);
+            targetTanks.Add(tank);
         }
+
+        Debug.Log(targetTanks.Count);
     }
 }

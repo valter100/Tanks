@@ -317,6 +317,7 @@ public class Tank : MonoBehaviour
             go.GetComponent<MeshRenderer>().material.color = newColor;
         }
 
+        if(nameText)
         nameText.text = playerName;
     }
 
