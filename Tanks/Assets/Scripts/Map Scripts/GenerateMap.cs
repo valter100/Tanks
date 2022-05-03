@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Tanks
-{
     public class GenerateMap : MonoBehaviour
     {
         [SerializeField] private bool generateNewMap;
@@ -239,6 +237,6 @@ namespace Tanks
             return indices;
         }
     }
-}
+
 
 

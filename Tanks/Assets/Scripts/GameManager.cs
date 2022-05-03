@@ -6,9 +6,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] List<string> playerNames;
-    [SerializeField] List<Tank> tanks;
-    [SerializeField] List<Tank> instatiatedTanks;
     [SerializeField] List<Color> playerColors;
+    [SerializeField] List<TankType> playerTankTypes;
+
+    [SerializeField] GameInfo gameInfo;
+    [SerializeField] GenerateSpawnpoints gameSpawnpoints;
+    [SerializeField] List<GameObject> tankPrefabs;
+    [SerializeField] List<Tank> spawnedTanks;
+
     [SerializeField] int currentPlayerIndex;
     [SerializeField] int playerCount;
     [SerializeField] Tank currentTank;
@@ -20,18 +25,15 @@ public class GameManager : MonoBehaviour
 
     bool pickingNextPlayer = false;
 
-    //enum GameState
-    //{
-    //    Start,
-    //    Turn,
-    //    Transition,
-    //    End
-    //}
-
     void Start()
     {
-        playerNameText = GameObject.Find("GUI").transform.Find("CurrentPlayer").GetComponent<TMP_Text>();
+        playerNames = new List<string>();
+        playerColors = new List<Color>();
+        playerTankTypes = new List<TankType>();
+        spawnedTanks = new List<Tank>();
 
+        playerNameText = GameObject.Find("GUI").transform.Find("CurrentPlayer").GetComponent<TMP_Text>();
+        gameInfo = GameObject.Find("Game Info").GetComponent<GameInfo>();
         StartCoroutine(Coroutine_StartMatch());
     }
 
@@ -39,10 +41,8 @@ public class GameManager : MonoBehaviour
     {
         float delay = 1.0f;
 
-        foreach(Tank tank in tanks)
-        {
-            tank.AssignPlayer();
-        }
+        GetInfo();
+        SpawnTanks();
 
         while (delay > 0.0f)
         {
@@ -52,16 +52,34 @@ public class GameManager : MonoBehaviour
 
 
         currentPlayerIndex = 0;
-        currentTank = tanks[currentPlayerIndex];
+        currentTank = spawnedTanks[currentPlayerIndex];
         playerNameText.text = "Current player: " + currentTank.GetPlayerName();
         currentTank.ReadyTank();
         yield return 0;
     }
 
+    void GetInfo()
+    {
+        for(int i = 0; i < gameInfo.names.Count; ++i)
+        {
+            playerNames.Add(gameInfo.names[i]);
+            playerColors.Add(gameInfo.colors[i]);
+            playerTankTypes.Add(gameInfo.tankTypes[i]);
+        }
+    }
+
+    void SpawnTanks()
+    {
+        for (int i = 0; i < gameInfo.names.Count; ++i)
+        {
+            GameObject spawnedTank = tankPrefabs[0];
+            gameSpawnpoints.GenerateTank(spawnedTank);
+        }
+    }
 
     public void StartPlayerTransition()
     {
-        if (tanks.Count == 1)
+        if (spawnedTanks.Count == 1)
         {
             Debug.Log(currentTank.GetPlayerName() + " Wins!");
             //current tank wins
@@ -98,15 +116,15 @@ public class GameManager : MonoBehaviour
             currentTank.UnreadyTank();
 
         currentPlayerIndex++;
-        if (currentPlayerIndex >= tanks.Count)
+        if (currentPlayerIndex >= spawnedTanks.Count)
             currentPlayerIndex = 0;
 
-        for (int i = currentPlayerIndex; i < tanks.Count; i++)
+        for (int i = currentPlayerIndex; i < spawnedTanks.Count; i++)
         {
-            if (tanks[i].gameObject.activeInHierarchy)
+            if (spawnedTanks[i].gameObject.activeInHierarchy)
             {
                 currentPlayerIndex = i;
-                currentTank = tanks[currentPlayerIndex];
+                currentTank = spawnedTanks[currentPlayerIndex];
                 playerNameText.text = "Current player: " + currentTank.GetPlayerName();
                 currentTank.ReadyTank();
                 return;
@@ -121,12 +139,12 @@ public class GameManager : MonoBehaviour
 
     public List<Tank> GetTankList()
     {
-        return tanks;
+        return spawnedTanks;
     }
 
     public Tank GetCurrentTank()
     {
-        return tanks[currentPlayerIndex];
+        return spawnedTanks[currentPlayerIndex];
     }
 
     public void Fire()
@@ -137,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     public void RemoveTankFromList(Tank tank)
     {
-        tanks.Remove(tank);
+        spawnedTanks.Remove(tank);
     }
 
     public string AssignName()
@@ -156,6 +174,6 @@ public class GameManager : MonoBehaviour
 
     public void AddInstantiatedTank(Tank newTank)
     {
-        instatiatedTanks.Add(newTank);
+        spawnedTanks.Add(newTank);
     }
 }

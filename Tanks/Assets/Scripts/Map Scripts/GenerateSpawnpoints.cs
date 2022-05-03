@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tanks
-{
+
     public class GenerateSpawnpoints : ObjectGenerator
     {
         [SerializeField] GameObject spawnPointPrefab;
@@ -13,9 +12,13 @@ namespace Tanks
         public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
         {
             base.GenerateObjects(linePositions, width, depth);
-            for (int i = 0; i < numberOfTanks; i++)
-                InstantiateAtPosition(GetRandomSpawnPosition());
+            
         }
+
+    public void GenerateTank(GameObject tank)
+    {
+        InstantiateAtPosition(GetRandomSpawnPosition(), tank);
+    }
 
         private Vector3 GetRandomSpawnPosition()
         {
@@ -36,7 +39,7 @@ namespace Tanks
             return randomizedVector;
         }
 
-        private void InstantiateAtPosition(Vector3 position) => CreateObjectAtPosition(position, spawnPointPrefab);
+        private void InstantiateAtPosition(Vector3 position, GameObject tank) => CreateObjectAtPosition(position, tank);
     }
-}
+
 

@@ -12,7 +12,7 @@ public class Tank : MonoBehaviour
     [Header("Player")]
     [SerializeField] GameManager gameManager;
     [SerializeField] CameraController cameraController;
-    [SerializeField] bool isActive;
+    [SerializeField] bool isActive = false;
     [SerializeField] string playerName;
     [SerializeField] public Color playerColor;
 
@@ -85,7 +85,6 @@ public class Tank : MonoBehaviour
     private void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gameManager.AddInstantiatedTank(this);
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
         playerController = GetComponent<PlayerController>();
@@ -139,17 +138,6 @@ public class Tank : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, 0);
         else if (playerController.GetMovement().x < 0)
             transform.rotation = Quaternion.Euler(0, -180, 0);
-
-        //Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
-
-        //RaycastHit hit;
-        //if (Physics.Raycast(transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-        //{
-        //    //Debug.DrawLine(transform.position + new Vector3(0,1,0) * 0.66f + localDirection, hit.point);
-        //    //Debug.Log(hit.normal.y);
-        //    if (hit.normal.y < 0.85f)
-        //        return;
-        //}
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
 
