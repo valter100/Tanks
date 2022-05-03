@@ -48,19 +48,15 @@ MonoBehaviour:
   - Player 2
   - Player 3
   - Player 4
-  tankTypes: 
-  tankPrefabs:
-  - {fileID: 694820345919734862, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
-  spawnedTanks: []
-  playerColors:
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0.008692741, b: 1, a: 0}
-  - {r: 0.22800577, g: 1, b: 0, a: 0}
-  - {r: 1, g: 0, b: 0.92892265, a: 0}
+  tanks:
+  - {fileID: 1456219737200762294, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
+  tankColors:
+  - {r: 1, g: 0, b: 0.04999399, a: 0}
+  - {r: 0, g: 1, b: 0.11143541, a: 0}
+  - {r: 0.011263847, g: 0, b: 1, a: 0}
+  - {r: 1, g: 0, b: 0.7807932, a: 0}
   currentPlayerIndex: 0
   playerCount: 0
   currentTank: {fileID: 0}
   cameraController: {fileID: 0}
-  gameInfo: {fileID: 0}
   playerNameText: {fileID: 0}
-  gameSpawnpoints: {fileID: 0}

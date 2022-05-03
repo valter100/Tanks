@@ -2,59 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tanks
+public class Explosion : MonoBehaviour
 {
+    [SerializeField] float radius;
+    [SerializeField] ParticleSystem explosionEffect;
 
-    public class Explosion : MonoBehaviour
+    float damage;
+
+    public void SetDamage(float newDamage)
     {
-        [SerializeField] float radius;
-        [SerializeField] ParticleSystem explosionEffect;
+        damage = newDamage;
+    }
 
-        float damage;
+    public void SetRadius(float newRadius)
+    {
+        radius = newRadius;
 
-        public void SetDamage(float newDamage)
+        ParticleSystem.ShapeModule shape = explosionEffect.shape;
+        ParticleSystem.EmissionModule emission = explosionEffect.emission;
+
+        ParticleSystem.Burst burst = emission.GetBurst(0);
+        burst.count = radius * 30;
+
+        emission.SetBurst(0, burst);
+
+        shape.radius = radius;
+    }
+
+    public void SetParticles(ParticleSystem newSystem)
+    {
+        explosionEffect = newSystem;
+    }
+
+    public ParticleSystem getParticles()
+    {
+        return explosionEffect;
+    }
+
+    public void Explode()
+    {
+        Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90,0,0));
+
+        Collider[] tankColliders = Physics.OverlapSphere(transform.position, radius);
+
+        foreach (Collider collider in tankColliders)
         {
-            damage = newDamage;
-        }
+            Tank tank = collider.GetComponent<Tank>();
 
-        public void SetRadius(float newRadius)
-        {
-            radius = newRadius;
-
-            ParticleSystem.ShapeModule shape = explosionEffect.shape;
-            ParticleSystem.EmissionModule emission = explosionEffect.emission;
-
-            ParticleSystem.Burst burst = emission.GetBurst(0);
-            burst.count = radius * 30;
-
-            emission.SetBurst(0, burst);
-
-            shape.radius = radius;
-        }
-
-        public void SetParticles(ParticleSystem newSystem)
-        {
-            explosionEffect = newSystem;
-        }
-
-        public ParticleSystem getParticles()
-        {
-            return explosionEffect;
-        }
-
-        public void Explode()
-        {
-            Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90, 0, 0));
-
-            Collider[] tankColliders = Physics.OverlapSphere(transform.position, radius);
-
-            foreach (Collider collider in tankColliders)
-            {
-                Tank tank = collider.GetComponent<Tank>();
-
-                if (tank)
-                    tank.TakeDamage(damage);
-            }
+            if (tank)
+                tank.TakeDamage(damage);
         }
     }
 }

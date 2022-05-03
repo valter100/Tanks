@@ -7,9 +7,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tanks
+public class Tank : MonoBehaviour
 {
-<<<<<<< Updated upstream
     [Header("Player")]
     [SerializeField] GameManager gameManager;
     [SerializeField] CameraController cameraController;
@@ -91,192 +90,105 @@ namespace Tanks
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
     }
-=======
->>>>>>> Stashed changes
 
-
-    public class Tank : MonoBehaviour
+    void Start()
     {
-        [Header("Player")]
-        [SerializeField] GameManager gameManager;
-        [SerializeField] CameraController cameraController;
-        [SerializeField] bool isActive;
-        [SerializeField] string playerName;
-        [SerializeField] public Color playerColor;
+        currentHealth = maxHealth;
+        currentFuel = maxFuel;
+        currentProjectile = projectiles[0];
 
-        [Header("Stats")]
-        [SerializeField] float maxHealth;
-        [SerializeField] float maxShootForce;
-        [SerializeField] float maxFuel;
+        for (int i = 0; i < projectiles.Count; i++)
+            ammo.Add(projectiles[i].GetStartAmmoCount());
+    }
 
-        [Header("Movement")]
-        [SerializeField] LayerMask groundLayerMask;
-        [SerializeField] float movementSpeed;
-        [SerializeField] float jumpForce;
-        [SerializeField] ParticleSystem movementEffect;
-        [SerializeField] float timeBetweenEffectSpawn;
+    void Update()
+    {
+        if (!isActive)
+            return;
 
-        [Header("Combat")]
-        [SerializeField] List<Projectile> projectiles;
-        //[SerializeField] List<AttackPattern> attackPatterns;
-        [SerializeField] List<int> ammo;
-        [SerializeField] Projectile currentProjectile;
-        [SerializeField] ParticleSystem fireParticles;
-        [SerializeField] Animator animator;
-        [SerializeField] ParticleSystem tankDamagedParticles;
+        if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
+            Move();
 
-        [Header("Explosion")]
-        [SerializeField] Explosion explosion;
-        [SerializeField] float explosionDamage;
+        if (playerController.GetNewWeapon() != 0)
+            SwapProjectile();
 
-        [Header("Status Effects")]
-        [SerializeField] bool isSlowed;
+        Aim();
+        CalculateShootForce();
 
-        [Header("References")]
-        [SerializeField] GameObject rotatePoint;
-        [SerializeField] GameObject[] tankParts;
-        [SerializeField] GameObject cannon;
-        [SerializeField] Transform firePoint;
-        [SerializeField] Transform rumbleSpot;
+        if (playerController.IsShooting() && CanFire())
+            Fire();
 
-        [Header("UI")]
-        [SerializeField] TMP_Text nameText;
-        [SerializeField] Slider healthSlider;
-        [SerializeField] Slider fuelSlider;
-        [SerializeField] Slider shootForceSlider;
-        [SerializeField] float aimRadius;
+        // Fire() must come before PreviewProjectileTrajectory()
+        // (For some reason ? )
+        PreviewProjectileTrajectory();
+    }
 
-        float timeSinceLastEffect;
-        int projectileIndex;
-        bool hasFired = false;
-        float currentFuel;
-        float currentHealth;
-        float currentShootForce;
-        PlayerController playerController;
-        GameObject followProjectile;
-        Rigidbody rb;
-        Ray ray;
-        TMP_Text projectileTMP;
-
-        public string GetPlayerName() => playerName;
-
-        public Projectile GetCurrentProjectile() => currentProjectile;
-
-        public float GetFuelPercentage() => currentFuel / maxFuel;
-
-        public float GetHealthPercentage() => currentHealth / maxHealth;
-
-        public GameManager GetGameManager() => gameManager;
-
-        public bool HasAmmo() => ammo[projectileIndex] > 0;
-
-        private void Awake()
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Water" && currentHealth > 0)
         {
-            cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
-            projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
-            playerController = GetComponent<PlayerController>();
-            rb = GetComponent<Rigidbody>();
+            TakeDamage(currentHealth);
+            gameManager.StartPlayerTransition();
+        }
+    }
+
+    public void Move()
+    {
+        if (playerController.GetMovement().x > 0)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        else if (playerController.GetMovement().x < 0)
+            transform.rotation = Quaternion.Euler(0, -180, 0);
+
+        //Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
+
+        //RaycastHit hit;
+        //if (Physics.Raycast(transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
+        //{
+        //    //Debug.DrawLine(transform.position + new Vector3(0,1,0) * 0.66f + localDirection, hit.point);
+        //    //Debug.Log(hit.normal.y);
+        //    if (hit.normal.y < 0.85f)
+        //        return;
+        //}
+
+        gameObject.transform.position += playerController.GetMovement() * movementSpeed;
+
+        timeSinceLastEffect += Time.deltaTime;
+        if (timeSinceLastEffect > timeBetweenEffectSpawn)
+        {
+            Instantiate(movementEffect, transform.position, Quaternion.identity);
+            timeSinceLastEffect = 0;
         }
 
-        void Start()
-        {
-            currentHealth = maxHealth;
-            currentFuel = maxFuel;
-            currentProjectile = projectiles[0];
+        if (!isSlowed)
+            currentFuel -= playerController.GetMovement().magnitude;
+        else
+            currentFuel -= playerController.GetMovement().magnitude * 2;
+        fuelSlider.value = currentFuel / maxFuel;
+    }
 
-            for (int i = 0; i < projectiles.Count; i++)
-                ammo.Add(projectiles[i].GetStartAmmoCount());
-        }
+    public void Aim()
+    {
+        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
+        Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
 
-        void Update()
-        {
-            if (!isActive)
-                return;
+        float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
 
-            if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
-                Move();
+        if (rotationZ < -90)
+            rotationZ = -90;
+        else if (rotationZ > 179)
+            rotationZ = 179;
 
-            if (playerController.GetNewWeapon() != 0)
-                SwapProjectile();
+        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+    }
 
-            Aim();
-            CalculateShootForce();
+    public bool CanFire()
+    {
+        return HasAmmo()
+            && !hasFired
+            && isActive
+            && currentHealth > 0.0f;
+    }
 
-            if (playerController.IsShooting() && CanFire())
-                Fire();
-
-            // Fire() must come before PreviewProjectileTrajectory()
-            // (For some reason ? )
-            PreviewProjectileTrajectory();
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.tag == "Water" && currentHealth > 0)
-            {
-                TakeDamage(currentHealth);
-                gameManager.StartPlayerTransition();
-            }
-        }
-
-        public void Move()
-        {
-            if (playerController.GetMovement().x > 0)
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-            else if (playerController.GetMovement().x < 0)
-                transform.rotation = Quaternion.Euler(0, -180, 0);
-
-            //Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
-
-            //RaycastHit hit;
-            //if (Physics.Raycast(transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-            //{
-            //    //Debug.DrawLine(transform.position + new Vector3(0,1,0) * 0.66f + localDirection, hit.point);
-            //    //Debug.Log(hit.normal.y);
-            //    if (hit.normal.y < 0.85f)
-            //        return;
-            //}
-
-            gameObject.transform.position += playerController.GetMovement() * movementSpeed;
-
-            timeSinceLastEffect += Time.deltaTime;
-            if (timeSinceLastEffect > timeBetweenEffectSpawn)
-            {
-                Instantiate(movementEffect, transform.position, Quaternion.identity);
-                timeSinceLastEffect = 0;
-            }
-
-            if (!isSlowed)
-                currentFuel -= playerController.GetMovement().magnitude;
-            else
-                currentFuel -= playerController.GetMovement().magnitude * 2;
-            fuelSlider.value = currentFuel / maxFuel;
-        }
-
-        public void Aim()
-        {
-            Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
-            Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
-
-            float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
-
-            if (rotationZ < -90)
-                rotationZ = -90;
-            else if (rotationZ > 179)
-                rotationZ = 179;
-
-            rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
-        }
-
-        public bool CanFire()
-        {
-            return HasAmmo()
-                && !hasFired
-                && isActive
-                && currentHealth > 0.0f;
-        }
-
-<<<<<<< Updated upstream
     private Projectile InstantiateProjectile()
     {
         Projectile projectile = Instantiate(currentProjectile, firePoint);
@@ -285,57 +197,31 @@ namespace Tanks
         projectile.Fire(cannon.transform.rotation, currentShootForce);
         return projectile;
     }
-=======
-        public Projectile InstantiateProjectile()
-        {
-            Projectile projectile = Instantiate(currentProjectile, firePoint);
-            projectile.ownTank = this;
-            projectile.transform.parent = null;
-            projectile.Fire(cannon.transform.rotation, currentShootForce);
-            followProjectile = projectile.gameObject;
-            return projectile;
-        }
->>>>>>> Stashed changes
 
-        public void Fire()
-        {
-            // Precompute projectile
+    public void Fire()
+    {
+        // Precompute projectile
 
-            Projectile precomputedProjectile = InstantiateProjectile();
-            Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
+        Projectile precomputedProjectile = InstantiateProjectile();
+        Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
 
-            // Determine if the projectile hit a Tank which will be destroyed
+        // Determine if the projectile hit a Tank which will be destroyed
 
-            bool firstPersonView = result != null
-                && result.Value.tank != null
-                && result.Value.tank.currentHealth - result.Value.damageDealtToTank <= 0.0f;
+        bool firstPersonView = result != null
+            && result.Value.tank != null
+            && result.Value.tank.currentHealth - result.Value.damageDealtToTank <= 0.0f;
 
-            // Fire projectile
+        // Fire projectile
 
-            ammo[projectileIndex] -= 1;
-            hasFired = true;
+        ammo[projectileIndex] -= 1;
+        hasFired = true;
 
-            if (animator)
-                animator.SetTrigger("Fire");
+        if (animator)
+            animator.SetTrigger("Fire");
 
-<<<<<<< Updated upstream
         Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
 
         Projectile projectile = InstantiateProjectile();
-=======
-            //foreach (AttackPattern attackPattern in attackPatterns)
-            //{
-            //    if (attackPattern == currentProjectile.GetAttackPattern())
-            //    {
-            //        attackPattern.Fire(this);
-            //    }
-            //}
-
-            Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
-            currentProjectile.GetAttackPattern().Fire(this);
-
-            //Projectile projectile = InstantiateProjectile();
->>>>>>> Stashed changes
 
         if (ammo[projectileIndex] <= 0)
         {
@@ -344,159 +230,130 @@ namespace Tanks
             SwapProjectile();
         }
 
-            // Update camera
+        // Update camera
 
-<<<<<<< Updated upstream
         if (firstPersonView)
             StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, projectile.gameObject));
 
         else if (result == null)
             StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(projectile.gameObject, 0.2f));
-=======
-            if (firstPersonView)
-                StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, followProjectile));
 
-            else if (result == null)
-                StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(followProjectile, 0.2f));
->>>>>>> Stashed changes
-
+        else
+        {
+            if (result.Value.tank != null)
+                cameraController.focusPoint.FollowObject(result.Value.tank.gameObject);
             else
-            {
-                if (result.Value.tank != null)
-                    cameraController.focusPoint.FollowObject(result.Value.tank.gameObject);
-                else
-                    cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefaultOffset());
+                cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefaultOffset());
 
-                cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
-            }
-
-            if (ammo[projectileIndex] <= 0)
-            {
-                projectiles.RemoveAt(projectileIndex);
-                ammo.RemoveAt(projectileIndex);
-                SwapProjectile();
-            }
-            isActive = false;
-            gameManager.StartPlayerTransition();
+            cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
         }
 
-<<<<<<< Updated upstream
         isActive = false;
         gameManager.StartPlayerTransition();
     }
-=======
-        public void TakeDamage(float damage)
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth > 0.0f)
         {
-            currentHealth -= damage;
->>>>>>> Stashed changes
-
-            if (currentHealth > 0.0f)
-            {
-                animator.SetTrigger("Damaged");
-                Instantiate(tankDamagedParticles, transform.position, Quaternion.identity, null);
-            }
-            else
-            {
-                animator.SetTrigger("Destroyed");
-            }
-
-            healthSlider.value = currentHealth / maxHealth;
+            animator.SetTrigger("Damaged");
+            Instantiate(tankDamagedParticles, transform.position, Quaternion.identity, null);
+        }
+        else
+        {
+            animator.SetTrigger("Destroyed");
         }
 
-        public void DeactivateTank()
+        healthSlider.value = currentHealth / maxHealth;
+    }
+
+    public void DeactivateTank()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void AssignPlayer()
+    {
+        playerName = gameManager.AssignName();
+        playerColor = gameManager.AssignColor();
+
+
+        foreach (GameObject go in tankParts)
         {
-            gameObject.SetActive(false);
+            go.GetComponent<Renderer>().material.color = playerColor;
         }
 
-        public void AssignPlayer()
+        nameText.text = playerName;
+    }
+
+    public void ReadyTank()
+    {
+        fuelSlider.gameObject.SetActive(true);
+        shootForceSlider.gameObject.SetActive(true);
+
+        currentFuel = maxFuel;
+        fuelSlider.value = currentFuel / maxFuel;
+        isActive = true;
+        hasFired = false;
+
+        if (cameraController == null)
+            cameraController = Camera.main.GetComponent<CameraController>();
+
+        cameraController.focusPoint.FollowObject(gameObject);
+        cameraController.Transition(CameraController.View.Side, 1.0f);
+
+        if (projectileTMP)
+            projectileTMP.text = "Current projectile: " + currentProjectile.name;
+    }
+
+    public void UnreadyTank()
+    {
+        fuelSlider.gameObject.SetActive(false);
+        shootForceSlider.gameObject.SetActive(false);
+
+        foreach (GameObject go in tankParts)
         {
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-            playerName = gameManager.AssignName();
-            playerColor = gameManager.AssignColor();
-
-
-            foreach (GameObject go in tankParts)
-            {
-                go.GetComponent<MeshRenderer>().material.color = playerColor;
-            }
-
-            nameText.text = playerName;
+            go.GetComponent<Renderer>().material.color = playerColor;
         }
+        isSlowed = false;
+    }
 
-        public void ReadyTank()
+    public void CalculateShootForce()
+    {
+        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(cannon.transform.position);
+        float percentage = Vector2.Distance(cannonScreenPos, playerController.GetMousePosition()) / aimRadius;
+        percentage = Mathf.Clamp01(percentage);
+        currentShootForce = percentage * maxShootForce;
+        shootForceSlider.value = percentage;
+    }
+
+    public void SwapProjectile()
+    {
+        projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
+        projectileIndex %= projectiles.Count;
+        currentProjectile = projectiles[projectileIndex];
+
+        if (projectileTMP)
+            projectileTMP.text = "Current projectile: " + currentProjectile.name;
+    }
+
+    public void SetHasFired(bool state)
+    {
+        hasFired = state;
+    }
+
+    public void SetIsSlowed(bool state)
+    {
+        isSlowed = state;
+
+        foreach (GameObject go in tankParts)
         {
-            fuelSlider.gameObject.SetActive(true);
-            shootForceSlider.gameObject.SetActive(true);
-
-            currentFuel = maxFuel;
-            fuelSlider.value = currentFuel / maxFuel;
-            isActive = true;
-            hasFired = false;
-
-            if (cameraController == null)
-                cameraController = Camera.main.GetComponent<CameraController>();
-
-            cameraController.focusPoint.FollowObject(gameObject);
-            cameraController.Transition(CameraController.View.Side, 1.0f);
-
-            if (projectileTMP)
-                projectileTMP.text = "Current projectile: " + currentProjectile.name;
+            go.GetComponent<MeshRenderer>().material.color = Color.cyan;
         }
+    }
 
-        public void UnreadyTank()
-        {
-            fuelSlider.gameObject.SetActive(false);
-            shootForceSlider.gameObject.SetActive(false);
-
-            foreach (GameObject go in tankParts)
-            {
-                go.GetComponent<Renderer>().material.color = playerColor;
-            }
-            isSlowed = false;
-        }
-
-        public void CalculateShootForce()
-        {
-            Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(cannon.transform.position);
-            float percentage = Vector2.Distance(cannonScreenPos, playerController.GetMousePosition()) / aimRadius;
-            percentage = Mathf.Clamp01(percentage);
-            currentShootForce = percentage * maxShootForce;
-            shootForceSlider.value = percentage;
-        }
-
-        public void SwapProjectile()
-        {
-            projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
-            projectileIndex %= projectiles.Count;
-            currentProjectile = projectiles[projectileIndex];
-
-            if (projectileTMP)
-                projectileTMP.text = "Current projectile: " + currentProjectile.name;
-        }
-
-        public void SetHasFired(bool state)
-        {
-            hasFired = state;
-        }
-
-        public void SetIsSlowed(bool state)
-        {
-            isSlowed = state;
-
-            foreach (GameObject go in tankParts)
-            {
-                go.GetComponent<MeshRenderer>().material.color = Color.cyan;
-            }
-        }
-
-        private void PreviewProjectileTrajectory()
-        {
-            Projectile projectile = InstantiateProjectile();
-            projectile.PrecomputeTrajectory(0.05f);
-        }
-
-<<<<<<< Updated upstream
     private void PreviewProjectileTrajectory()
     {
         Projectile projectile = InstantiateProjectile();
@@ -509,17 +366,3 @@ namespace Tanks
         explosion.Explode();
     }
 }
-=======
-        public void Explode()
-        {
-            explosion.SetDamage(explosionDamage);
-            explosion.Explode();
-        }
-
-        public void SetFollowProjectile(GameObject projectile)
-        {
-            followProjectile = projectile;
-        }
-    }
-}
->>>>>>> Stashed changes

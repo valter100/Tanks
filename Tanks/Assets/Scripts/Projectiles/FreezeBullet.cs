@@ -2,31 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tanks
+public class FreezeBullet : Projectile
 {
-
-    public class FreezeBullet : Projectile
+    protected override void OnCollision(Collider other)
     {
-        protected override void OnCollision(Collider other)
-        {
-            base.OnCollision(other);
-            Detonate(other);
-        }
+        base.OnCollision(other);
+        Detonate(other);
+    }
 
-        protected override void Detonate(Collider other)
+    protected override void Detonate(Collider other)
+    {
+        if (other != null)
         {
-            if (other != null)
+            Tank tank = other.gameObject.GetComponent<Tank>();
+
+            if (CanDamage(tank))
             {
-                Tank tank = other.gameObject.GetComponent<Tank>();
-
-                if (CanDamage(tank))
-                {
-                    tank.SetIsSlowed(true);
-                    tank.TakeDamage(damage);
-                }
+                tank.SetIsSlowed(true);
+                tank.TakeDamage(damage);
             }
-
-            base.Detonate(other);
         }
+
+        base.Detonate(other);
     }
 }

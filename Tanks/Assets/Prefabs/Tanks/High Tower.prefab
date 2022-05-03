@@ -132,8 +132,8 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   cameraController: {fileID: 0}
   isActive: 1
-  playerName: "Valter\u200B"
-  playerColor: {r: 255, g: 0, b: 0, a: 1}
+  playerName: Player 1
+  playerColor: {r: 1, g: 0, b: 0, a: 0}
   maxHealth: 15
   maxShootForce: 250
   maxFuel: 200
@@ -155,8 +155,7 @@ MonoBehaviour:
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 6966359629255667410}
   tankDamagedParticles: {fileID: 0}
-  explosion: {fileID: 0}
-  explosionDamage: 0
+  tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
   isSlowed: 0
   rotatePoint: {fileID: 1351948662712958291}
   tankParts:
@@ -595,7 +594,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 97bcafb42371aaa4ba60f4169a8c6288, type: 2}
+  - {fileID: 5770769167005288114, guid: 0945221e0ad9e0643afbfeaf4039a296, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -819,9 +818,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7416315104764816234}
     m_Modifications:
+    - target: {fileID: 2177597150407863350, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_text
+      value: Player 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177597150407863350, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 3049102817173278899, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487215746850717380, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487215746850717380, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4118651240290460164, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4118651240290460164, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5458330031080980165, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461925460376421636, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7341998373167020666, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_Pivot.x
@@ -905,6 +936,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7341998373167020666, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8976400902680636137, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8976400902680636137, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

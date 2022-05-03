@@ -2,32 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tanks
+public class Bullet : Projectile
 {
-    public class Bullet : Projectile
+    protected override void Update()
     {
-        protected override void Update()
+        base.Update();
+    }
+
+    protected override void OnCollision(Collider other)
+    {
+        base.OnCollision(other);
+        Detonate(other);
+    }
+
+    protected override void Detonate(Collider other)
+    {
+        if (other != null)
         {
-            base.Update();
+            Tank tank = other.gameObject.GetComponent<Tank>();
+
+            if (CanDamage(tank))
+                tank.TakeDamage(damage);
         }
 
-        protected override void OnCollision(Collider other)
-        {
-            base.OnCollision(other);
-            Detonate(other);
-        }
-
-        protected override void Detonate(Collider other)
-        {
-            if (other != null)
-            {
-                Tank tank = other.gameObject.GetComponent<Tank>();
-
-                if (CanDamage(tank))
-                    tank.TakeDamage(damage);
-            }
-
-            base.Detonate(other);
-        }
+        base.Detonate(other);
     }
 }
