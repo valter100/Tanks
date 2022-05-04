@@ -19,7 +19,7 @@ public class Bullet : Projectile
     {
         if (other != null)
         {
-            Tank tank = other.gameObject.GetComponent<Tank>();
+            PlayerTank tank = other.gameObject.GetComponent<PlayerTank>();
 
             if (CanDamage(tank))
                 tank.TakeDamage(damage);

@@ -10,8 +10,7 @@ public class AiManager : MonoBehaviour
     private MoveState moveState = new MoveState(); 
     private FireState fireState = new FireState();
 
-    [SerializeField]
-    Tank thisTank;
+    AiTank thisTank;
     
     Transform activeTargetPosition;
     List<GameObject> targetTanks;
@@ -26,11 +25,12 @@ public class AiManager : MonoBehaviour
     {
         activeState = startState;
         targetTanks = new List<GameObject>();
+        thisTank = GetComponent<AiTank>();
 
         UpdateTargetsList();
     }
 
-    private void Update()
+    public void Update()
     {
         ChooseTarget();
 
@@ -123,6 +123,6 @@ public class AiManager : MonoBehaviour
             targetTanks.Add(tank);
         }
 
-        Debug.Log(targetTanks.Count);
+        //Debug.Log(targetTanks.Count);
     }
 }

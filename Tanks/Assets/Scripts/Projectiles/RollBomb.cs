@@ -21,10 +21,10 @@ public class RollBomb : Projectile
     {
         Collider[] colliderHits = Physics.OverlapSphere(transform.position, explosionRadius);
 
-        Tank tank;
+        PlayerTank tank;
         foreach (Collider colliderHit in colliderHits)
         {
-            tank = colliderHit.gameObject.GetComponent<Tank>();
+            tank = colliderHit.gameObject.GetComponent<PlayerTank>();
 
             if (CanDamage(tank))
                 tank.TakeDamage(damage);

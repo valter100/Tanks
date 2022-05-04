@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
             currentTank.Fire();
     }
 
-    public void RemoveTankFromList(Tank tank)
+    public void RemoveTankFromList(PlayerTank tank)
     {
         tanks.Remove(tank);
     }

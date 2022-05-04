@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireState :  State
 {
-    public override void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, Tank thisTank)
+    public override void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, AiTank thisTank)
     {
         if (thisBehaviour.GetDistanceToEnemy() >= thisBehaviour.GetMaxShootingRange() && thisBehaviour.GetFuel() > 0)
         {
