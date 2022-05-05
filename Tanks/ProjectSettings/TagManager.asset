@@ -9,6 +9,7 @@ TagManager:
   - Projectile
   - Point
   - Water
+  - Icon
   layers:
   - Default
   - TransparentFX
