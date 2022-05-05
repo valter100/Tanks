@@ -69,6 +69,7 @@ public class Tank : MonoBehaviour
     Rigidbody rb;
     Ray ray;
     TMP_Text projectileTMP;
+    UIitemSwap swapIcon;
 
     public string GetPlayerName() => playerName;
 
@@ -90,6 +91,7 @@ public class Tank : MonoBehaviour
         projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
+        swapIcon = GameObject.Find("ItemDisplay").GetComponent<UIitemSwap>();
     }
 
     void Start()
@@ -317,6 +319,7 @@ public class Tank : MonoBehaviour
 
         if (projectileTMP)
             projectileTMP.text = "Current projectile: " + currentProjectile.name;
+        swapIcon.UpdateIconOnProjectileSwap(projectileIndex);
     }
 
     public void UnreadyTank()
@@ -348,6 +351,7 @@ public class Tank : MonoBehaviour
 
         if (projectileTMP)
             projectileTMP.text = "Current projectile: " + currentProjectile.name;
+        swapIcon.UpdateIconOnProjectileSwap(projectileIndex);
     }
 
     public void SetHasFired(bool state)
