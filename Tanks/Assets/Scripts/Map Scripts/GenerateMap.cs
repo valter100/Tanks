@@ -147,9 +147,6 @@ namespace Tanks
 
         private void GenerateQuads()
         {
-            //TODO Skapa punktklass som kan spara information om att ha blivit kopplad och om de har öppen väg till marken.
-            //TODO Kolla om punkterna inte har en öppen väg vänta tills efter alla giltiga punktet gjorts del av quads
-            //TODO Sedan gör quads eller trianglar från de närmsta punkterna som kopplats
             Point[] points = PositionsToPoints();
 
             vertices = new List<Vector3>();
@@ -167,13 +164,12 @@ namespace Tanks
                 }
                 if (!points[i].CanReachFloor)
                     continue;
-                
-                int vertexIndex = i+1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
-                int pastIndex = vertexIndex - verticesPerPosition;
+
+                points[i].vertexIndex = i+1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
+                int pastIndex = points[i].vertexIndex - verticesPerPosition;
                 for (int j = 0; j < verticesPerPosition - 1; j++)
-                    AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
+                    AddQuad(pastIndex + j, points[i].vertexIndex + j, j < 2);
                 points[i].IsConnected = true;
-                points[i].vertexIndex = vertexIndex;
             }
 
             //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
@@ -186,11 +182,11 @@ namespace Tanks
                     points[i].vertexIndex = AddVertex(points[i].position, true);
                     if (nextIndex < i)
                         nextIndex = GetNextConnectedPoint(i);
-                    AddToQuad(previousIndex, points[i].vertexIndex, true);
+                    AddQuad(previousIndex, points[i].vertexIndex, true);
                     quads.Add(new Quad(points[i].vertexIndex + 1, previousIndex + 1, points[nextIndex].vertexIndex + 1, -1, true));
 
                     if (nextIndex == i + 1)
-                        AddToQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+                        AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
 
                     points[i].IsConnected = true;
                 }
@@ -199,19 +195,23 @@ namespace Tanks
 
             CreateMesh(CreateSubMeshDescriptors(quads));
 
-            void AddToQuad(int pastIndex, int vertexIndex, bool isTopside){
+            void AddQuad(int pastIndex, int vertexIndex, bool isTopside){
                 quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
             }
 
             int GetNextConnectedPoint(int startIndex)
             {
-                int index = startIndex + 1;
+                int index = startIndex;
+                if (index + 1 >= points.Length)
+                {
+                    Debug.Log($"Index was {index} the length of points is {points.Length}");
+                    return -1;
+                }
+                    
+                
                 while (!points[++index].IsConnected)
-                    if (index >= points.Length)
-                    {
-                        index = -1;
-                        break;
-                    }
+                    if (index + 1 >= points.Length)
+                        return -1;
                 return index;
             }
         }
@@ -241,6 +241,47 @@ namespace Tanks
         //    void AddToQuad(int pastIndex, int vertexIndex, bool isTopside)
         //    {
         //        quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+        //    }
+        //}
+
+        //private void ConnectPoints(Point[] points)
+        //{
+        //    for (int i = 0; i < points.Length; i++)
+        //        if (!points[i].IsConnected)
+        //            points[i].vertexIndex = AddVertex(points[i].position, true);
+
+        //    int nextIndex = 0, lastIndex = 0;
+        //    for (int i = 0; i < points.Length - 2; i++)
+        //    {
+        //        if (points[i].IsConnected && GetNextConnectedPoint(i) - i >= 2)
+        //        {
+        //            lastIndex = GetNextConnectedPoint(i);
+        //            int currentIndex = i;
+        //            while (currentIndex < lastIndex)
+        //            {
+        //                quads.Add(new Quad(points[i].vertexIndex + 1, points[currentIndex + 1].vertexIndex + 1,
+        //                                    points[currentIndex + 2].vertexIndex + 1, points[currentIndex + 3].vertexIndex + 1 + 1, true));
+        //                AddQuad(points[i].vertexIndex, points[currentIndex + 1].vertexIndex, true);
+        //                AddQuad(points[currentIndex + 1].vertexIndex, points[currentIndex + 2].vertexIndex, true);
+        //                AddQuad(points[currentIndex + 2].vertexIndex, points[currentIndex + 3].vertexIndex, true);
+        //                points[currentIndex + 1].IsConnected = points[currentIndex + 2].IsConnected = true;
+        //                currentIndex += 2;
+        //            }
+        //        }
+        //        else if (!points[i + 1].IsConnected)
+        //        {
+        //            nextIndex = i + 1;
+        //            lastIndex = i + 2;
+        //            points[nextIndex].IsConnected = true;
+        //            AddTriangle(points[i].vertexIndex, points[nextIndex].vertexIndex, points[lastIndex].vertexIndex, true);
+        //            AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+        //            AddQuad(points[nextIndex].vertexIndex, points[lastIndex].vertexIndex, true);
+        //        }
+        //    }
+
+        //    void AddTriangle(int vertexA, int vertexB, int vertexC, bool isTopside)
+        //    {
+        //        quads.Add(new Quad(vertexB + 1, vertexA + 1, vertexC + 1, -1, isTopside));
         //    }
         //}
 
