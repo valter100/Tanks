@@ -241,7 +241,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe4e1de0dfeb524a835fb110ee04a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisTank: {fileID: -8712968657905559516}
+  lowHealthTarget: 0
+  highHealthTarget: 0
+  closestTarget: 0
+  furthestTarget: 0
 --- !u!1 &2304177630583904192
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,7 +710,6 @@ GameObject:
   - component: {fileID: 4395665588174742955}
   - component: {fileID: 4134007115226425286}
   - component: {fileID: 1170586511908396389}
-  - component: {fileID: 312693881424766399}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -779,21 +781,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &312693881424766399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8272758081323894147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 728c8c99c28d6d4408d2677eeacb20d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotatePoint: {fileID: 1428599815432508635}
-  controller: {fileID: 0}
-  cam: {fileID: 0}
 --- !u!1001 &6116942696137329763
 PrefabInstance:
   m_ObjectHideFlags: 0

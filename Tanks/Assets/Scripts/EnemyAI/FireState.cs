@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class FireState :  State
 {
-    public override void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, AiTank thisTank)
+    public override void DoState(AiManager thisManager, Transform enemyTankPosition, AiTank thisTank)
     {
-        if (thisBehaviour.GetDistanceToEnemy() >= thisBehaviour.GetMaxShootingRange() && thisBehaviour.GetFuel() > 0)
+        if (thisManager.GetDistanceToEnemy() >= thisManager.GetMaxShootingRange() && thisManager.GetFuel() > 0)
         {
-           thisBehaviour.SetMoveState();
+           thisManager.SetMoveState();
             return;
         }
 
-        DoShoot();
+        DoShoot(thisTank);
+        thisManager.activeTargetPosition = null;
     }
 
-    private void DoShoot()
+    private void DoShoot(AiTank thisTank)
     {
-        //If we are in fireing state, calculate the correct aim to hit target, then randomize a bias and ad to aim to make sure not every shot is a direct hit.
+        //If we are in fireing state, calculate the correct aim to hit target, then randomize a bias and add to aim to make sure not every shot is a direct hit.
+        //thisTank.Fire();
+        Debug.Log("PewPew");
     }
 }

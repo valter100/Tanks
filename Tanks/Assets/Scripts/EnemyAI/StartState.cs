@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StartState : State
 {
-    public override void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, AiTank thisTank)
+    public override void DoState(AiManager thisBehaviour, Transform enemyTankPosition, AiTank thisTank)
     {
         if (thisBehaviour.GetDistanceToEnemy() >= 1 && thisBehaviour.GetFuel() >= 1f)
         {

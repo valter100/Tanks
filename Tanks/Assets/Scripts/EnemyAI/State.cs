@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public abstract class State : MonoBehaviour
 {
-    public virtual void DoState(AiManager thisBehaviour, Transform thisTankPosition, Transform enemyTankPosition, AiTank thisTank) { }
+    public virtual void DoState(AiManager thisBehaviour, Transform enemyTankPosition, AiTank thisTank) { }
 
     public virtual void Initialize() { }
 }

@@ -9,9 +9,9 @@ public class MoveState : State
     private float fuel;
 
     private LayerMask groundLayer;
-    public override void DoState(AiManager thisManager, Transform thisTankPosition,Transform enemyTankPosition, AiTank thisTank)
+    public override void DoState(AiManager thisManager,Transform enemyTankPosition, AiTank thisTank)
     {
-        if (thisManager.GetDistanceToEnemy() < 1 || thisManager.GetFuel() <= 0)
+        if (thisManager.GetDistanceToEnemy() < 4 || thisManager.GetFuel() <= 0)
         {
             thisManager.SetFireState();
             return;
