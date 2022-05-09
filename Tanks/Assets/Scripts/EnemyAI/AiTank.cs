@@ -47,7 +47,7 @@ public class AiTank : Tank
         }
 
         if (!isSlowed)
-            currentFuel -= 0.05f; // 1 should be changed for the correct value;
+            currentFuel -= 0.05f; // should be changed for the correct value;
         else
             currentFuel -= 0.05f * 2;
         fuelSlider.value = currentFuel / maxFuel;
@@ -58,7 +58,7 @@ public class AiTank : Tank
         float g = Physics.gravity.y;
         float x = transform.position.x - enemyTarget.position.x;
         float y = transform.position.y - enemyTarget.position.y;
-        float v = Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
+        float v = maxShootForce;//Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
 
         float v2 = v * v;
         float v4 = v * v * v * v;
