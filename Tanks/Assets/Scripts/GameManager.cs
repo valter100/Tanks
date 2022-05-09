@@ -5,33 +5,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] List<string> playerNames;
-    [SerializeField] List<Tank> tanks;
-    [SerializeField] List<Tank> instatiatedTanks;
-    [SerializeField] List<Color> playerColors;
-    [SerializeField] int currentPlayerIndex;
-    [SerializeField] int playerCount;
-    [SerializeField] Tank currentTank;
-    [SerializeField] CameraController cameraController;
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private List<Player> players;
+    [SerializeField] private Player currentPlayer;
+    [SerializeField] private int currentPlayerIndex;
+    [SerializeField] private CameraController cameraController;
 
-    [SerializeField] TMP_Text playerNameText;
-    float timeUntilNextPlayer;
-    float nextPlayerTimer;
+    private float timeUntilNextPlayer;
+    private float nextPlayerTimer;
+    private bool pickingNextPlayer = false;
 
-    bool pickingNextPlayer = false;
-
-    //enum GameState
-    //{
-    //    Start,
-    //    Turn,
-    //    Transition,
-    //    End
-    //}
+    public List<Player> Players => players;
+    public Player CurrentPlayer => currentPlayer;
 
     void Start()
     {
-        playerNameText = GameObject.Find("GUI").transform.Find("CurrentPlayer").GetComponent<TMP_Text>();
-
         StartCoroutine(Coroutine_StartMatch());
     }
 
@@ -39,9 +27,17 @@ public class GameManager : MonoBehaviour
     {
         float delay = 1.0f;
 
-        foreach(Tank tank in tanks)
+        GameInfo gameInfo = GameObject.Find("Game Info").GetComponent<GameInfo>();
+
+        for (int i = 0; i < gameInfo.names.Count; ++i)
         {
-            tank.AssignPlayer();
+            PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.name = gameInfo.names[i];
+            playerInfo.color = gameInfo.colors[i];
+            playerInfo.tankType = gameInfo.tankTypes[i];
+            playerInfo.control = gameInfo.controls[i];
+
+            AddNewPlayer(playerInfo);
         }
 
         while (delay > 0.0f)
@@ -50,31 +46,39 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-
         currentPlayerIndex = 0;
-        currentTank = tanks[currentPlayerIndex];
-        playerNameText.text = "Current player: " + currentTank.GetPlayerName();
-        currentTank.ReadyTank();
+        currentPlayer = players[currentPlayerIndex];
+        currentPlayer.Ready();
         yield return 0;
     }
 
+    public void AddNewPlayer(PlayerInfo playerInfo)
+    {
+        Player player = Instantiate(playerPrefab).GetComponent<Player>();
+        player.Initialize(playerInfo);
+        players.Add(player);
+    }
 
     public void StartPlayerTransition()
     {
-        if (tanks.Count == 1)
+        if (players.Count == 1)
         {
-            Debug.Log(currentTank.GetPlayerName() + " Wins!");
-            //current tank wins
-            //End game
+            Debug.Log(currentPlayer.Info.name + " Wins!");
+        }
+
+        else if (players.Count == 0)
+        {
+            Debug.Log("Draw");
         }
 
         if (!pickingNextPlayer)
             StartCoroutine(Coroutine_PlayerTransition());
     }
+
     private IEnumerator Coroutine_PlayerTransition()
     {
         pickingNextPlayer = true;
-        float delay = currentTank.GetCurrentProjectile().GetTimeToLive();
+        float delay = currentPlayer.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetTimeToLive();
 
         while (delay > 0.0f)
         {
@@ -94,68 +98,25 @@ public class GameManager : MonoBehaviour
 
     public void SetNextPlayer()
     {
-        if (currentTank)
-            currentTank.UnreadyTank();
+        if (currentPlayer != null)
+            currentPlayer.Unready();
 
         currentPlayerIndex++;
-        if (currentPlayerIndex >= tanks.Count)
+        if (currentPlayerIndex >= players.Count)
             currentPlayerIndex = 0;
 
-        for (int i = currentPlayerIndex; i < tanks.Count; i++)
+        // Vad gör denna ?
+        for (int i = currentPlayerIndex; i < players.Count; i++)
         {
-            if (tanks[i].gameObject.activeInHierarchy)
+            if (players[i].Tank.gameObject.activeInHierarchy)
             {
                 currentPlayerIndex = i;
-                currentTank = tanks[currentPlayerIndex];
-                playerNameText.text = "Current player: " + currentTank.GetPlayerName();
-                currentTank.ReadyTank();
+                currentPlayer = players[currentPlayerIndex];
+                currentPlayer.Ready();
                 return;
             }
         }
+        // ––––––––
     }
 
-    public int GetCurrentPlayerIndex()
-    {
-        return currentPlayerIndex;
-    }
-
-    public List<Tank> GetTankList()
-    {
-        return tanks;
-    }
-
-    public Tank GetCurrentTank()
-    {
-        return tanks[currentPlayerIndex];
-    }
-
-    public void Fire()
-    {
-        if (currentTank.CanFire())
-            currentTank.Fire();
-    }
-
-    public void RemoveTankFromList(Tank tank)
-    {
-        tanks.Remove(tank);
-    }
-
-    public string AssignName()
-    {
-        string newName = playerNames[0];
-        playerNames.RemoveAt(0);
-        return newName;
-    }
-
-    public Color AssignColor()
-    {
-        Color newColor = playerColors[0];
-        playerColors.RemoveAt(0);
-        return newColor;
-    }
-
-    public void AddInstantiatedTank(Tank newTank)
-    {
-        instatiatedTanks.Add(newTank);
-    }
 }

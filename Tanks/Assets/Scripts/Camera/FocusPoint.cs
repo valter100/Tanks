@@ -46,7 +46,7 @@ public class FocusPoint : MonoBehaviour
 
         // Click object
 
-        if (playerController.IsFocusing())
+        if (playerController.Trigger_Focus())
         {
             RaycastHit raycastHit;
             Ray ray = Camera.main.ScreenPointToRay(playerController.GetMousePosition());
@@ -65,9 +65,9 @@ public class FocusPoint : MonoBehaviour
             }
         }
 
-        else if (playerController.IsAutoFocusing())
+        else if (playerController.Trigger_AutoFocus())
         {
-            FollowObject(gameManager.GetCurrentTank().gameObject);
+            FollowObject(gameManager.CurrentPlayer.Tank.gameObject);
             cameraController.Transition(CameraController.View.Side, 0.5f);
             return;
         }

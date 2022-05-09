@@ -5,7 +5,7 @@ using TMPro;
 
 public class CustomizationPanel : MonoBehaviour
 {
-    [SerializeField] public TankCustomization tankCustomization;
+    [SerializeField] public PlayerInfo tankCustomization;
     [SerializeField] private int colorIndex;
 
     [SerializeField] private TextMeshProUGUI nametag;

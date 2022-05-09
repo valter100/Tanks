@@ -6,23 +6,34 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private bool open;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private GUIManager guiManager;
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private int selectedItemSlot;
     [SerializeField] private ItemSlot[] itemSlots;
 
+    /// <summary>
+    /// Returns whether or not the invenrory is open.
+    /// </summary>
+    public bool Open => open;
+
     void Start()
     {
-        itemSlots = (ItemSlot[])grid.transform.GetComponentsInChildren(typeof(ItemSlot));
+        itemSlots = grid.transform.GetComponentsInChildren<ItemSlot>();
         selectedItemSlot = -1;
-        Open(false);
+        SetOpen(false);
     }
 
-    void Update()
+    void ManualUpdate()
     {
         if (Input.GetKeyDown(KeyCode.I))
-            Open(!open);
+            ToggleOpen();
+
+        if (gameManager.CurrentPlayer.Inventory != playerInventory)
+        {
+            Link(gameManager.CurrentPlayer.Inventory);
+        }
     }
 
     public void Clear()
@@ -31,10 +42,7 @@ public class Inventory : MonoBehaviour
         selectedItemSlot = -1;
 
         for (int i = itemSlots.Length - 1; i >= 0; --i)
-        {
-            itemSlots[i].itemPrefab = null;
-            itemSlots[i].UpdateAmount(0);
-        }
+            itemSlots[i].Clear();
     }
 
     public void Reload()
@@ -42,21 +50,19 @@ public class Inventory : MonoBehaviour
         Link(playerInventory);
     }
 
-    public void Link(PlayerInventory playerInventory)
+    private void Link(PlayerInventory playerInventory)
     {
         this.playerInventory = playerInventory;
-        SelectItemSlot(playerInventory.selectedItem);
+        SelectItemSlot(playerInventory.selectedIndex);
 
         for (int i = playerInventory.items.Count - 1; i >= 0; --i)
         {
-            itemSlots[i].itemPrefab = playerInventory.items[i].gameObject;
-            itemSlots[i].UpdateAmount(playerInventory.items[i].amount);
+            itemSlots[i].item = playerInventory.items[i];
         }
 
         for (int i = playerInventory.items.Count; i < itemSlots.Length; ++i)
         {
-            itemSlots[i].itemPrefab = null;
-            itemSlots[i].UpdateAmount(0);
+            itemSlots[i].Clear();
         }
     }
 
@@ -76,19 +82,21 @@ public class Inventory : MonoBehaviour
             itemSlots[selectedItemSlot].Deselect();
 
         itemSlots[i].Select();
-        playerInventory.selectedItem = selectedItemSlot = i;
+        playerInventory.selectedIndex = selectedItemSlot = i;
     }
 
-    public void Open(bool open)
+    public void SetOpen(bool open)
     {
-        if (this.open == open)
-            return;
-
         this.open = open;
         GetComponent<Image>().enabled = open;
 
         for (int i = transform.childCount - 1; i >= 0; --i)
             transform.GetChild(i).gameObject.SetActive(open);
+    }
+
+    public void ToggleOpen()
+    {
+        SetOpen(!open);
     }
 
 }

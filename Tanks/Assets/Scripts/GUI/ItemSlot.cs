@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour
 {
-    [SerializeField] public GameObject itemPrefab;
+    [SerializeField] public Item item;
     [SerializeField] private bool selected;
+
+    private int amount;
 
     private Inventory inventory;
     private TextMeshProUGUI amountText;
@@ -25,7 +27,17 @@ public class ItemSlot : MonoBehaviour
 
     void Update()
     {
-        
+        if (item != null)
+        {
+            if (item.amount != amount)
+            {
+                amount = item.amount;
+                amountText.text = amount == 0 ? "" : amount.ToString();
+            }
+        }
+            
+        else if (amount != 0)
+            Clear();
     }
 
     public void OnClick()
@@ -45,8 +57,11 @@ public class ItemSlot : MonoBehaviour
         frame.SetActive(false);
     }
 
-    public void UpdateAmount(int newAmount)
+    public void Clear()
     {
-        amountText.text = newAmount == 0 ? "" : newAmount.ToString();
+        item = null;
+        amount = 0;
+        amountText.text = "";
     }
+
 }

@@ -27,24 +27,11 @@ public class PlayerController : MonoBehaviour
         move = playerControls.Tank.Move.ReadValue<Vector3>();
     }
 
+    // Gets
+
     public Vector3 GetMovement()
     {
         return move;
-    }
-
-    public bool IsShooting()
-    {
-        return playerControls.Tank.Shoot.triggered;
-    }
-
-    public bool IsFocusing()
-    {
-        return playerControls.Tank.FocusCamera.triggered;
-    }
-
-    public bool IsAutoFocusing()
-    {
-        return playerControls.Tank.AutoFocusCamera.triggered;
     }
 
     public Vector2 GetMousePosition()
@@ -52,13 +39,31 @@ public class PlayerController : MonoBehaviour
         return playerControls.Tank.Aim.ReadValue<Vector2>();
     }
 
-    public int GetNewWeapon()
-    {
-        if (playerControls.Tank.NextProjectile.triggered)
-            return 1;
-        else if (playerControls.Tank.PreviousProjectile.triggered)
-            return -1;
+    // Triggers
 
-        else return 0;
+    public bool Trigger_Fire()
+    {
+        return playerControls.Tank.Shoot.triggered;
     }
+
+    public bool Trigger_Focus()
+    {
+        return playerControls.Tank.FocusCamera.triggered;
+    }
+
+    public bool Trigger_AutoFocus()
+    {
+        return playerControls.Tank.AutoFocusCamera.triggered;
+    }
+
+    public bool Trigger_PreviousItem()
+    {
+        return playerControls.Tank.PreviousProjectile.triggered;
+    }
+
+    public bool Trigger_NextItem()
+    {
+        return playerControls.Tank.NextProjectile.triggered;
+    }
+
 }

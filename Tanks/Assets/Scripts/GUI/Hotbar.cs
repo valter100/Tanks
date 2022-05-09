@@ -10,8 +10,7 @@ public class Hotbar : MonoBehaviour
     [SerializeField] private bool open;
 
     [Header("Temporary references")]
-    [SerializeField] private Tank tank;
-    [SerializeField] private Projectile item;
+    [SerializeField] private Player player;
 
     [Header("Permanent references")]
     [SerializeField] private GameManager gameManager;
@@ -36,32 +35,29 @@ public class Hotbar : MonoBehaviour
 
     private void Start()
     {
-        Open(true);
+        itemSlot.Select();
+        SetOpen(true);
     }
 
     private void Update()
     {
-        if (gameManager.GetCurrentTank() != tank)
+        if (gameManager.CurrentPlayer != player)
         {
-            tank = gameManager.GetCurrentTank();
-            playerName.text = tank == null ? "" : tank.GetPlayerName();
+            player = gameManager.CurrentPlayer;
+            playerName.text = player == null ? "" : player.Info.name;
         }
 
-        if (tank.GetCurrentProjectile() != item)
+        if (player != null && player.Inventory.SelectedItem != itemSlot.item)
         {
-            item = tank.GetCurrentProjectile();
+            itemSlot.item = player.Inventory.SelectedItem;
             UpdateItemPanel();
-            UpdateItemSlot();
         }
 
         UpdatePlayerPlanel();
     }
 
-    public void Open(bool open)
+    public void SetOpen(bool open)
     {
-        if (this.open == open)
-            return;
-
         this.open = open;
         GetComponent<Image>().enabled = open;
 
@@ -71,27 +67,29 @@ public class Hotbar : MonoBehaviour
 
     private void UpdatePlayerPlanel()
     {
-        if (tank == null)
+        if (player == null)
+        {
             playerHealth.text = playerFuel.text = playerAngle.text = playerPower.text = "";
+            return;
+        }
 
-        playerHealth.text = (int)(tank.GetHealthPercentage() * 100.0f + 0.5f) + "%";
-        playerFuel.text = (int)(tank.GetFuelPercentage() * 100.0f + 0.5f) + "%";
+        playerHealth.text = (int)(player.Tank.GetHealthPercentage() * 100.0f + 0.5f) + "%";
+        playerFuel.text = (int)(player.Tank.GetFuelPercentage() * 100.0f + 0.5f) + "%";
         playerAngle.text = "---";
         playerPower.text = "---";
     }
     
     private void UpdateItemPanel()
     {
-        itemName.text = item.name;
-        itemDescription.text = "Not implemented";
-        itemDamage.text = item.GetDamage().ToString("0.0") + "HP";
+        itemName.text = itemSlot.item.name;
+        itemDescription.text = "---";
+        itemDamage.text = "---";
         itemExplosiveRadius.text = "---";
         itemRange.text = "---";
     }
 
-    private void UpdateItemSlot()
+    public void OnClick_ItemSlot()
     {
-        itemSlot.itemPrefab = item.gameObject;
-        //itemSlot.UpdateAmount(tank.playerInventory.GetSelectedItem());
+        guiManager.inventory.ToggleOpen();
     }
 }

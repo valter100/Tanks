@@ -12,7 +12,7 @@ public class AddPlayerButton : MonoBehaviour
         GameObject playMenu = GameObject.Find("Canvas").transform.Find("Play Menu").gameObject;
         GameObject customizationPanel = Instantiate(customizationPanelPrefab, playMenu.transform);
         customizationPanel.GetComponent<FollowInWorldObject>().followObject = playerSpot.transform;
-        customizationPanel.GetComponent<CustomizationPanel>().tankCustomization = playerSpot.GetComponent<TankCustomization>();
+        customizationPanel.GetComponent<CustomizationPanel>().tankCustomization = playerSpot.GetComponent<PlayerInfo>();
 
         playerSpot.SetActive(true);
         gameObject.SetActive(false);

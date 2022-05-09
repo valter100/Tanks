@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameInfo : MonoBehaviour
 {
-    public List<TankCustomization> info;
+    public List<PlayerInfo> info;
 
     [SerializeField] public List<string> names;
     [SerializeField] public List<Color> colors;
@@ -23,7 +23,7 @@ public class GameInfo : MonoBehaviour
 
     public void SaveInfo()
     {
-        foreach (TankCustomization tankCustomization in info)
+        foreach (PlayerInfo tankCustomization in info)
         {
             if (tankCustomization.transform.Find("Tank").gameObject.activeInHierarchy)
             {

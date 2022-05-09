@@ -16,7 +16,7 @@ public enum Control
     Bot
 }
 
-public class TankCustomization : MonoBehaviour
+public class PlayerInfo : MonoBehaviour
 {
     [SerializeField] public new string name;
     [SerializeField] public Color color;
