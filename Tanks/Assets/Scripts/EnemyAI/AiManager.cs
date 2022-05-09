@@ -26,6 +26,7 @@ public class AiManager : MonoBehaviour
         activeState = startState;
         targetTanks = new List<GameObject>();
         thisTank = GetComponent<AiTank>();
+        maxShootingRange = thisTank.GetMaxShootForce();
 
         activeTargetPosition = null;
 
@@ -39,8 +40,7 @@ public class AiManager : MonoBehaviour
 
         distanceToEnemy = Vector3.Distance(gameObject.transform.position, activeTargetPosition.position);
         fuel = thisTank.GetFuelPercentage();
-        maxShootingRange = thisTank.GetMaxShootForce();
-
+       
         activeState.DoState(this, activeTargetPosition, thisTank);
     }
 
@@ -113,7 +113,7 @@ public class AiManager : MonoBehaviour
             activeTargetPosition = targetTanks[random].transform;
         }
 
-        Debug.Log(activeTargetPosition.position);
+        //Debug.Log(activeTargetPosition.position);
 
         //choose a target from the list of targets. 
         //should we choose at random? (pick a random index from the list)

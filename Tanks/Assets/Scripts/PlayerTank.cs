@@ -97,7 +97,7 @@ public class PlayerTank : Tank
         rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
     }
 
-    public override void Fire()
+    public void Fire()
     {
         // Precompute projectile
 

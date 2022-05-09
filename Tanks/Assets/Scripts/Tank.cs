@@ -199,7 +199,4 @@ public abstract class Tank : MonoBehaviour
             && isActive
             && currentHealth > 0.0f;
     }
-
-    public virtual void Fire() { }
-
 }

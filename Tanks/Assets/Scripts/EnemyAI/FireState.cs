@@ -12,14 +12,14 @@ public class FireState :  State
             return;
         }
 
-        DoShoot(thisTank);
+        DoShoot(thisTank, enemyTankPosition);
         thisManager.activeTargetPosition = null;
     }
 
-    private void DoShoot(AiTank thisTank)
+    private void DoShoot(AiTank thisTank, Transform enemyTankPosition)
     {
         //If we are in fireing state, calculate the correct aim to hit target, then randomize a bias and add to aim to make sure not every shot is a direct hit.
-        //thisTank.Fire();
+        //thisTank.Fire(enemyTankPosition);
         Debug.Log("PewPew");
     }
 }
