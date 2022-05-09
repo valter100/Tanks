@@ -24,8 +24,8 @@ public class Gun : MonoBehaviour
         Vector2 cannonScreenPos = cam.WorldToScreenPoint(rotatePoint.transform.position);
         Vector2 lookVector = controller.GetMousePosition() - cannonScreenPos;
 
-        //rotatePoint.transform.rotation = Quaternion.LookRotation(lookVector);
-        //rotatePoint.transform.Rotate(-90, 0, 0);
+        rotatePoint.transform.rotation = Quaternion.LookRotation(lookVector);
+        rotatePoint.transform.Rotate(90, 0, 0);
 
         //float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
 

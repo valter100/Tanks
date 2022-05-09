@@ -47,6 +47,7 @@ public class Tank : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject rotatePoint;
     [SerializeField] GameObject[] tankParts;
+    [SerializeField] GameObject body;
     [SerializeField] GameObject cannon;
     [SerializeField] Transform firePoint;
     [SerializeField] Transform rumbleSpot;
@@ -112,7 +113,7 @@ public class Tank : MonoBehaviour
         if (playerController.GetNewWeapon() != 0)
             SwapProjectile();
 
-        Aim();
+        //Aim();
         CalculateShootForce();
 
         if (playerController.IsShooting() && CanFire())
@@ -135,9 +136,9 @@ public class Tank : MonoBehaviour
     public void Move()
     {
         if (playerController.GetMovement().x > 0)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            body.transform.rotation = Quaternion.Euler(0, 0, 0);
         else if (playerController.GetMovement().x < 0)
-            transform.rotation = Quaternion.Euler(0, -180, 0);
+            body.transform.rotation = Quaternion.Euler(0, -180, 0);
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
 
@@ -155,21 +156,6 @@ public class Tank : MonoBehaviour
         fuelSlider.value = currentFuel / maxFuel;
     }
 
-    public void Aim()
-    {
-        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
-        Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
-
-        float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
-
-        if (rotationZ < -90)
-            rotationZ = -90;
-        else if (rotationZ > 179)
-            rotationZ = 179;
-
-        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
-    }
-
     public bool CanFire()
     {
         return HasAmmo()
@@ -183,7 +169,7 @@ public class Tank : MonoBehaviour
         Projectile projectile = Instantiate(currentProjectile, firePoint);
         projectile.ownTank = this;
         projectile.transform.parent = null;
-        projectile.Fire(cannon.transform.rotation, currentShootForce);
+        projectile.Fire(rotatePoint.transform.rotation, currentShootForce);
         followProjectile = projectile.gameObject;
         return projectile;
     }

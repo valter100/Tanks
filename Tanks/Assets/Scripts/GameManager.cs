@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<Tank> spawnedTanks;
 
     [SerializeField] int currentPlayerIndex;
-    [SerializeField] int playerCount;
     [SerializeField] Tank currentTank;
     [SerializeField] CameraController cameraController;
 
@@ -145,12 +144,6 @@ public class GameManager : MonoBehaviour
     public Tank GetCurrentTank()
     {
         return spawnedTanks[currentPlayerIndex];
-    }
-
-    public void Fire()
-    {
-        if (currentTank.CanFire())
-            currentTank.Fire();
     }
 
     public void RemoveTankFromList(Tank tank)

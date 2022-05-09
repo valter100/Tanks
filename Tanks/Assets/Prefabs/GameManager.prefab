@@ -49,7 +49,7 @@ MonoBehaviour:
   gameInfo: {fileID: 0}
   gameSpawnpoints: {fileID: 0}
   tankPrefabs:
-  - {fileID: 694820345919734862, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
+  - {fileID: 8375430385975182193, guid: c1b99d69cb1e6e540a6ab2534e7d35bb, type: 3}
   spawnedTanks: []
   currentPlayerIndex: 0
   playerCount: 0
