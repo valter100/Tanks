@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
     public class GenerateMap : MonoBehaviour
     {
         [SerializeField] private bool generateNewMap;
+        [SerializeField] private bool drawDebugLines = false;
 
         [Min(0.1f)]
         [SerializeField] private float pointsPerWidth = 3;
@@ -18,9 +19,9 @@ using UnityEngine.Rendering;
         [SerializeField] private float bottomDepth = 1f;
         [SerializeField] private float overhangHeight;
         [SerializeField] private float slopeWidth;
-        
+
         private float[] heights;
-        private Vector3[] linePositions;
+        public Vector3[] LinePositions { get; private set; }
 
         List<int> triangleIndices;
         List<Vector3> vertices;
@@ -36,12 +37,31 @@ using UnityEngine.Rendering;
                 GenerateRandomMap();
                 generateNewMap = false;
             }
+            
+            if (drawDebugLines) 
+                DrawDebugLine(LinePositions);
+
+        }
+
+        private void DrawDebugLine(Vector3[] positions)
+        {
+            if (positions.Length <= 1)
+                return;
+            for (int i = 1; i < positions.Length; i++)
+                Debug.DrawLine(positions[i - 1] + transform.position, positions[i] + transform.position, Color.green);
+        }
+
+        public void UpdateLinePositions(Vector3[] newLinePositions)
+        {
+            LinePositions = newLinePositions;
+            GenerateQuads();
         }
 
         private void GenerateRandomMap()
         {
-            if (height < amplitude * 2)
-                height = amplitude * 2;
+            float heightToAmplitude = 2.5f;
+            if (height < amplitude * heightToAmplitude)
+                height = amplitude * heightToAmplitude;
             GenerateRandomHeights();
             SmoothenHeights();
             AddSideSlopes();
@@ -95,49 +115,191 @@ using UnityEngine.Rendering;
         {
             float widthPerPoint = 1.0f / pointsPerWidth;
             float trueWidth = width + slopeWidth * 2;
-            linePositions = new Vector3[heights.Length];
+            LinePositions = new Vector3[heights.Length];
             for (int i = 0; i < heights.Length; i++)
-                linePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
+                LinePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
+        }
+
+        private Point[] PositionsToPoints()
+        {
+            Point[] points = new Point[LinePositions.Length];
+            for (int i = 0; i < points.Length; i++)
+                    points[i] = new Point(LinePositions[i]);
+
+            for (int i = 0; i < points.Length; i++)
+                for (int j = 0; j < points.Length; j++)
+                    if (ConflictWithEarlierPoint(i, j) || ConflictWithLaterPoint(i, j))
+                    {
+                        points[i].CanReachFloor = false;
+                        break;
+                    }
+
+            return points;
+
+            bool ConflictWithEarlierPoint(int i, int j) => i > j && !IsToTheLeft(i, j) && IsBelow(i, j);
+            bool ConflictWithLaterPoint(int i, int j) => i < j && !IsToTheRight(i, j) && IsBelow(i, j);
+
+            bool IsToTheRight(int i, int j) => points[i].position.x < points[j].position.x;
+            bool IsToTheLeft(int i, int j) => points[i].position.x > points[j].position.x;
+            bool IsBelow(int i, int j) => points[i].position.y > points[j].position.y;
         }
 
         private void GenerateQuads()
         {
+            Point[] points = PositionsToPoints();
+
             vertices = new List<Vector3>();
             triangleIndices = new List<int>();
             quads = new List<Quad>();
             int verticesPerPosition = 4;
 
-            for (int i = 0; i < linePositions.Length; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 if (i < 1)
                 {
-                    AddFirstSide(linePositions[i]);
+                    AddFirstSide(points[i].position);
+                    points[i].IsConnected = true;
                     continue;
                 }
-                int vertexIndex = i+1 != linePositions.Length ? AddVertex(linePositions[i]) : AddLastSide(linePositions[i]);
-                int pastIndex = vertexIndex - verticesPerPosition;
+                if (!points[i].CanReachFloor)
+                    continue;
+
+                points[i].vertexIndex = i+1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
+                int pastIndex = points[i].vertexIndex - verticesPerPosition;
                 for (int j = 0; j < verticesPerPosition - 1; j++)
-                    AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
+                    AddQuad(pastIndex + j, points[i].vertexIndex + j, j < 2);
+                points[i].IsConnected = true;
+            }
 
+            //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
+            int previousIndex, nextIndex = 0;
+            for (int i = 0; i < points.Length; i++)
+            {
+                if (!points[i].IsConnected)
+                {
+                    previousIndex = points[i - 1].vertexIndex;
+                    points[i].vertexIndex = AddVertex(points[i].position, true);
+                    if (nextIndex < i)
+                        nextIndex = GetNextConnectedPoint(i);
+                    AddQuad(previousIndex, points[i].vertexIndex, true);
+                    quads.Add(new Quad(points[i].vertexIndex + 1, previousIndex + 1, points[nextIndex].vertexIndex + 1, -1, true));
 
+                    if (nextIndex == i + 1)
+                        AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+
+                    points[i].IsConnected = true;
+                }
 
             }
 
             CreateMesh(CreateSubMeshDescriptors(quads));
 
-            void AddToQuad(int pastIndex, int vertexIndex, bool isTopside){
+            void AddQuad(int pastIndex, int vertexIndex, bool isTopside){
                 quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+            }
+
+            int GetNextConnectedPoint(int startIndex)
+            {
+                int index = startIndex;
+                if (index + 1 >= points.Length)
+                {
+                    Debug.Log($"Index was {index} the length of points is {points.Length}");
+                    return -1;
+                }
+                    
+                
+                while (!points[++index].IsConnected)
+                    if (index + 1 >= points.Length)
+                        return -1;
+                return index;
             }
         }
 
-        int AddVertex(Vector3 vertex)
+        //private void GenerateQuads()
+        //{
+        //    vertices = new List<Vector3>();
+        //    triangleIndices = new List<int>();
+        //    quads = new List<Quad>();
+        //    int verticesPerPosition = 4;
+
+        //    for (int i = 0; i < LinePositions.Length; i++)
+        //    {
+        //        if (i < 1)
+        //        {
+        //            AddFirstSide(LinePositions[i]);
+        //            continue;
+        //        }
+        //        int vertexIndex = i + 1 != LinePositions.Length ? AddVertex(LinePositions[i]) : AddLastSide(LinePositions[i]);
+        //        int pastIndex = vertexIndex - verticesPerPosition;
+        //        for (int j = 0; j < verticesPerPosition - 1; j++)
+        //            AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
+        //    }
+
+        //    CreateMesh(CreateSubMeshDescriptors(quads));
+
+        //    void AddToQuad(int pastIndex, int vertexIndex, bool isTopside)
+        //    {
+        //        quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+        //    }
+        //}
+
+        //private void ConnectPoints(Point[] points)
+        //{
+        //    for (int i = 0; i < points.Length; i++)
+        //        if (!points[i].IsConnected)
+        //            points[i].vertexIndex = AddVertex(points[i].position, true);
+
+        //    int nextIndex = 0, lastIndex = 0;
+        //    for (int i = 0; i < points.Length - 2; i++)
+        //    {
+        //        if (points[i].IsConnected && GetNextConnectedPoint(i) - i >= 2)
+        //        {
+        //            lastIndex = GetNextConnectedPoint(i);
+        //            int currentIndex = i;
+        //            while (currentIndex < lastIndex)
+        //            {
+        //                quads.Add(new Quad(points[i].vertexIndex + 1, points[currentIndex + 1].vertexIndex + 1,
+        //                                    points[currentIndex + 2].vertexIndex + 1, points[currentIndex + 3].vertexIndex + 1 + 1, true));
+        //                AddQuad(points[i].vertexIndex, points[currentIndex + 1].vertexIndex, true);
+        //                AddQuad(points[currentIndex + 1].vertexIndex, points[currentIndex + 2].vertexIndex, true);
+        //                AddQuad(points[currentIndex + 2].vertexIndex, points[currentIndex + 3].vertexIndex, true);
+        //                points[currentIndex + 1].IsConnected = points[currentIndex + 2].IsConnected = true;
+        //                currentIndex += 2;
+        //            }
+        //        }
+        //        else if (!points[i + 1].IsConnected)
+        //        {
+        //            nextIndex = i + 1;
+        //            lastIndex = i + 2;
+        //            points[nextIndex].IsConnected = true;
+        //            AddTriangle(points[i].vertexIndex, points[nextIndex].vertexIndex, points[lastIndex].vertexIndex, true);
+        //            AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+        //            AddQuad(points[nextIndex].vertexIndex, points[lastIndex].vertexIndex, true);
+        //        }
+        //    }
+
+        //    void AddTriangle(int vertexA, int vertexB, int vertexC, bool isTopside)
+        //    {
+        //        quads.Add(new Quad(vertexB + 1, vertexA + 1, vertexC + 1, -1, isTopside));
+        //    }
+        //}
+
+        int AddVertex(Vector3 vertex, bool onlyTop = false)
         {
             int index = vertices.Count;
+            
             vertices.Add(new Vector3(vertex.x, vertex.y, depth));
             vertices.Add(vertex);
-            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight));
+            if (onlyTop)
+                return index;
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth()));
             vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
             return index;
+            float GetOverhangDepth()
+            {
+                float angle = Mathf.Atan(bottomDepth/vertex.y);
+                return overhangHeight * Mathf.Tan(angle);
+            }
         }
 
         void AddFirstSide(Vector3 vertex)
@@ -177,7 +339,6 @@ using UnityEngine.Rendering;
                     if (quad.isTopside == isTopside)
                         foreach (int index in quad.GetTriangleIndices())
                             triangleIndices.Add(index);
-
             }
         }
 
@@ -198,23 +359,24 @@ using UnityEngine.Rendering;
 
         private void GenerateObjects()  
         {
-            GetComponent<GenerateDecor>().GenerateObjects(linePositions, width, depth);
-            GetComponent<GenerateSpawnpoints>().GenerateObjects(linePositions, width, depth);
+            GetComponent<GenerateDecor>().GenerateObjects(LinePositions, width, depth);
+            GetComponent<GenerateSpawnpoints>().GenerateObjects(LinePositions, width, depth);
         }
-        
-        //private void CreateUVs(List<Vector3> vertices, Mesh mesh)
-        //{   //Unfolds the map to determine UV-coord
-        //    Vector2[] uvs = new Vector2[vertices.Count];
-        //    int divideMapSize = 2;
-        //    for (int i = 0; i < vertices.Count; i++)
-        //    {
-        //        float vertexHeight = vertices[i].y + vertices[i].z;//both y and z are counted as height. 
-        //        float fillPercentX = Mathf.InverseLerp(width / divideMapSize, -width / divideMapSize, vertices[i].x);
-        //        float fillPercentY = Mathf.InverseLerp((height + depth) / divideMapSize, -(height + depth) / divideMapSize, vertexHeight);
-        //        uvs[i] = new Vector2(fillPercentX, fillPercentY);
-        //    }
-        //    mesh.uv = uvs;         
-        //}
+    }
+
+    public struct Point
+    {
+        public readonly Vector3 position;
+        public int vertexIndex;
+        public bool IsConnected { get; set; }
+        public bool CanReachFloor { get; set; }
+        public Point(Vector3 position)
+        {
+            this.position = position;
+            IsConnected = false;
+            CanReachFloor = true;
+            vertexIndex = -1;
+        }
     }
 
     public struct Quad
@@ -232,6 +394,12 @@ using UnityEngine.Rendering;
 
         public int[] GetTriangleIndices()
         {
+            if (lowerRightIndex < 0)
+            {
+                int[] triangle = { lowerLeftIndex, upperLeftIndex, upperRightIndex };
+                return triangle;
+            }
+
             int[] indices = { lowerLeftIndex, upperLeftIndex, upperRightIndex,
                               lowerLeftIndex, upperRightIndex, lowerRightIndex};
             return indices;

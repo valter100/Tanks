@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -7335453738284943218}
   - component: {fileID: -5110843745954764067}
   - component: {fileID: 448625847279662430}
-  - component: {fileID: 1588366499591927755}
+  - component: {fileID: 3289109751968384498}
   m_Layer: 0
   m_Name: Rock2
   m_TagString: Untagged
@@ -99,7 +99,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!136 &1588366499591927755
+--- !u!136 &3289109751968384498
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,7 +109,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.7
-  m_Height: 1.62
-  m_Direction: 2
+  m_Radius: 0.7675021
+  m_Height: 1.3838291
+  m_Direction: 1
   m_Center: {x: -0.04374355, y: -0.023550695, z: 0.23249814}
