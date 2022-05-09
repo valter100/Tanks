@@ -5,25 +5,14 @@ using UnityEngine;
 
 public class AiTank : Tank
 {
-    AiManager aiManager;
+    private AiManager aiManager;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
-        rb = GetComponent<Rigidbody>();
         aiManager = GetComponent<AiManager>();
-
-        currentHealth = maxHealth;
-        currentFuel = maxFuel;
-        currentProjectile = projectiles[0];
-
-        for (int i = 0; i < projectiles.Count; i++)
-            ammo.Add(projectiles[i].GetStartAmmoCount());
     }
 
-    void Update()
+    public override void ManualUpdate()
     {
         aiManager.Update();
     }
@@ -46,10 +35,10 @@ public class AiTank : Tank
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
+
         else if (enemyTankPosition.position.x < gameObject.transform.position.x)
             gameObject.transform.position -= Vector3.right * movementSpeed * Time.deltaTime;
 
-        
         timeSinceLastEffect += Time.deltaTime;
         if (timeSinceLastEffect > timeBetweenEffectSpawn)
         {
@@ -82,57 +71,6 @@ public class AiTank : Tank
         //rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
     }
 
-    public void Fire(Transform enemyTarget)
-    {
-        // Precompute projectile
-
-        Projectile precomputedProjectile = InstantiateProjectile();
-        Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
-
-        // Determine if the projectile hit a Tank which will be destroyed
-
-        bool firstPersonView = result != null
-            && result.Value.tank != null
-            && result.Value.tank.GetCurrentHealth() - result.Value.damageDealtToTank <= 0.0f;
-
-        // Fire projectile
-
-        ammo[projectileIndex] -= 1;
-        hasFired = true;
-        animator.SetTrigger("Fire");
-        Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
-
-        Projectile projectile = InstantiateProjectile();
-
-        if (ammo[projectileIndex] <= 0)
-        {
-            projectiles.RemoveAt(projectileIndex);
-            ammo.RemoveAt(projectileIndex);
-            SwapProjectile();
-        }
-
-        // Update camera
-
-        if (firstPersonView)
-            StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, projectile.gameObject));
-
-        else if (result == null)
-            StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(projectile.gameObject, 0.2f));
-
-        else
-        {
-            if (result.Value.tank != null)
-                cameraController.focusPoint.FollowObject(result.Value.tank.gameObject);
-            else
-                cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefaultOffset());
-
-            cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
-        }
-
-        isActive = false;
-        gameManager.StartPlayerTransition();
-    }
-
     public void CalculateShootForce()
     {
         //Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(cannon.transform.position);
@@ -152,9 +90,4 @@ public class AiTank : Tank
         //    projectileTMP.text = "Current projectile: " + currentProjectile.name;
     }
 
-    private void PreviewProjectileTrajectory()
-    {
-        Projectile projectile = InstantiateProjectile();
-        projectile.PrecomputeTrajectory(0.05f);
-    }
 }

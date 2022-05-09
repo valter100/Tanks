@@ -4,51 +4,35 @@ using UnityEngine;
 
 public class PlayerTank : Tank
 {
-    PlayerController playerController;
+    private static PlayerController playerController;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
-        projectileTMP = GameObject.Find("GUI").GetComponentsInChildren<TextMeshProUGUI>().ToList().Find(item => item.name == "Current projectile");
-        playerController = GetComponent<PlayerController>();
-        rb = GetComponent<Rigidbody>();
-
-        currentHealth = maxHealth;
-        currentFuel = maxFuel;
-        currentProjectile = projectiles[0];
-
-        for (int i = 0; i < projectiles.Count; i++)
-            ammo.Add(projectiles[i].GetStartAmmoCount());
+        if (playerController == null)
+            playerController = GetComponent<PlayerController>();
     }
 
-    void Update()
+    public override void ManualUpdate()
     {
-        if (!isActive)
-            return;
-
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
             Move();
-
-        if (playerController.GetNewWeapon() != 0)
-            SwapProjectile();
 
         Aim();
         CalculateShootForce();
 
-        if (playerController.IsShooting() && CanFire())
+        if (playerController.Trigger_Fire() && CanFire())
             Fire();
 
         // Fire() must come before PreviewProjectileTrajectory()
-        // (For some reason ? )
+        // (For unknown reason)
         PreviewProjectileTrajectory();
     }
-
 
     public void Move()
     {
         if (playerController.GetMovement().x > 0)
             transform.rotation = Quaternion.Euler(0, 0, 0);
+
         else if (playerController.GetMovement().x < 0)
             transform.rotation = Quaternion.Euler(0, -180, 0);
 
@@ -84,68 +68,15 @@ public class PlayerTank : Tank
         Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
         Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
 
-        //Quaternion newRotation = Quaternion.LookRotation(lookVector);
-        //rotatePoint.transform.rotation = newRotation;
-
         float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
 
         if (rotationZ < -90)
             rotationZ = -90;
+
         else if (rotationZ > 179)
             rotationZ = 179;
 
         rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
-    }
-
-    public void Fire()
-    {
-        // Precompute projectile
-
-        Projectile precomputedProjectile = InstantiateProjectile();
-        Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
-
-        // Determine if the projectile hit a Tank which will be destroyed
-
-        bool firstPersonView = result != null
-            && result.Value.tank != null
-            && result.Value.tank.GetCurrentHealth() - result.Value.damageDealtToTank <= 0.0f;
-
-        // Fire projectile
-
-        ammo[projectileIndex] -= 1;
-        hasFired = true;
-        animator.SetTrigger("Fire");
-        Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
-
-        Projectile projectile = InstantiateProjectile();
-
-        if (ammo[projectileIndex] <= 0)
-        {
-            projectiles.RemoveAt(projectileIndex);
-            ammo.RemoveAt(projectileIndex);
-            SwapProjectile();
-        }
-
-        // Update camera
-
-        if (firstPersonView)
-            StartCoroutine(cameraController.Coroutine_KillCamSequence(result.Value, projectile.gameObject));
-
-        else if (result == null)
-            StartCoroutine(cameraController.focusPoint.Coroutine_DelayedFollowObject(projectile.gameObject, 0.2f));
-
-        else
-        {
-            if (result.Value.tank != null)
-                cameraController.focusPoint.FollowObject(result.Value.tank.gameObject);
-            else
-                cameraController.focusPoint.SetPosition(result.Value.raycastHit.point + cameraController.focusPoint.GetDefaultOffset());
-
-            cameraController.Transition(CameraController.View.Side, result.Value.timeBeforeHit);
-        }
-
-        isActive = false;
-        gameManager.StartPlayerTransition();
     }
 
     public void CalculateShootForce()
@@ -157,19 +88,4 @@ public class PlayerTank : Tank
         shootForceSlider.value = percentage;
     }
 
-    public void SwapProjectile()
-    {
-        projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
-        projectileIndex %= projectiles.Count;
-        currentProjectile = projectiles[projectileIndex];
-
-        if (projectileTMP)
-            projectileTMP.text = "Current projectile: " + currentProjectile.name;
-    }
-
-    private void PreviewProjectileTrajectory()
-    {
-        Projectile projectile = InstantiateProjectile();
-        projectile.PrecomputeTrajectory(0.05f);
-    }
 }

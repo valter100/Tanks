@@ -40,11 +40,11 @@ public class ObjectGenerator : MonoBehaviour
         instantiatedObject.transform.position = position;
         instantiatedObject.transform.Rotate(0.0f, 0.0f, rotation);
 
-        if (instantiatedObject.GetComponent<Tank>())
+        /*if (instantiatedObject.GetComponent<Tank>())
         {
             instantiatedObject.GetComponent<Tank>().AssignPlayer();
             GameObject.Find("GameManager").GetComponent<GameManager>().AddInstantiatedTank(instantiatedObject.GetComponent<Tank>());
-        }
+        }*/
     }
 }
 
