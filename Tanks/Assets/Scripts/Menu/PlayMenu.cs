@@ -44,7 +44,7 @@ public class PlayMenu : Menu
 
 
 
-        SceneManager.LoadScene("Battle");
+        SceneManager.LoadScene(1);
         Disable();
     }
 

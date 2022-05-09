@@ -11,8 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int currentPlayerIndex;
     [SerializeField] private CameraController cameraController;
 
-    private float timeUntilNextPlayer;
-    private float nextPlayerTimer;
     private bool pickingNextPlayer = false;
 
     public List<Player> Players => players;
@@ -105,7 +103,6 @@ public class GameManager : MonoBehaviour
         if (currentPlayerIndex >= players.Count)
             currentPlayerIndex = 0;
 
-        // Vad gör denna ?
         for (int i = currentPlayerIndex; i < players.Count; i++)
         {
             if (players[i].Tank.gameObject.activeInHierarchy)
@@ -116,7 +113,5 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-        // ––––––––
     }
-
 }

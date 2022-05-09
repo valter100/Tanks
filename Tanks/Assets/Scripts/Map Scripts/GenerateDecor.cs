@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Tanks
-{
     public class GenerateDecor : ObjectGenerator
     {
         [SerializeField] GameObject[] objects;
@@ -44,5 +42,5 @@ namespace Tanks
 
         private GameObject PickRandomObject() => objects[RandomInt(objects.Length)];
     }
-}
+
 

@@ -43,18 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0620d4575497bb47bc4dfe7f6efcbbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNames:
-  - Player 1
-  - Player 2
-  - Player 3
-  - Player 4
-  tanks:
-  - {fileID: 1456219737200762294, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
-  tankColors:
-  - {r: 1, g: 0, b: 0.04999399, a: 0}
-  - {r: 0, g: 1, b: 0.11143541, a: 0}
-  - {r: 0.011263847, g: 0, b: 1, a: 0}
-  - {r: 1, g: 0, b: 0.7807932, a: 0}
+  playerNames: []
+  playerColors: []
+  playerTankTypes: 
+  gameInfo: {fileID: 0}
+  gameSpawnpoints: {fileID: 0}
+  tankPrefabs:
+  - {fileID: 8375430385975182193, guid: c1b99d69cb1e6e540a6ab2534e7d35bb, type: 3}
+  spawnedTanks: []
   currentPlayerIndex: 0
   playerCount: 0
   currentTank: {fileID: 0}
