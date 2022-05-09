@@ -24,7 +24,7 @@ public class BulletSpread : Bullet
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Tank>() != null && other.gameObject.GetComponent<Tank>() == ownTank)
+        if (other.gameObject.GetComponent<PlayerTank>() != null && other.gameObject.GetComponent<PlayerTank>() == ownTank)
             return;
 
         Detonate(other);

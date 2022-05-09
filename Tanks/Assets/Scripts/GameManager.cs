@@ -129,13 +129,7 @@ public class GameManager : MonoBehaviour
         return tanks[currentPlayerIndex];
     }
 
-    public void Fire()
-    {
-        if (currentTank.CanFire())
-            currentTank.Fire();
-    }
-
-    public void RemoveTankFromList(Tank tank)
+    public void RemoveTankFromList(PlayerTank tank)
     {
         tanks.Remove(tank);
     }
