@@ -526,6 +526,10 @@ MonoBehaviour:
   - {fileID: -8063847045595054941, guid: 3993da982c11aea4a83c040dbfad7e89, type: 3}
   - {fileID: 6481296158931651720, guid: d90d4454beadc314bba6b501d2b98a73, type: 3}
   - {fileID: 5288328317349611985, guid: f970a4f8397fea14fa7c1f2a2b5f06cf, type: 3}
+  - {fileID: 4666774405610918408, guid: 8e98790f6a261f04a819d6bca196c43d, type: 3}
+  - {fileID: 2485305547307765608, guid: 45a7ad875c0428544a76c1f7ab59a7e3, type: 3}
+  - {fileID: 2010923922042384439, guid: 55ef6006a2889ca4f8e05e3e4a17fc74, type: 3}
+  - {fileID: -5739045232068466832, guid: d6f425a57b481464d8b0bf0189fb6fe7, type: 3}
   ammo: 
   currentProjectile: {fileID: 0}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
