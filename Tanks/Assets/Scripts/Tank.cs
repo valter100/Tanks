@@ -13,7 +13,6 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected GameManager gameManager;
     [SerializeField] protected CameraController cameraController;
     [SerializeField] protected bool isActive;
-    //[SerializeField] int playerIndex;
     [SerializeField] protected string playerName;
     [SerializeField] protected Color playerColor;
 
@@ -86,14 +85,14 @@ public abstract class Tank : MonoBehaviour
 
     public bool HasAmmo() => ammo[projectileIndex] > 0;
 
-    public void AssignPlayer(int newIndex, string newName, Color newColor)
+    public void AssignPlayer()
     {
-        playerName = newName;
-        playerColor = newColor;
+        //playerName = ;
+        //playerColor = ;
 
         foreach (GameObject go in tankParts)
         {
-            go.GetComponent<MeshRenderer>().material.color = newColor;
+            go.GetComponent<MeshRenderer>().material.color = playerColor;
         }
 
         if (nameText)
@@ -183,7 +182,7 @@ public abstract class Tank : MonoBehaviour
         Instantiate(tankDestroyedParticles, transform.position, Quaternion.Euler(-90, 0, 0), null);
     }
 
-    protected Projectile InstantiateProjectile()
+    public Projectile InstantiateProjectile()
     {
         Projectile projectile = Instantiate(currentProjectile, firePoint);
         projectile.ownTank = this;

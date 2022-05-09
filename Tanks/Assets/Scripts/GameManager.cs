@@ -20,14 +20,6 @@ public class GameManager : MonoBehaviour
 
     bool pickingNextPlayer = false;
 
-    //enum GameState
-    //{
-    //    Start,
-    //    Turn,
-    //    Transition,
-    //    End
-    //}
-
     void Start()
     {
         playerNameText = GameObject.Find("GUI").transform.Find("CurrentPlayer").GetComponent<TMP_Text>();
@@ -38,11 +30,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator Coroutine_StartMatch()
     {
         float delay = 1.0f;
-
-        foreach(Tank tank in tanks)
-        {
-            tank.AssignPlayer();
-        }
 
         while (delay > 0.0f)
         {
