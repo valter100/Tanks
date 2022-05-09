@@ -20,8 +20,8 @@ namespace Tanks
         {
             if (explode)
             {
-                Explode();
                 explode = false;
+                Explode();
             }
         }
 

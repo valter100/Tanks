@@ -61,8 +61,9 @@ namespace Tanks
 
         private void GenerateRandomMap()
         {
-            if (height < amplitude * 2)
-                height = amplitude * 2;
+            float heightToAmplitude = 2.5f;
+            if (height < amplitude * heightToAmplitude)
+                height = amplitude * heightToAmplitude;
             GenerateRandomHeights();
             SmoothenHeights();
             AddSideSlopes();

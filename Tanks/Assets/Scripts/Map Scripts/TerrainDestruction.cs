@@ -6,128 +6,24 @@ namespace Tanks
 {
     public class TerrainDestruction : MonoBehaviour
     {
-        [Range(1, 8)]
-        [SerializeField] int numberOfDivisions = 2;
+        [SerializeField] float pointsPerDegree = 0.05f;
 
         private List<Line> lines;
         private List<Point> points;
         private List<Vector3> newLinePositions;
 
-        //public void DestroyTerrain(Vector3 explosionOrigin, float explosionRadius)
-        //{
-        //    //TODO byt ut metod till att kolla om linjer korsar cirkeln, via cirkelns ekvation.
-        //    //TODO Lägg även till nya punkter längs cirkelbågen.
-        //    GenerateMap mapGenerator = gameObject.GetComponent<GenerateMap>();
-        //    newLinePositions = new List<Vector3>();
-        //    List<Vector3> linePositions = new List<Vector3>();
-        //    linePositions.AddRange(mapGenerator.LinePositions);
-        //    Vector3 origin = explosionOrigin - transform.position;
-        //    origin.z = 0;
-
-        //    Debug.Log("Origin: " + origin);
-
-        //    for (int i = 0; i < linePositions.Count; i++)
-        //    {
-        //        if (!IsInExplosion(i))
-        //        {
-        //            newLinePositions.Add(linePositions[i]);
-        //            continue;
-        //        }
-        //        int previousIndex = i - 1;
-        //        int nextIndex = i + 1;
-
-        //        if (IsWithinBounds(previousIndex))
-        //            newLinePositions.AddRange(GetProjectedPositions(origin, explosionRadius, linePositions[previousIndex], linePositions[i]));
-
-        //        if (IsWithinBounds(nextIndex))
-        //            newLinePositions.AddRange(GetProjectedPositions(origin, explosionRadius, linePositions[nextIndex], linePositions[i]));
-
-        //        if (!IsWithinBounds(previousIndex) && !IsWithinBounds(nextIndex))
-        //            newLinePositions.Add(GetProjectedPosition(origin, explosionRadius, linePositions[i]));
-        //        else
-        //            ++i;
-        //    }
-
-        //    Debug.Log("Previous line positions: " + linePositions.Count);
-        //    Debug.Log("New line positions: " + newLinePositions.Count);
-
-        //    mapGenerator.UpdateLinePositions(newLinePositions.ToArray());
-        //    bool IsInExplosion(int i) => (linePositions[i] - origin).magnitude < explosionRadius;
-        //    bool IsWithinBounds(int i) => i >= 0 && i < linePositions.Count;
-        //}
-
-        //private Vector3 GetProjectedPosition(Vector3 origin, float radius, Vector3 position)
-        //{
-        //    float height = origin.y + Mathf.Sqrt(Mathf.Pow(radius, 2) + Mathf.Pow(origin.x, 2) + Mathf.Pow(position.x, 2) + position.x * origin.x * 2);
-        //    return new Vector3(position.x, height, position.z);
-        //}
-
-        //private List<Vector3> GetProjectedPositions(Vector3 origin, float radius, Vector3 positionA, Vector3 positionB, int recursionDepth = 0)
-        //{
-        //    List<Vector3> positions = new List<Vector3>();
-        //    if (recursionDepth >= numberOfDivisions)
-        //        return positions;
-
-        //    Vector3 newPosition = GetProjection(origin, radius, positionA, positionB);
-
-        //    positions.AddRange(GetProjectedPositions(origin, radius, positionA, newPosition, recursionDepth + 1));
-        //    positions.Add(newPosition);
-        //    positions.AddRange(GetProjectedPositions(origin, radius, newPosition, positionB, recursionDepth + 1));
-
-        //    return positions;
-        //}
-
-        //private Vector3 GetProjection(Vector3 origin, float radius, Vector3 positionA, Vector3 positionB)
-        //{
-        //    Vector3 vectorA = positionA - origin;
-        //    Vector3 vectorB = positionB - origin;
-        //    return (vectorA + vectorB).normalized * radius + new Vector3(origin.x, origin.y);
-        //}
-
+        //TODO kolla över beräkning av cirkelns ekvation och resultat som skjuter åt olika håll
         public void DestroyTerrain(Vector3 explosionOrigin, float explosionRadius)
         {
-            //TODO Ta bort punkter om de inte är kopplade frammåt eller bakåt.
-            //TODO Gå igenom alla punkter som är kvar och placera ut punkter i vinkeln mellan de som placerats ut under borttagning. 
             GenerateMap mapGenerator = gameObject.GetComponent<GenerateMap>();
-            
+
             newLinePositions = new List<Vector3>();
             CreatePointsAndLines(mapGenerator.LinePositions);
             Vector3 origin = explosionOrigin - transform.position;
             origin.z = 0;
             Explosion explosion = new Explosion(origin, explosionRadius);
 
-            for (int i = 0; i < lines.Count; i++)
-            {
-                if (lines[i].IsInExplosion(explosion))
-                {
-                    if (i > 0 && !lines[i - 1].IsInExplosion(explosion))
-                    {
-                        Vector3[] intersections = GetIntersection(lines[i], explosion);
-                        Debug.Log($"Intersections size: {intersections.Length}");
-                        if (intersections.Length > 0)
-                            lines[i].PointB.Position = GetClosestValidPosition(lines[i], lines[i].PointA, intersections);
-                        else
-                            AddPoint(lines[i].PointB, lines[i].PointA.ConnectedToPrevious);
-                    }
-                        
-                    if (i < lines.Count - 1 && !lines[i + 1].IsInExplosion(explosion))
-                    {
-                        Vector3[] intersections = GetIntersection(lines[i], explosion);
-                        Debug.Log($"Intersections size: {intersections.Length}");
-                        if (intersections.Length > 0)
-                            lines[i].PointA.Position = GetClosestValidPosition(lines[i], lines[i].PointB, intersections);
-                        else
-                            AddPoint(lines[i].PointB, lines[i].PointA.ConnectedToPrevious);
-                    }
-                    
-                    continue;
-                }
-
-                if (i < 1)
-                    AddLine(lines[i], true);
-                else
-                    AddPoint(lines[i].PointB, lines[i].PointA.ConnectedToPrevious);
-            }
+            AddPointsAfterExplosion(explosion);
 
             Debug.Log("Previous line positions: " + points.Count);
             Debug.Log("New line positions: " + newLinePositions.Count);
@@ -146,38 +42,156 @@ namespace Tanks
             }
         }
 
-        private void AddPoint(Point point, bool connectedToPrevious, bool connectedToNext = true)
+        private void AddPointsAfterExplosion(Explosion explosion)
         {
-            if (point.PositionIndex != -1)
-                RemovePoint(point);
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (i == 0 && !points[0].IsInExplosion(explosion))
+                    AddLinePosition(lines[i].PointA, true);
 
+                if (lines[i].IsInExplosion(explosion))
+                {
+                    HandleExplosion(i, explosion);
+                    continue;
+                }
+                AddLinePosition(lines[i].PointB, true);
+            }
+
+            //TODO kolla på uteblivna cirklar vid många punkter
+            for (int i = 0; i < points.Count - 1; i++)
+                if (!points[i].ConnectedToNext && !points[i + 1].ConnectedToPrevious)
+                {
+                    Debug.Log("Adding pojnts to cuurkel");
+                    AddPointsAlongCircle(i, i+1, explosion);
+                }
+                    
+        }
+
+        private void HandleExplosion(int i, Explosion explosion)
+        {//TODO fixa sprängning av kanter
+            if (i == 0) //Hantera första punkt
+            {
+                if (lines[i].PointA.IsInExplosion(explosion))
+                    lines[i].PointA.Position = new Vector3(lines[i].PointA.Position.x, explosion.GetY(lines[i].PointA.Position.x)[1]);
+                AddLinePosition(lines[i].PointA, true, false);
+            }
+
+            if (i > 0 && !lines[i - 1].IsInExplosion(explosion))
+            {
+                Vector3[] intersections = GetIntersections(lines[i], explosion);
+                if (intersections.Length > 0)
+                    lines[i].PointB.Position = GetClosestValidPosition(lines[i], lines[i].PointA, intersections);
+                AddLinePosition(lines[i].PointB, true, false);
+                i -= HandleRangeRemoval(lines[i].PointB);
+            }
+
+
+            if (i < lines.Count - 1 && !lines[i + 1].IsInExplosion(explosion))
+            {
+                if (!lines[i].PointA.ConnectedToNext)
+                {
+                    Point point = new Point(lines[i].PointA.Position);
+                    AddLinePosition(point, true, false);
+                    AddPoint(point, i);
+                }
+
+                Vector3[] intersections = GetIntersections(lines[i], explosion);
+                if (intersections.Length > 0)
+                    lines[i].PointA.Position = GetClosestValidPosition(lines[i], lines[i].PointB, intersections);
+                AddLinePosition(lines[i].PointA, false);
+                AddLinePosition(lines[i].PointB, true);
+            }
+
+            if (i == lines.Count - 1) //Hanterar sista punkt
+            {
+                if (lines[i].PointB.IsInExplosion(explosion))
+                    lines[i].PointB.Position = new Vector3(lines[i].PointB.Position.x, explosion.GetY(lines[i].PointB.Position.x)[1]);
+                AddLinePosition(lines[i].PointB, true, true);
+            }
+        }
+
+        private void AddPointsAlongCircle(int startIndex, int stopIndex, Explosion explosion)
+        {
+            Point startPoint = points[startIndex];
+            Point stopPoint = points[stopIndex];
+
+            Debug.DrawLine(startPoint.Position + transform.position, stopPoint.Position + transform.position, Color.red, 2000);
+
+            float angleStart = GetAngleOnExplosion(startPoint.Position, explosion);
+            float angleStop = GetAngleOnExplosion(stopPoint.Position, explosion);
+            int numberOfPoints = (int)(explosion.Radius * pointsPerDegree * Mathf.Abs(angleStop - angleStart));
+            Debug.Log($"Start angle {angleStart}, stop angle {angleStop}, number of points {numberOfPoints}");
+
+            List<Vector3> positions = new List<Vector3>();
+
+            if (angleStart < angleStop)
+            {
+                for (int i = 0; i < numberOfPoints + 2; i++)
+                {
+                    float angle = Mathf.LerpAngle(angleStart, angleStop, i / (float)(numberOfPoints + 1));
+                    positions.Add(GetCirclePosition(angle));
+                }
+            }
+            else
+            {
+                for (int i = numberOfPoints + 2; i >= 0 ; --i)
+                {
+                    float angle = Mathf.LerpAngle(angleStop, angleStart, i / (float)(numberOfPoints + 1));
+                    positions.Add(GetCirclePosition(angle));
+                }
+            }
+
+            AddLinePositionRange(positions, stopPoint.PositionIndex);
+            
+            Vector3 GetCirclePosition(float angle)
+            {
+                angle *= Mathf.Deg2Rad;
+                Vector3 position = new Vector3(Mathf.Cos(angle) * explosion.Radius, Mathf.Sin(angle) * explosion.Radius);
+                return explosion.Origin + position;
+            }
+        }
+
+        private float GetAngleOnExplosion(Vector3 position, Explosion explosion)
+        {
+            Vector3 positionVector = position - explosion.Origin;
+            float angle = Mathf.Atan2(positionVector.y, positionVector.x) * Mathf.Rad2Deg;
+            if (angle < 0)
+                return 360f + angle;
+            return angle;
+        }
+
+        private void AddLinePosition(Point point, bool connectedToPrevious, bool connectedToNext = true)
+        {
             point.ConnectedToPrevious = connectedToPrevious;
             point.ConnectedToNext = connectedToNext;
             point.PositionIndex = newLinePositions.Count;
             newLinePositions.Add(point.Position);
         }
 
-        private void AddLine(Line line, bool connectedToPrevious, bool connectedToNext = true)
+        private void AddLinePositionRange(List<Vector3> positions, int index) => newLinePositions.InsertRange(index, positions);
+
+        private void AddPoint(Point point, int index) => points.Insert(index, point);
+
+        private int HandleRangeRemoval(Point startPoint)
         {
-            AddPoint(line.PointA, connectedToPrevious, connectedToNext);
-            AddPoint(line.PointB, connectedToPrevious, connectedToNext);
+            int startIndex = points.IndexOf(startPoint);
+            for (int i = startIndex; i > 0; --i)
+                if (!points[i].ConnectedToPrevious)
+                    return RemovePointRange(points[i], points[startIndex]);
+            return 0;
         }
 
-        private void RemovePoint(Point point)
+        private int RemovePointRange(Point firstPoint, Point lastPoint)
         {
-            if (point.PositionIndex < 0)
-                return;
-            newLinePositions.RemoveAt(point.PositionIndex);
-            point.PositionIndex = -1;
-        }
-
-        private void RemovePointRange(Point firstPoint, Point lastPoint)
-        {
-            int count = lastPoint.PositionIndex - firstPoint.PositionIndex + 1;
+            int count = lastPoint.PositionIndex - firstPoint.PositionIndex;
             newLinePositions.RemoveRange(firstPoint.PositionIndex, count);
+            firstPoint.ConnectedToPrevious = true;
+            lastPoint.ConnectedToNext = true;
+            Debug.Log($"Removed {count} objects betweed index {firstPoint.PositionIndex} and {lastPoint.PositionIndex}");
+            return count;
         }
 
-        private Vector3[] GetIntersection(Line line, Explosion explosion)
+        private Vector3[] GetIntersections(Line line, Explosion explosion)
         {   // Calculates intersection between explosion circle and line
             // (x - a)^2 + (y - b)^2 = r^2
             // y = kx + m
@@ -202,10 +216,11 @@ namespace Tanks
             float discriminant = Mathf.Pow(p / 2, 2) - q;
             if (discriminant >= 0)
             {
-                float x1 = -p / 2 + Mathf.Sqrt(Mathf.Pow(p / 2, 2) - q);
-                float x2 = -p / 2 - Mathf.Sqrt(Mathf.Pow(p / 2, 2) - q);
+                float x1 = -p / 2 + Mathf.Sqrt(discriminant);
+                float x2 = -p / 2 - Mathf.Sqrt(discriminant);
                 intersections = new Vector3[] { new Vector3(x1, k * x1 + m), new Vector3(x2, k * x2 + m) };
             }
+            Debug.Log($"Intersections 1: {intersections[0]}, 2: {intersections[1]}");
             return intersections;
         }
 
@@ -258,8 +273,8 @@ namespace Tanks
             {
                 PointA = pointA;
                 PointB = pointB;
-                m = LeftPoint.Position.y;
-                k = (RightPoint.Position.y - LeftPoint.Position.y) / (RightPoint.Position.x - LeftPoint.Position.x);               
+                k = (RightPoint.Position.y - LeftPoint.Position.y) / (RightPoint.Position.x - LeftPoint.Position.x);
+                m = LeftPoint.Position.y - k * LeftPoint.Position.x;
             }
 
             //TODO Räkna med linjer som överskrids men som inte är har punkter i explosioner
@@ -280,6 +295,28 @@ namespace Tanks
             {
                 Origin = origin;
                 Radius = radius;   
+            }
+
+            public float[] GetX(float y)
+            {
+                float a = Origin.x;
+                float b = Origin.y;
+                float discriminant = Mathf.Sqrt(-y * y + 2 * y * b - b * b + Radius * Radius);
+                float x1 = a + discriminant;
+                float x2 = a - discriminant;
+                float[] x = new float[] {x1, x2};
+                return x;
+            }
+
+            public float[] GetY(float x)
+            {
+                float a = Origin.x;
+                float b = Origin.y;
+                float discriminant = Mathf.Sqrt(-x * x + 2 * x * a - a * a + Radius * Radius);
+                float y1 = b + discriminant;
+                float y2 = b - discriminant;
+                float[] y = new float[] { y1, y2 };
+                return y;
             }
         }
     }
