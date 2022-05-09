@@ -53,41 +53,36 @@ public class AiTank : Tank
         fuelSlider.value = currentFuel / maxFuel;
     }
 
-    public void Aim()
+    public void Aim(Transform enemyTarget)
     {
-        //Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
-        //Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
+        float g = Physics.gravity.y;
+        float x = transform.position.x - enemyTarget.position.x;
+        float y = transform.position.y - enemyTarget.position.y;
+        float v = Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
 
-        ////Quaternion newRotation = Quaternion.LookRotation(lookVector);
-        ////rotatePoint.transform.rotation = newRotation;
+        float v2 = v * v;
+        float v4 = v * v * v * v;
 
-        //float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
+        float gx2 = g * v2;
+        float yv2 = 2 * y * v * v;
+        float gx = g * x;
 
-        //if (rotationZ < -90)
-        //    rotationZ = -90;
-        //else if (rotationZ > 179)
-        //    rotationZ = 179;
+        float res = Mathf.Sqrt(v4 - g * (gx2 + yv2));
+        float res1 = v2 + res;
+        float res2 = res1 / gx;
 
-        //rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        float trajectoryAngle = Mathf.Atan(res2) * 180 / Mathf.PI;
+
+        if (float.IsNaN(trajectoryAngle))
+        {
+            trajectoryAngle = 0;
+        }
+
+        //return trajectoryAngle;
+        currentShootForce = v;
+        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
+
+
+        Fire();
     }
-
-    public void CalculateShootForce()
-    {
-        //Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(cannon.transform.position);
-        //float percentage = Vector2.Distance(cannonScreenPos, playerController.GetMousePosition()) / aimRadius;
-        //percentage = Mathf.Clamp01(percentage);
-        //currentShootForce = percentage * maxShootForce;
-        //shootForceSlider.value = percentage;
-    }
-
-    public void SwapProjectile()
-    {
-        //projectileIndex += playerController.GetNewWeapon() + projectiles.Count;
-        //projectileIndex %= projectiles.Count;
-        //currentProjectile = projectiles[projectileIndex];
-
-        //if (projectileTMP)
-        //    projectileTMP.text = "Current projectile: " + currentProjectile.name;
-    }
-
 }
