@@ -237,7 +237,7 @@ namespace Tanks
             return positions[closestIndex];
         }
 
-        public class Point
+        private class Point
         {
             public Vector3 Position { get; set; }
             public int PositionIndex { get; set; }
@@ -262,7 +262,7 @@ namespace Tanks
             }
         }
 
-        public class Line
+        private class Line
         {
             public Point PointA { get; set; }
             public Point PointB { get; set; }

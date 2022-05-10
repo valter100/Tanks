@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PointVisualizer : MonoBehaviour
 {
     [SerializeField] public GameObject pointPrefab;
@@ -19,7 +18,7 @@ public class PointVisualizer : MonoBehaviour
     /// </summary>
     public static void AddPoint(Vector3 position, float timeToLive = 1.0f)
     {
-        Point point = Instantiate(pointVisualizer.pointPrefab, gameObject.transform).GetComponent<Point>();
+        Tanks.Point point = Instantiate(pointVisualizer.pointPrefab, gameObject.transform).GetComponent<Tanks.Point>();
         point.timeToLive = timeToLive;
         point.transform.position = position;
         point.hideFlags = HideFlags.HideInHierarchy;
