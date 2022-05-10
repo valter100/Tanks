@@ -53,9 +53,9 @@ public abstract class Tank : MonoBehaviour
 
     protected float timeSinceLastEffect;
     protected int projectileIndex;
-    [SerializeField] protected bool hasFired = false;
+    protected bool hasFired = false;
     protected float currentFuel;
-    [SerializeField] protected float currentHealth;
+    protected float currentHealth;
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
@@ -185,6 +185,17 @@ public abstract class Tank : MonoBehaviour
         this.player = player;
         nameText.text = player.Info.name;
         SetColor(player.Info.color);
+
+        if (player.Info.control == Control.Player)
+        {
+            GetComponent<PlayerTank>().enabled = true;
+            GetComponent<PlayerController>().enabled = true;
+        }
+        else if (player.Info.control == Control.Bot)
+        {
+            GetComponent<AiTank>().enabled = true;
+            GetComponent<AiManager>().enabled = true;
+        }
     }
 
     public void Ready()
