@@ -6,7 +6,7 @@ public class Tower : MonoBehaviour
 {
     [SerializeField] Transform rotatePoint;
     [SerializeField] PlayerController controller;
-    [SerializeField] Camera cam;
+    Camera cam;
 
     bool facingRight;
 
@@ -15,18 +15,16 @@ public class Tower : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
-    private void Update()
-    {
-        Aim();
-    }
+    //private void Update()
+    //{
+    //    Aim();
+    //}
 
     public void Aim()
     {
         Vector2 mousePosition = controller.GetMousePosition();
 
         float xValue = cam.WorldToScreenPoint(rotatePoint.transform.position).x - mousePosition.x;
-
-        Debug.Log(xValue);
 
         if (xValue < 0 && !facingRight)
         {

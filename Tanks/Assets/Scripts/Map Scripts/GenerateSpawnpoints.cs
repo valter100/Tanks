@@ -4,23 +4,25 @@ using UnityEngine;
 
 public class GenerateSpawnpoints : ObjectGenerator
 {
-    [SerializeField] GameObject spawnPointPrefab;
-    [Range(2, 4)]
-    [SerializeField] int numberOfTanks;
+    [SerializeField] private bool ready;
 
-    public override void GenerateObjects(Vector3[] linePositions, float width, float depth)
+    public bool Ready => ready;
+
+    public void PrepareGeneration(Vector3[] linePositions, float width, float depth)
     {
-        base.GenerateObjects(linePositions, width, depth);  
+        base.GenerateObjects(linePositions, width, depth);
+        ready = true;
     }
 
-    public void GenerateTank(GameObject tank)
+    public Vector3 GetNewSpawnpoint()
     {
-        InstantiateAtPosition(GetRandomSpawnPosition(), tank);
-    }
+        if (!ready)
+        {
+            Debug.LogWarning("GenerateSpawnpoints script not ready.");
+            return Vector3.zero;
+        }
 
-    private Vector3 GetRandomSpawnPosition()
-    {
-        int attemptsBeforeExit = 10;
+        int attemptsBeforeExit = 20;
         Vector3 randomizedVector = Vector3.zero;
 
         while (attemptsBeforeExit > 0)
@@ -39,5 +41,4 @@ public class GenerateSpawnpoints : ObjectGenerator
         return randomizedVector;
     }
 
-    private void InstantiateAtPosition(Vector3 position, GameObject tank) => CreateObjectAtPosition(position, tank);
 }

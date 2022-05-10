@@ -22,7 +22,6 @@ public class ItemSlot : MonoBehaviour
         frame = transform.Find("Frame").gameObject;
 
         amountText.text = "";
-        Deselect();
     }
 
     void Update()

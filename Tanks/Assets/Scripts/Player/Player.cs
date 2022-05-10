@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,10 +30,26 @@ public class Player : MonoBehaviour
         tank.ManualUpdate();
     }
 
-    public void Initialize(PlayerInfo info)
+    public void Initialize(string name, Color color, Prefab tankPrefab, Control control, Vector3 position)
     {
-        this.info = info;
+        // Info
+
+        info.name = name;
+        info.color = color;
+        info.tankPrefab = tankPrefab;
+        info.control = control;
+
+        // Tank
+
+        tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<Tank>();
         tank.LinkPlayer(this);
+        tank.transform.position = position;
+
+        // Inventory
+
+        inventory.Clear();
+        foreach (GameObject prefab in Prefabs.Items.Values)
+            inventory.AddItem(prefab, 12);
     }
 
     public void Ready()

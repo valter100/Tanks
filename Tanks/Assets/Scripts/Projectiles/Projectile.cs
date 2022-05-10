@@ -125,8 +125,10 @@ public abstract class Projectile : MonoBehaviour
     public void Fire(Quaternion angle, float power)
     {
         transform.rotation = angle;
-        Vector3 force = gameObject.transform.up * power;
-        rb.velocity += force / rb.mass;
+        Vector3 force = transform.up * power;
+
+        Vector3 velocity = force / rb.mass;
+        rb.velocity = velocity;
 
         // Equivalent to: rb.AddForce(force, ForceMode.Impulse)
         // AddForce is not used since the Rigidbody requires an update before
@@ -138,6 +140,7 @@ public abstract class Projectile : MonoBehaviour
     /// </summary>
     public PrecomputedResult? PrecomputeTrajectory(float timeToVisualize = 0.0f)
     {
+        Debug.Log("Rigidbody Velocity: " + rb.velocity);
         RaycastHit raycastHit;
 
         // For the duration of its life time
@@ -166,6 +169,7 @@ public abstract class Projectile : MonoBehaviour
             rb.velocity *= 1.0f - Time.fixedDeltaTime * rb.drag;
             rb.velocity += Physics.gravity * Time.fixedDeltaTime;
             rb.position += rb.velocity * Time.fixedDeltaTime;
+
         }
 
         Destroy(gameObject);

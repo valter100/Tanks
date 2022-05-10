@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] public int selectedIndex;
     [SerializeField] public List<Item> items;
 
-    private static PlayerController playerController;
+    private PlayerController playerController;
     private static Inventory inventory;
 
     /// <summary>
@@ -19,16 +19,15 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>
     /// Returns the selected item, or null if no item is selected.
     /// </summary>
-    public Item SelectedItem => ItemSelected ? items[selectedIndex] : null;
+    [SerializeField] public Item SelectedItem => ItemSelected ? items[selectedIndex] : null;
 
-    private void Start()
+    private void Awake()
     {
-        if (playerController == null)
-            playerController = GameObject.Find("Player Controller").GetComponent<PlayerController>();
-
         if (inventory == null)
             inventory = GameObject.Find("Canvas").transform.Find("Inventory").GetComponent<Inventory>();
 
+        items = new List<Item>();
+        playerController = GetComponent<PlayerController>();
         selectedIndex = -1;
     }
     
@@ -61,15 +60,19 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddItem(GameObject prefab, int amount)
     {
-        if (amount <= 0)
+        if (prefab == null || amount <= 0)
             return;
 
-        int i = items.FindIndex(item => item.gameObject == prefab);
+        Debug.Log(items);
+        int i = items.FindIndex(item => item.prefab == prefab);
 
         if (i == -1)
             items.Add(new Item(prefab, amount));
         else
             items[i].amount += amount;
+
+        if (!ItemSelected)
+            IncrementSelectedItem(1);
     }
 
     public void Clear()
@@ -79,3 +82,4 @@ public class PlayerInventory : MonoBehaviour
     }
 
 }
+

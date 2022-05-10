@@ -7,8 +7,9 @@ public class AiTank : Tank
 {
     private AiManager aiManager;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         aiManager = GetComponent<AiManager>();
     }
 

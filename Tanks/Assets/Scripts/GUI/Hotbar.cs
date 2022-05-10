@@ -35,7 +35,6 @@ public class Hotbar : MonoBehaviour
 
     private void Start()
     {
-        itemSlot.Select();
         SetOpen(true);
     }
 
@@ -81,15 +80,11 @@ public class Hotbar : MonoBehaviour
     
     private void UpdateItemPanel()
     {
-        itemName.text = itemSlot.item.name;
+        itemName.text = itemSlot.item.prefab.name.SplitPascalCase();
         itemDescription.text = "---";
         itemDamage.text = "---";
         itemExplosiveRadius.text = "---";
         itemRange.text = "---";
     }
 
-    public void OnClick_ItemSlot()
-    {
-        guiManager.inventory.ToggleOpen();
-    }
 }

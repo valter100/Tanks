@@ -6,8 +6,10 @@ public class PlayerTank : Tank
 {
     private static PlayerController playerController;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if (playerController == null)
             playerController = GetComponent<PlayerController>();
     }
@@ -31,24 +33,21 @@ public class PlayerTank : Tank
     public void Move()
     {
         if (playerController.GetMovement().x > 0)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         else if (playerController.GetMovement().x < 0)
-            transform.rotation = Quaternion.Euler(0, -180, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, -180, 0);
 
-        Vector3 localDirection = transform.InverseTransformDirection(Vector3.right);
+        Vector3 localDirection = chassi.transform.InverseTransformDirection(Vector3.right);
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
+        if (Physics.Raycast(chassi.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
         {
-            //Debug.DrawLine(transform.position + new Vector3(0,1,0) * 0.66f + localDirection, hit.point);
-            //Debug.Log(hit.normal.y);
             if (hit.normal.y < 0.85f)
                 return;
         }
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
-        //rb.AddForce(playerController.GetMovement() * movementSpeed);
         timeSinceLastEffect += Time.deltaTime;
         if (timeSinceLastEffect > timeBetweenEffectSpawn)
         {
@@ -65,27 +64,17 @@ public class PlayerTank : Tank
 
     public void Aim()
     {
-        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(rotatePoint.transform.position);
-        Vector2 lookVector = playerController.GetMousePosition() - cannonScreenPos;
-
-        float rotationZ = Mathf.Atan2(lookVector.y, lookVector.x) * Mathf.Rad2Deg - 90;
-
-        if (rotationZ < -90)
-            rotationZ = -90;
-
-        else if (rotationZ > 179)
-            rotationZ = 179;
-
-        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
+        tower.Aim();
+        gun.Aim();
     }
 
     public void CalculateShootForce()
     {
-        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(cannon.transform.position);
+        Vector2 cannonScreenPos = Camera.main.WorldToScreenPoint(gun.transform.position);
         float percentage = Vector2.Distance(cannonScreenPos, playerController.GetMousePosition()) / aimRadius;
         percentage = Mathf.Clamp01(percentage);
         currentShootForce = percentage * maxShootForce;
         shootForceSlider.value = percentage;
+        Debug.Log("Shoot Force: " + currentShootForce);
     }
-
 }
