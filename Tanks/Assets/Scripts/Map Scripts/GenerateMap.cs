@@ -165,10 +165,10 @@ public class GenerateMap : MonoBehaviour
             if (!points[i].CanReachFloor)
                 continue;
 
-            points[i].vertexIndex = i + 1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
-            int pastIndex = points[i].vertexIndex - verticesPerPosition;
+            points[i].VertexIndex = i + 1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
+            int pastIndex = points[i].VertexIndex - verticesPerPosition;
             for (int j = 0; j < verticesPerPosition - 1; j++)
-                AddQuad(pastIndex + j, points[i].vertexIndex + j, j < 2);
+                AddQuad(pastIndex + j, points[i].VertexIndex + j, j < 2);
             points[i].IsConnected = true;
         }
 
@@ -178,15 +178,15 @@ public class GenerateMap : MonoBehaviour
         {
             if (!points[i].IsConnected)
             {
-                previousIndex = points[i - 1].vertexIndex;
-                points[i].vertexIndex = AddVertex(points[i].position, true);
+                previousIndex = points[i - 1].VertexIndex;
+                points[i].VertexIndex = AddVertex(points[i].position, true);
                 if (nextIndex < i)
                     nextIndex = GetNextConnectedPoint(i);
-                AddQuad(previousIndex, points[i].vertexIndex, true);
-                quads.Add(new Quad(points[i].vertexIndex + 1, previousIndex + 1, points[nextIndex].vertexIndex + 1, -1, true));
+                AddQuad(previousIndex, points[i].VertexIndex, true);
+                quads.Add(new Quad(points[i].VertexIndex + 1, previousIndex + 1, points[nextIndex].VertexIndex + 1, -1, true));
 
                 if (nextIndex == i + 1)
-                    AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+                    AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex, true);
 
                 points[i].IsConnected = true;
             }
@@ -291,9 +291,10 @@ public class GenerateMap : MonoBehaviour
 
     private void GenerateObjects()
     {
-        GetComponent<GenerateDecor>().GenerateObjects(linePositions, width, depth);
-        GetComponent<GenerateSpawnpoints>().PrepareGeneration(linePositions, width, depth);
+        GetComponent<GenerateDecor>().GenerateObjects(LinePositions, width, depth);
+        GetComponent<GenerateSpawnpoints>().PrepareGeneration(LinePositions, width, depth);
     }
+}
 
 namespace Tanks.MapPoint
 {
