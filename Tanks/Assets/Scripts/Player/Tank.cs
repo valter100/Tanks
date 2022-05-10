@@ -24,7 +24,7 @@ public abstract class Tank : MonoBehaviour
     [Header("Combat")]
     [SerializeField] protected ParticleSystem fireParticles;
     [SerializeField] protected Animator animator;
-    [SerializeField] protected ParticleSystem famagedParticles;
+    [SerializeField] protected ParticleSystem damagedParticles;
 
     [Header("Explosion")]
     [SerializeField] protected Explosion explosion;
@@ -39,8 +39,9 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected Player player;
     [SerializeField] protected GameObject rotatePoint;
     [SerializeField] protected GameObject[] tankParts;
-    [SerializeField] protected GameObject cannon;
-    [SerializeField] protected Transform firePoint;
+    [SerializeField] protected GameObject chassi;
+    [SerializeField] protected Tower tower;
+    [SerializeField] protected Gun gun;
     [SerializeField] protected Transform rumbleSpot;
 
     [Header("GUI")]
@@ -52,9 +53,9 @@ public abstract class Tank : MonoBehaviour
 
     protected float timeSinceLastEffect;
     protected int projectileIndex;
-    protected bool hasFired = false;
+    [SerializeField] protected bool hasFired = false;
     protected float currentFuel;
-    protected float currentHealth;
+    [SerializeField] protected float currentHealth;
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
@@ -74,7 +75,7 @@ public abstract class Tank : MonoBehaviour
     public bool CanFire() => !hasFired && currentHealth > 0.0f;
 
 
-    private void Start()
+    protected virtual void Start()
     {
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -109,17 +110,16 @@ public abstract class Tank : MonoBehaviour
 
     public Projectile InstantiateProjectile()
     {
-        Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, firePoint).GetComponent<Projectile>();
+        Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, gun.GetFirePoint()).GetComponent<Projectile>();
         projectile.ownTank = this;
         projectile.transform.parent = null;
-        projectile.Fire(cannon.transform.rotation, currentShootForce);
+        projectile.Fire(gun.transform.parent.transform.rotation, currentShootForce);
         return projectile;
     }
 
     protected void Fire()
     {
         // Precompute projectile
-
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
 
@@ -137,7 +137,7 @@ public abstract class Tank : MonoBehaviour
         if (animator)
             animator.SetTrigger("Fire");
 
-        Instantiate(fireParticles, firePoint.position, Quaternion.identity, null);
+        Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
         player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
 
         Projectile projectile = InstantiateProjectile();
@@ -170,7 +170,7 @@ public abstract class Tank : MonoBehaviour
         if (currentHealth > 0.0f)
         {
             animator.SetTrigger("Damaged");
-            Instantiate(famagedParticles, transform.position, Quaternion.identity, null);
+            Instantiate(damagedParticles, transform.position, Quaternion.identity, null);
         }
         else
         {

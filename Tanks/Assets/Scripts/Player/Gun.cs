@@ -6,17 +6,12 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] Transform rotatePoint;
     [SerializeField] PlayerController controller;
-    [SerializeField] Camera cam;
+    Camera cam;
     [SerializeField] Transform firePoint;
 
     private void Start()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-    }
-
-    private void Update()
-    {
-        Aim();
     }
 
     public void Aim()

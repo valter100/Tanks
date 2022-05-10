@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234084714172202981}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.015881538, y: 0.9428672, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4136549662212236512}
@@ -97,7 +97,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 2850206411591242150}
   controller: {fileID: 7664846895700311258}
-  cam: {fileID: 0}
 --- !u!1 &269192754818683625
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269192754818683625}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.5035424, y: -0.5620122, z: 1.3439059}
+  m_LocalPosition: {x: -0.17, y: -0.5620122, z: 1.3439059}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2087007544571495219}
@@ -309,7 +308,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 4136549662212236512}
   controller: {fileID: 7664846895700311258}
-  cam: {fileID: 0}
   firePoint: {fileID: 4261913482558963813}
 --- !u!1 &1440287824427188877
 GameObject:
@@ -335,7 +333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440287824427188877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.82, z: 0}
+  m_LocalPosition: {x: 0, y: 1.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3052982436888107006}
@@ -467,9 +465,9 @@ GameObject:
   - component: {fileID: 226711847806081470}
   - component: {fileID: 7664846895700311258}
   - component: {fileID: 6538253324154581228}
-  - component: {fileID: 6538253324154581227}
-  - component: {fileID: 5838577604151896639}
   - component: {fileID: 6538253324154581230}
+  - component: {fileID: 2657026208458003744}
+  - component: {fileID: 4999108648552774094}
   m_Layer: 0
   m_Name: Tank1fbx
   m_TagString: Tank
@@ -505,14 +503,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98885a335a0105e4088d41b50f1ab0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  cameraController: {fileID: 0}
-  isActive: 0
-  playerName: 
-  playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 15
-  maxShootForce: 250
-  maxFuel: 200
+  maxShootForce: 100
+  maxFuel: 100
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -520,36 +513,27 @@ MonoBehaviour:
   jumpForce: 100
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.25
-  projectiles:
-  - {fileID: 7936401087168736136, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
-  - {fileID: 4666774405610918408, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
-  - {fileID: -8063847045595054941, guid: 3993da982c11aea4a83c040dbfad7e89, type: 3}
-  - {fileID: 6481296158931651720, guid: d90d4454beadc314bba6b501d2b98a73, type: 3}
-  - {fileID: 5288328317349611985, guid: f970a4f8397fea14fa7c1f2a2b5f06cf, type: 3}
-  - {fileID: 4666774405610918408, guid: 8e98790f6a261f04a819d6bca196c43d, type: 3}
-  - {fileID: 2485305547307765608, guid: 45a7ad875c0428544a76c1f7ab59a7e3, type: 3}
-  - {fileID: 2010923922042384439, guid: 55ef6006a2889ca4f8e05e3e4a17fc74, type: 3}
-  - {fileID: -5739045232068466832, guid: d6f425a57b481464d8b0bf0189fb6fe7, type: 3}
-  ammo: 
-  currentProjectile: {fileID: 0}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
-  animator: {fileID: 5838577604151896639}
-  tankDamagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
+  animator: {fileID: 2657026208458003744}
+  damagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
   explosion: {fileID: 0}
   explosionDamage: 0
   isSlowed: 0
+  player: {fileID: 0}
   rotatePoint: {fileID: 2168714140922752080}
   tankParts:
   - {fileID: 823687964183072229}
-  body: {fileID: 823687964183072229}
-  cannon: {fileID: 963748327498118015}
-  firePoint: {fileID: 4261913482558963813}
+  chassi: {fileID: 823687964183072229}
+  tower: {fileID: 3429087769263482813}
+  gun: {fileID: 3975383469951734012}
   rumbleSpot: {fileID: 6458958948821315585}
   nameText: {fileID: 2356583793397656385}
   healthSlider: {fileID: 2840559886408133184}
   fuelSlider: {fileID: 6126757462696722231}
   shootForceSlider: {fileID: 855066007436251629}
   aimRadius: 250
+  hasFired: 0
+  currentHealth: 0
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,38 +562,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
---- !u!65 &6538253324154581227
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8375430385975182193}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.7054281, y: 3.9337535, z: 3.501601}
-  m_Center: {x: -4.571898, y: 1.6067607, z: 0.00347054}
---- !u!95 &5838577604151896639
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8375430385975182193}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!82 &6538253324154581230
 AudioSource:
   m_ObjectHideFlags: 0
@@ -706,6 +658,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &2657026208458003744
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375430385975182193}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &4999108648552774094
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375430385975182193}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.0468493, y: 3.734644, z: 3.6092553}
+  m_Center: {x: -4.5491195, y: 1.4388847, z: 0}
 --- !u!1 &8647265570607738252
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,7 +714,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8647265570607738252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.62, y: -0, z: 0}
+  m_LocalPosition: {x: -1.23, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6850933712307228528}

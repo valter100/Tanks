@@ -19,7 +19,7 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>
     /// Returns the selected item, or null if no item is selected.
     /// </summary>
-    public Item SelectedItem => ItemSelected ? items[selectedIndex] : null;
+    [SerializeField] public Item SelectedItem => ItemSelected ? items[selectedIndex] : null;
 
     private void Awake()
     {
@@ -63,6 +63,7 @@ public class PlayerInventory : MonoBehaviour
         if (prefab == null || amount <= 0)
             return;
 
+        Debug.Log(items);
         int i = items.FindIndex(item => item.prefab == prefab);
 
         if (i == -1)
@@ -81,3 +82,4 @@ public class PlayerInventory : MonoBehaviour
     }
 
 }
+

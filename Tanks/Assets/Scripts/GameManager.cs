@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < gameInfo.names.Count; ++i)
             {
                 Player player = AddNewPlayer();
-
                 player.Initialize(
                     gameInfo.names[i][0] != '\u200B' ? gameInfo.names[i] : "Player " + players.Count,
                     gameInfo.colors[i],

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -978,9 +978,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tankKeys: 000000000100000002000000
   tankValues:
-  - {fileID: 694820345919734862, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
-  - {fileID: 694820345919734862, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
-  - {fileID: 694820345919734862, guid: f5b9853f3ceafca4b8a35f7ef76de908, type: 3}
+  - {fileID: 8375430385975182193, guid: c1b99d69cb1e6e540a6ab2534e7d35bb, type: 3}
+  - {fileID: 8375430385975182193, guid: c1b99d69cb1e6e540a6ab2534e7d35bb, type: 3}
+  - {fileID: 8375430385975182193, guid: c1b99d69cb1e6e540a6ab2534e7d35bb, type: 3}
   itemKeys: 030000000400000005000000060000000700000008000000090000000a0000000b000000
   itemValues:
   - {fileID: 725691630527340521, guid: 45a7ad875c0428544a76c1f7ab59a7e3, type: 3}
