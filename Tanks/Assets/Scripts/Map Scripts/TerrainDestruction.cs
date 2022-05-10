@@ -11,8 +11,8 @@ namespace Tanks
         private List<Line> lines;
         private List<Point> points;
         private List<Vector3> newLinePositions;
+        private Explosion explosion;
 
-        //TODO kolla över beräkning av cirkelns ekvation och resultat som skjuter åt olika håll
         public void DestroyTerrain(Vector3 explosionOrigin, float explosionRadius)
         {
             GenerateMap mapGenerator = gameObject.GetComponent<GenerateMap>();
@@ -21,9 +21,9 @@ namespace Tanks
             CreatePointsAndLines(mapGenerator.LinePositions);
             Vector3 origin = explosionOrigin - transform.position;
             origin.z = 0;
-            Explosion explosion = new Explosion(origin, explosionRadius);
+            explosion = new Explosion(origin, explosionRadius);
 
-            AddPointsAfterExplosion(explosion);
+            AddPointsAfterExplosion();
 
             Debug.Log("Previous line positions: " + points.Count);
             Debug.Log("New line positions: " + newLinePositions.Count);
@@ -42,7 +42,7 @@ namespace Tanks
             }
         }
 
-        private void AddPointsAfterExplosion(Explosion explosion)
+        private void AddPointsAfterExplosion()
         {
             for (int i = 0; i < lines.Count; i++)
             {
@@ -51,23 +51,26 @@ namespace Tanks
 
                 if (lines[i].IsInExplosion(explosion))
                 {
-                    HandleExplosion(i, explosion);
+                    HandleExplosion(i);
                     continue;
                 }
                 AddLinePosition(lines[i].PointB, true);
             }
 
-            //TODO kolla på uteblivna cirklar vid många punkter
             for (int i = 0; i < points.Count - 1; i++)
-                if (!points[i].ConnectedToNext && !points[i + 1].ConnectedToPrevious)
+            {
+                for (int j = i + 1; j < points.Count; j++)
                 {
-                    Debug.Log("Adding pojnts to cuurkel");
-                    AddPointsAlongCircle(i, i+1, explosion);
+                    if (!points[i].ConnectedToNext && !points[j].ConnectedToPrevious)
+                    {
+                        Debug.Log("Adding pojnts to cuurkel");
+                        AddPointsAlongCircle(i, j);
+                    }
                 }
-                    
+            }     
         }
 
-        private void HandleExplosion(int i, Explosion explosion)
+        private void HandleExplosion(int i)
         {//TODO fixa sprängning av kanter
             if (i == 0) //Hantera första punkt
             {
@@ -78,7 +81,7 @@ namespace Tanks
 
             if (i > 0 && !lines[i - 1].IsInExplosion(explosion))
             {
-                Vector3[] intersections = GetIntersections(lines[i], explosion);
+                Vector3[] intersections = GetIntersections(lines[i]);
                 if (intersections.Length > 0)
                     lines[i].PointB.Position = GetClosestValidPosition(lines[i], lines[i].PointA, intersections);
                 AddLinePosition(lines[i].PointB, true, false);
@@ -95,7 +98,7 @@ namespace Tanks
                     AddPoint(point, i);
                 }
 
-                Vector3[] intersections = GetIntersections(lines[i], explosion);
+                Vector3[] intersections = GetIntersections(lines[i]);
                 if (intersections.Length > 0)
                     lines[i].PointA.Position = GetClosestValidPosition(lines[i], lines[i].PointB, intersections);
                 AddLinePosition(lines[i].PointA, false);
@@ -110,48 +113,43 @@ namespace Tanks
             }
         }
 
-        private void AddPointsAlongCircle(int startIndex, int stopIndex, Explosion explosion)
+        private void AddPointsAlongCircle(int startIndex, int stopIndex)
         {
             Point startPoint = points[startIndex];
             Point stopPoint = points[stopIndex];
 
             Debug.DrawLine(startPoint.Position + transform.position, stopPoint.Position + transform.position, Color.red, 2000);
 
-            float angleStart = GetAngleOnExplosion(startPoint.Position, explosion);
-            float angleStop = GetAngleOnExplosion(stopPoint.Position, explosion);
+            float angleStart = GetAngleOnExplosion(startPoint.Position);
+            float angleStop = GetAngleOnExplosion(stopPoint.Position);
+            if (angleStart >= angleStop)
+                angleStart -= 360;
             int numberOfPoints = (int)(explosion.Radius * pointsPerDegree * Mathf.Abs(angleStop - angleStart));
             Debug.Log($"Start angle {angleStart}, stop angle {angleStop}, number of points {numberOfPoints}");
 
             List<Vector3> positions = new List<Vector3>();
 
-            if (angleStart < angleStop)
+            
+
+            for (int i = 0; i < numberOfPoints + 2; i++)
             {
-                for (int i = 0; i < numberOfPoints + 2; i++)
-                {
-                    float angle = Mathf.LerpAngle(angleStart, angleStop, i / (float)(numberOfPoints + 1));
-                    positions.Add(GetCirclePosition(angle));
-                }
-            }
-            else
-            {
-                for (int i = numberOfPoints + 2; i >= 0 ; --i)
-                {
-                    float angle = Mathf.LerpAngle(angleStop, angleStart, i / (float)(numberOfPoints + 1));
-                    positions.Add(GetCirclePosition(angle));
-                }
+                float angle = Mathf.Lerp(angleStart, angleStop, i / (float)(numberOfPoints + 1));
+                positions.Add(GetCirclePosition(angle));
             }
 
             AddLinePositionRange(positions, stopPoint.PositionIndex);
             
             Vector3 GetCirclePosition(float angle)
             {
+                Debug.Log("Angle: " + angle);
                 angle *= Mathf.Deg2Rad;
+
                 Vector3 position = new Vector3(Mathf.Cos(angle) * explosion.Radius, Mathf.Sin(angle) * explosion.Radius);
                 return explosion.Origin + position;
             }
         }
 
-        private float GetAngleOnExplosion(Vector3 position, Explosion explosion)
+        private float GetAngleOnExplosion(Vector3 position)
         {
             Vector3 positionVector = position - explosion.Origin;
             float angle = Mathf.Atan2(positionVector.y, positionVector.x) * Mathf.Rad2Deg;
@@ -191,15 +189,15 @@ namespace Tanks
             return count;
         }
 
-        private Vector3[] GetIntersections(Line line, Explosion explosion)
+        private Vector3[] GetIntersections(Line line)
         {   // Calculates intersection between explosion circle and line
             // (x - a)^2 + (y - b)^2 = r^2
             // y = kx + m
             Vector3[] intersections = new Vector3[0];
             float k, m, a, b, r;
             float p, q;
-            k = line.k;
-            m = line.m;
+            k = line.K;
+            m = line.M;
             a = explosion.Origin.x;
             b = explosion.Origin.y;
             r = explosion.Radius;
@@ -220,12 +218,16 @@ namespace Tanks
                 float x2 = -p / 2 - Mathf.Sqrt(discriminant);
                 intersections = new Vector3[] { new Vector3(x1, k * x1 + m), new Vector3(x2, k * x2 + m) };
             }
-            Debug.Log($"Intersections 1: {intersections[0]}, 2: {intersections[1]}");
+            Debug.Log($"Intersections 1: {intersections[0] + transform.position}, 2: {intersections[1] + transform.position}");
             return intersections;
         }
 
         private Vector3 GetClosestValidPosition(Line line, Point targetPoint, Vector3[] positions)
         {
+
+            if (!IsOnCircleEdge(positions[0]) && !IsOnCircleEdge(positions[1]))
+                return targetPoint.Position;
+
             int closestIndex = 0;
             if (line.IsPointOnLineSegment(positions[0]) != line.IsPointOnLineSegment(positions[1]))
                 closestIndex = line.IsPointOnLineSegment(positions[0]) ? 0 : 1;
@@ -234,7 +236,15 @@ namespace Tanks
                 bool firstIsCloser = Vector3.Distance(targetPoint.Position, positions[0]) < Vector3.Distance(targetPoint.Position, positions[1]);
                 closestIndex = firstIsCloser ? 0 : 1;
             }
+
             return positions[closestIndex];
+
+            bool IsOnCircleEdge(Vector3 position)
+            {
+                float distanceToOrigin = Vector3.Distance(position, explosion.Origin);
+                float marginOfError = 0.05f;
+                return distanceToOrigin > explosion.Radius * (1 - marginOfError) && distanceToOrigin < explosion.Radius * (1 + marginOfError);
+            }
         }
 
         private class Point
@@ -268,21 +278,20 @@ namespace Tanks
             public Point PointB { get; set; }
             private Point LeftPoint => PointA.Position.x < PointB.Position.x ? PointA : PointB;
             private Point RightPoint => PointA.Position.x >= PointB.Position.x ? PointA : PointB;
-            public readonly float k, m;
+            public float K => (RightPoint.Position.y - LeftPoint.Position.y) / (RightPoint.Position.x - LeftPoint.Position.x);
+            public float M => LeftPoint.Position.y - K * LeftPoint.Position.x;
             public Line(Point pointA, Point pointB)
             {
                 PointA = pointA;
                 PointB = pointB;
-                k = (RightPoint.Position.y - LeftPoint.Position.y) / (RightPoint.Position.x - LeftPoint.Position.x);
-                m = LeftPoint.Position.y - k * LeftPoint.Position.x;
             }
 
             //TODO Räkna med linjer som överskrids men som inte är har punkter i explosioner
             public bool IsInExplosion(Explosion explosion) => LeftPoint.IsInExplosion(explosion) || RightPoint.IsInExplosion(explosion);
             public bool IsPointOnLineSegment(Vector3 point)
             {   //Checks if point is within bounds and if kx + m - y = 0
-                float kxmy = k * point.x + m - point.y;
-                float accuracy = 0.001f;
+                float kxmy = K * point.x + M - point.y;
+                float accuracy = 0.01f;
                 return LeftPoint.Position.x <= point.x && RightPoint.Position.x > point.x && (kxmy < accuracy || kxmy > -accuracy);
             }
         }

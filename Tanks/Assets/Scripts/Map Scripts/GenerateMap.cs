@@ -105,6 +105,12 @@ using UnityEngine.Rendering;
             float[] GetSlope(float height)
             {
                 float[] slopeHeights = new float[numberOfPoints];
+                if (numberOfPoints == 1)
+                {
+                    slopeHeights = new float[] { Mathf.Lerp(baseAmplitude, height, Mathf.Abs(height / baseAmplitude)) };
+                    return slopeHeights;
+                }
+                    
                 for (int i = 0; i < numberOfPoints; i++)
                     slopeHeights[i] = Mathf.Lerp(baseAmplitude, height, Mathf.Log(i + 1.0f, numberOfPoints));
                 return slopeHeights;
