@@ -8,7 +8,7 @@ public class GameInfo : MonoBehaviour
 
     [SerializeField] public List<string> names;
     [SerializeField] public List<Color> colors;
-    [SerializeField] public List<TankType> tankTypes;
+    [SerializeField] public List<Prefab> tankPrefabs;
     [SerializeField] public List<Control> controls;
 
     void Start()
@@ -17,7 +17,7 @@ public class GameInfo : MonoBehaviour
 
         names = new List<string>();
         colors = new List<Color>();
-        tankTypes = new List<TankType>();
+        tankPrefabs = new List<Prefab>();
         controls = new List<Control>();
     }
 
@@ -29,7 +29,7 @@ public class GameInfo : MonoBehaviour
             {
                 names.Add(tankCustomization.name);
                 colors.Add(tankCustomization.color);
-                tankTypes.Add(tankCustomization.tankType);
+                tankPrefabs.Add(tankCustomization.tankPrefab);
                 controls.Add(tankCustomization.control);
             }
         }

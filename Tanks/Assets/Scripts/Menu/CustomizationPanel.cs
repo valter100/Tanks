@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class CustomizationPanel : MonoBehaviour
 {
@@ -59,6 +60,9 @@ public class CustomizationPanel : MonoBehaviour
             colorIndex = colors.Length - 1;
 
         tankCustomization.color = colors[colorIndex];
+
+        // TODO: Change update tank
+
         UpdateOptionTexts();
     }
 
@@ -68,18 +72,33 @@ public class CustomizationPanel : MonoBehaviour
             colorIndex = 0;
 
         tankCustomization.color = colors[colorIndex];
+
+        // TODO: Change update tank
+
         UpdateOptionTexts();
     }
 
     public void OnClick_PreviousTank()
     {
-        tankCustomization.tankType.SetPrevious();
+        tankCustomization.tankPrefab.SetPrevious();
+
+        if (!Prefabs.Tanks.ContainsKey(tankCustomization.tankPrefab))
+            tankCustomization.tankPrefab = Prefabs.Tanks.Last().Key;
+
+        // TODO: Change update tank
+
         UpdateOptionTexts();
     }
 
     public void OnClick_NextTank()
     {
-        tankCustomization.tankType.SetNext();
+        tankCustomization.tankPrefab.SetNext();
+
+        if (!Prefabs.Tanks.ContainsKey(tankCustomization.tankPrefab))
+            tankCustomization.tankPrefab = Prefabs.Tanks.First().Key;
+
+        // TODO: Change update tank
+
         UpdateOptionTexts();
     }
 
@@ -98,7 +117,7 @@ public class CustomizationPanel : MonoBehaviour
     public void UpdateOptionTexts()
     {
         colorOption.text = colorNames[colorIndex];
-        tankOption.text = tankCustomization.tankType.ToString().SplitPascalCase();
+        tankOption.text = tankCustomization.tankPrefab.ToString().SplitPascalCase();
         controlOption.text = tankCustomization.control.ToString().SplitPascalCase();
     }
 

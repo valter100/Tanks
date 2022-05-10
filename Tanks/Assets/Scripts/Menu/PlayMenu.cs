@@ -42,8 +42,6 @@ public class PlayMenu : Menu
         GameInfo gameInfo = GameObject.Find("Game Info").GetComponent<GameInfo>();
         gameInfo.SaveInfo();
 
-
-
         SceneManager.LoadScene(1);
         Disable();
     }

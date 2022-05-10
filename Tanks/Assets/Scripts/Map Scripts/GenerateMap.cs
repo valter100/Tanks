@@ -199,7 +199,7 @@ using UnityEngine.Rendering;
         private void GenerateObjects()  
         {
             GetComponent<GenerateDecor>().GenerateObjects(linePositions, width, depth);
-            GetComponent<GenerateSpawnpoints>().GenerateObjects(linePositions, width, depth);
+            GetComponent<GenerateSpawnpoints>().PrepareGeneration(linePositions, width, depth);
         }
         
         //private void CreateUVs(List<Vector3> vertices, Mesh mesh)

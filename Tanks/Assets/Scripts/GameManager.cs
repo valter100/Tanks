@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Players")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private List<Player> players;
     [SerializeField] private Player currentPlayer;
     [SerializeField] private int currentPlayerIndex;
+
+    [Header("References")]
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private GameObject map;
 
     private bool pickingNextPlayer = false;
 
@@ -23,38 +27,56 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator Coroutine_StartMatch()
     {
-        float delay = 1.0f;
+        GameObject gameInfoObject = GameObject.Find("Game Info");
 
-        GameInfo gameInfo = GameObject.Find("Game Info").GetComponent<GameInfo>();
-
-        for (int i = 0; i < gameInfo.names.Count; ++i)
+        if (gameInfoObject != null)
         {
-            PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.name = gameInfo.names[i];
-            playerInfo.color = gameInfo.colors[i];
-            playerInfo.tankType = gameInfo.tankTypes[i];
-            playerInfo.control = gameInfo.controls[i];
+            GameInfo gameInfo = gameInfoObject.GetComponent<GameInfo>();
+            GenerateSpawnpoints generateSpawnpoints = GameObject.Find("Map").GetComponent<GenerateSpawnpoints>();
 
-            AddNewPlayer(playerInfo);
+            for (int i = 0; i < gameInfo.names.Count; ++i)
+            {
+                Player player = AddNewPlayer();
+
+                player.Initialize(
+                    gameInfo.names[i] != "" ? gameInfo.names[i] : "Player " + players.Count,
+                    gameInfo.colors[i],
+                    gameInfo.tankPrefabs[i],
+                    gameInfo.controls[i],
+                    //generateSpawnpoints.GetNewSpawnpoint());
+                    new Vector3(players.Count * 10.0f, 10.0f, 0.0f));
+
+                Debug.Log("Player added. Nr of players: " + players.Count);
+            }
         }
 
+        else
+        {
+            Debug.LogWarning("No Game Info Game Object found. Make sure to launch the game through the Menu scene.");
+        }
+
+        float delay = 1.0f;
         while (delay > 0.0f)
         {
             delay -= Time.deltaTime;
             yield return null;
         }
 
-        currentPlayerIndex = 0;
-        currentPlayer = players[currentPlayerIndex];
-        currentPlayer.Ready();
+        if (players.Count != 0)
+        {
+            currentPlayerIndex = 0;
+            currentPlayer = players[currentPlayerIndex];
+            currentPlayer.Ready();
+        }
+        
         yield return 0;
     }
 
-    public void AddNewPlayer(PlayerInfo playerInfo)
+    public Player AddNewPlayer()
     {
-        Player player = Instantiate(playerPrefab).GetComponent<Player>();
-        player.Initialize(playerInfo);
+        Player player = Instantiate(playerPrefab, transform).GetComponent<Player>();
         players.Add(player);
+        return player;
     }
 
     public void StartPlayerTransition()
@@ -114,4 +136,5 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 }

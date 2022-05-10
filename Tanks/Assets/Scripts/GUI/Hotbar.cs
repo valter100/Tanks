@@ -35,7 +35,6 @@ public class Hotbar : MonoBehaviour
 
     private void Start()
     {
-        itemSlot.Select();
         SetOpen(true);
     }
 

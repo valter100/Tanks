@@ -26,8 +26,6 @@ public class Tower : MonoBehaviour
 
         float xValue = cam.WorldToScreenPoint(rotatePoint.transform.position).x - mousePosition.x;
 
-        Debug.Log(xValue);
-
         if (xValue < 0 && !facingRight)
         {
             rotatePoint.transform.rotation = Quaternion.Euler(0, 0, 0);
