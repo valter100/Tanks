@@ -6,27 +6,42 @@ using Tanks.MapPoint;
 
 public class GenerateMap : MonoBehaviour
 {
+    enum GenerationMethod
+    {
+        Smoothen, Points
+    }
+
+    [Header("Debug Variables")]
     [SerializeField] private bool generateNewMap;
     [SerializeField] private bool drawDebugLines = false;
 
-    [Min(0.1f)]
-    [SerializeField] private float pointsPerWidth = 3;
-    [SerializeField] private float amplitude = 1.75f;
+    [Header("Generation Variables")]
+    [SerializeField] private GenerationMethod generationMethod;
+    [Range(0.1f, 6.0f)]
+    [SerializeField] private float pointsPerWidth;
     [Range(0.0f, 1.0f)]
-    [SerializeField] private float smoothFactor = 0.9f;
-    [SerializeField] private float width = 20f;
-    [SerializeField] private float height = 6f;
-    [SerializeField] private float depth = 3f;
-    [SerializeField] private float bottomDepth = 1f;
+    [SerializeField] private float smoothFactor;
+    [Tooltip("How far down past the edge the overhang goes")]
     [SerializeField] private float overhangHeight;
+
+    [Header("Map Dimensions")]
+    [Min(0.1f)]
+    [SerializeField] private float amplitude;
+    [SerializeField] private float width;
+    [SerializeField] private float height;
+    [SerializeField] private float depth;
+    [Tooltip("How far out the bottom of the map is")]
+    [Min(0)]
+    [SerializeField] private float bottomDepth;
     [SerializeField] private float slopeWidth;
+
 
     private float[] heights;
     public Vector3[] LinePositions { get; private set; }
 
-    List<int> triangleIndices;
-    List<Vector3> vertices;
-    List<Quad> quads;
+    private List<int> triangleIndices;
+    private List<Vector3> vertices;
+    private List<Quad> quads;
     void Start() => GenerateRandomMap();
 
     private void Update()
@@ -60,34 +75,69 @@ public class GenerateMap : MonoBehaviour
 
     private void GenerateRandomMap()
     {
-        float heightToAmplitude = 2.5f;
-        if (height < amplitude * heightToAmplitude)
-            height = amplitude * heightToAmplitude;
-        GenerateRandomHeights();
-        SmoothenHeights();
-        AddSideSlopes();
+        GenerateLinePositions();
         CreatePositions();
         GenerateQuads();
         GenerateObjects();
+    }
+
+    private void GenerateLinePositions()
+    {
+        GenerateRandomHeights();
+        switch (generationMethod)
+        {   //Smoothen heights
+            case GenerationMethod.Smoothen:
+                for (int i = 1; i < heights.Length; i++)
+                    heights[i] = Mathf.Lerp(heights[i], heights[i - 1], smoothFactor);
+                break;
+            case GenerationMethod.Points:
+                SmoothenTowardsPoints();
+                break;
+        }
+        AddSideSlopes();
     }
 
     private float GetRandomHeight() => Random.value * 2.0f - 1.0f;
 
     private void GenerateRandomHeights()
     {
+        float heightToAmplitude = 2.5f;
+        if (height < amplitude * heightToAmplitude)
+            height = amplitude * heightToAmplitude;
+
         heights = new float[(int)(pointsPerWidth * width)];
         for (int i = 0; i < heights.Length; i++)
             heights[i] = GetRandomHeight();
     }
 
-    private void SmoothenHeights()
+    private void SmoothenTowardsPoints()
     {
-        for (int i = 1; i < heights.Length; i++)
-            heights[i] = Mathf.Lerp(heights[i], heights[i - 1], smoothFactor);
+        //TODO se om det går att göra saker lite rundare
+        float percentageOfPoints = 1 / (5f + pointsPerWidth);
+        int numberOfPoints = (int)(heights.Length * percentageOfPoints);
+        Debug.Log($"Percentage of points {percentageOfPoints}, number of points {heights.Length * percentageOfPoints}");
+        int pointFrequency = heights.Length / numberOfPoints;
+        int firstIndex = 0, nextIndex = 0;
+        Debug.Log($"Number of points {numberOfPoints}, point frequency {pointFrequency}");
+        for (int i = 0; i < heights.Length; i++)
+        {
+            if (i % pointFrequency == 0)
+            {
+                firstIndex = i;
+                nextIndex = i + pointFrequency >= heights.Length ? heights.Length - 1 : i + pointFrequency;
+                continue;
+            }
+
+            float percentBetween = (i - firstIndex) / (float)(nextIndex - firstIndex);
+            float targetHeight = Mathf.Lerp(heights[firstIndex], heights[nextIndex], percentBetween);
+            Debug.Log($"i:{i} is {percentBetween} percent between {firstIndex} and {nextIndex}");
+            heights[i] = Mathf.Lerp(heights[i], targetHeight, smoothFactor);
+        }
     }
 
     private void AddSideSlopes()
     {
+        //TODO lägg till lite slump på sluttningarna
         float baseAmplitude = -0.9f;
         int numberOfPoints = (int)(slopeWidth * pointsPerWidth);
         List<float> heightList = new List<float>();
@@ -172,7 +222,7 @@ public class GenerateMap : MonoBehaviour
             points[i].IsConnected = true;
         }
 
-        //TODO kolla �ver algoritmen f�r att koppla trianglarna med andra punkter d� den kan bli fel om flera okopplade sitter n�ra varandra
+        //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
         int previousIndex, nextIndex = 0;
         for (int i = 0; i < points.Length; i++)
         {
