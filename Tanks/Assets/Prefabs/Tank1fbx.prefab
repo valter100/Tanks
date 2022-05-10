@@ -468,6 +468,8 @@ GameObject:
   - component: {fileID: 6538253324154581230}
   - component: {fileID: 2657026208458003744}
   - component: {fileID: 4999108648552774094}
+  - component: {fileID: -1728797651725278110}
+  - component: {fileID: 2626749122293949152}
   m_Layer: 0
   m_Name: Tank1fbx
   m_TagString: Tank
@@ -498,7 +500,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8375430385975182193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98885a335a0105e4088d41b50f1ab0fc, type: 3}
   m_Name: 
@@ -532,8 +534,6 @@ MonoBehaviour:
   fuelSlider: {fileID: 6126757462696722231}
   shootForceSlider: {fileID: 855066007436251629}
   aimRadius: 250
-  hasFired: 0
-  currentHealth: 0
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8375430385975182193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e126a5b97767a54c806759ac629b17b, type: 3}
   m_Name: 
@@ -690,6 +690,63 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.0468493, y: 3.734644, z: 3.6092553}
   m_Center: {x: -4.5491195, y: 1.4388847, z: 0}
+--- !u!114 &-1728797651725278110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375430385975182193}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c0f1ac10f554b49b3c10dfbe105c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  maxShootForce: 100
+  maxFuel: 100
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  movementSpeed: 1
+  jumpForce: 0
+  movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
+  timeBetweenEffectSpawn: 0.5
+  fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
+  animator: {fileID: 2657026208458003744}
+  damagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
+  explosion: {fileID: 0}
+  explosionDamage: 0
+  isSlowed: 0
+  player: {fileID: 0}
+  rotatePoint: {fileID: 3022464576086988331, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  tankParts: []
+  chassi: {fileID: 823687964183072229}
+  tower: {fileID: 3429087769263482813}
+  gun: {fileID: 3975383469951734012}
+  rumbleSpot: {fileID: 5955620086700898198, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  nameText: {fileID: 2356583793397656385}
+  healthSlider: {fileID: 5549606514419130708, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  fuelSlider: {fileID: 4569190864587535395, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  shootForceSlider: {fileID: 7039783255621376761, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  aimRadius: 250
+--- !u!114 &2626749122293949152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375430385975182193}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe4e1de0dfeb524a835fb110ee04a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTargetPosition: {fileID: 0}
+  lowHealthTarget: 0
+  highHealthTarget: 0
+  closestTarget: 0
+  furthestTarget: 0
 --- !u!1 &8647265570607738252
 GameObject:
   m_ObjectHideFlags: 0
