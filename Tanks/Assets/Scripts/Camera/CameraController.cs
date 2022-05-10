@@ -99,7 +99,7 @@ public class CameraController : MonoBehaviour
 
         if (view == View.Side || view == View.Focus)
         {
-            //targetPosition = new Vector3(focusPoint.transform.position.x, focusPoint.transform.position.y, transform.position.z);
+            targetPosition = new Vector3(focusPoint.transform.position.x, focusPoint.transform.position.y, transform.position.z);
         }
 
         else if (view == View.FirstPerson)

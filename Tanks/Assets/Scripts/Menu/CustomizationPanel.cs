@@ -6,7 +6,7 @@ using System.Linq;
 
 public class CustomizationPanel : MonoBehaviour
 {
-    [SerializeField] public PlayerInfo tankCustomization;
+    [SerializeField] public PlayerInfo playerInfo;
     [SerializeField] private int colorIndex;
 
     [SerializeField] private TextMeshProUGUI nametag;
@@ -44,14 +44,15 @@ public class CustomizationPanel : MonoBehaviour
 
     private void Start()
     {
-        tankCustomization.color = colors[colorIndex];
+        playerInfo.color = colors[colorIndex];
         UpdateOptionTexts();
         transform.GetComponentInParent<PlayMenu>().customizationPanels.Add(this);
+        nametag.text = "";
     }
 
     public void Update()
     {
-        tankCustomization.name = nametag.text;
+        playerInfo.name = nametag.text;
     }
 
     public void OnClick_PreviousColor()
@@ -59,7 +60,7 @@ public class CustomizationPanel : MonoBehaviour
         if (--colorIndex == -1)
             colorIndex = colors.Length - 1;
 
-        tankCustomization.color = colors[colorIndex];
+        playerInfo.color = colors[colorIndex];
 
         // TODO: Change update tank
 
@@ -71,7 +72,7 @@ public class CustomizationPanel : MonoBehaviour
         if (++colorIndex == colors.Length)
             colorIndex = 0;
 
-        tankCustomization.color = colors[colorIndex];
+        playerInfo.color = colors[colorIndex];
 
         // TODO: Change update tank
 
@@ -80,10 +81,10 @@ public class CustomizationPanel : MonoBehaviour
 
     public void OnClick_PreviousTank()
     {
-        tankCustomization.tankPrefab.SetPrevious();
+        playerInfo.tankPrefab.SetPrevious();
 
-        if (!Prefabs.Tanks.ContainsKey(tankCustomization.tankPrefab))
-            tankCustomization.tankPrefab = Prefabs.Tanks.Last().Key;
+        if (!Prefabs.Tanks.ContainsKey(playerInfo.tankPrefab))
+            playerInfo.tankPrefab = Prefabs.Tanks.Last().Key;
 
         // TODO: Change update tank
 
@@ -92,10 +93,10 @@ public class CustomizationPanel : MonoBehaviour
 
     public void OnClick_NextTank()
     {
-        tankCustomization.tankPrefab.SetNext();
+        playerInfo.tankPrefab.SetNext();
 
-        if (!Prefabs.Tanks.ContainsKey(tankCustomization.tankPrefab))
-            tankCustomization.tankPrefab = Prefabs.Tanks.First().Key;
+        if (!Prefabs.Tanks.ContainsKey(playerInfo.tankPrefab))
+            playerInfo.tankPrefab = Prefabs.Tanks.First().Key;
 
         // TODO: Change update tank
 
@@ -104,21 +105,21 @@ public class CustomizationPanel : MonoBehaviour
 
     public void OnClick_PreviousControl()
     {
-        tankCustomization.control.SetPrevious();
+        playerInfo.control.SetPrevious();
         UpdateOptionTexts();
     }
 
     public void OnClick_NextControl()
     {
-        tankCustomization.control.SetNext();
+        playerInfo.control.SetNext();
         UpdateOptionTexts();
     }
 
     public void UpdateOptionTexts()
     {
         colorOption.text = colorNames[colorIndex];
-        tankOption.text = tankCustomization.tankPrefab.ToString().SplitPascalCase();
-        controlOption.text = tankCustomization.control.ToString().SplitPascalCase();
+        tankOption.text = playerInfo.tankPrefab.ToString().SplitPascalCase();
+        controlOption.text = playerInfo.control.ToString().SplitPascalCase();
     }
 
 }

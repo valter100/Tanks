@@ -39,14 +39,11 @@ public class GameManager : MonoBehaviour
                 Player player = AddNewPlayer();
 
                 player.Initialize(
-                    gameInfo.names[i] != "" ? gameInfo.names[i] : "Player " + players.Count,
+                    gameInfo.names[i][0] != '\u200B' ? gameInfo.names[i] : "Player " + players.Count,
                     gameInfo.colors[i],
                     gameInfo.tankPrefabs[i],
                     gameInfo.controls[i],
-                    //generateSpawnpoints.GetNewSpawnpoint());
-                    new Vector3(players.Count * 10.0f, 10.0f, 0.0f));
-
-                Debug.Log("Player added. Nr of players: " + players.Count);
+                    generateSpawnpoints.GetNewSpawnpoint());
             }
         }
 

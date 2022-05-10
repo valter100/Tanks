@@ -63,8 +63,7 @@ public class PlayerInventory : MonoBehaviour
         if (prefab == null || amount <= 0)
             return;
 
-        Debug.Log(items);
-        int i = items.FindIndex(item => item.gameObject == prefab);
+        int i = items.FindIndex(item => item.prefab == prefab);
 
         if (i == -1)
             items.Add(new Item(prefab, amount));

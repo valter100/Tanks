@@ -25,12 +25,22 @@ public class Inventory : MonoBehaviour
         SetOpen(false);
     }
 
-    void ManualUpdate()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
             ToggleOpen();
 
-        if (gameManager.CurrentPlayer.Inventory != playerInventory)
+        if (gameManager.CurrentPlayer == null)
+        {
+            if (selectedItemSlot != -1)
+            {
+                selectedItemSlot = -1;
+                for (int i = 0; i < itemSlots.Length; ++i)
+                    itemSlots[i].Clear();
+            }
+        }
+
+        else if (gameManager.CurrentPlayer.Inventory != playerInventory)
         {
             Link(gameManager.CurrentPlayer.Inventory);
         }
