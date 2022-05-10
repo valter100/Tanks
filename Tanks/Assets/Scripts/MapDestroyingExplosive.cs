@@ -6,16 +6,9 @@ namespace Tanks
 {
     public class MapDestroyingExplosive : MonoBehaviour
     {
+        [SerializeField] bool debugRadius;
         [SerializeField] bool explode;
         [SerializeField] float explosionRadius;
-
-        TerrainDestruction[] terrainDestroyers;
-
-        private void Start()
-        {
-            
-        }
-
         void Update()
         {
             if (explode)
@@ -25,7 +18,7 @@ namespace Tanks
             }
         }
 
-        private void Explode()
+        public void Explode()
         {
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Map");
             foreach (GameObject gameObject in gameObjects)
@@ -34,7 +27,8 @@ namespace Tanks
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(transform.position, explosionRadius);
+            if (debugRadius)
+                Gizmos.DrawWireSphere(transform.position, explosionRadius);
         }
     }
 }

@@ -7,11 +7,14 @@ namespace Tanks
     public class TerrainDestruction : MonoBehaviour
     {
         [SerializeField] float pointsPerDegree = 0.05f;
+        [SerializeField] bool printDebug;
 
         private List<Line> lines;
         private List<Point> points;
         private List<Vector3> newLinePositions;
         private Explosion explosion;
+
+        private void Print(string text) { if (printDebug) { Debug.Log(text); } }
 
         public void DestroyTerrain(Vector3 explosionOrigin, float explosionRadius)
         {
@@ -25,8 +28,8 @@ namespace Tanks
 
             AddPointsAfterExplosion();
 
-            Debug.Log("Previous line positions: " + points.Count);
-            Debug.Log("New line positions: " + newLinePositions.Count);
+            Print("Previous line positions: " + points.Count);
+            Print("New line positions: " + newLinePositions.Count);
             mapGenerator.UpdateLinePositions(newLinePositions.ToArray());
         }
 
@@ -63,7 +66,7 @@ namespace Tanks
                 {
                     if (!points[i].ConnectedToNext && !points[j].ConnectedToPrevious)
                     {
-                        Debug.Log("Adding pojnts to cuurkel");
+                        Print("Adding pojnts to cuurkel");
                         AddPointsAlongCircle(i, j);
                     }
                 }
@@ -80,6 +83,25 @@ namespace Tanks
             }
 
             if (i > 0 && !lines[i - 1].IsInExplosion(explosion))
+                HandleFirstPoint();
+
+
+            if (i < lines.Count - 1 && !lines[i + 1].IsInExplosion(explosion))
+                HandleLastPoint();
+
+            if (i == lines.Count - 1) //Hanterar sista punkt
+            {
+                if (lines[i].PointB.IsInExplosion(explosion))
+                {
+                    lines[i].PointB.Position = new Vector3(lines[i].PointB.Position.x, explosion.GetY(lines[i].PointB.Position.x)[1]);
+                    AddLinePosition(lines[i].PointB, false, true);
+                }
+                else
+                    HandleLastPoint();
+
+            }
+
+            void HandleFirstPoint()
             {
                 Vector3[] intersections = GetIntersections(lines[i]);
                 if (intersections.Length > 0)
@@ -88,8 +110,7 @@ namespace Tanks
                 i -= HandleRangeRemoval(lines[i].PointB);
             }
 
-
-            if (i < lines.Count - 1 && !lines[i + 1].IsInExplosion(explosion))
+            void HandleLastPoint()
             {
                 if (!lines[i].PointA.ConnectedToNext)
                 {
@@ -103,13 +124,6 @@ namespace Tanks
                     lines[i].PointA.Position = GetClosestValidPosition(lines[i], lines[i].PointB, intersections);
                 AddLinePosition(lines[i].PointA, false);
                 AddLinePosition(lines[i].PointB, true);
-            }
-
-            if (i == lines.Count - 1) //Hanterar sista punkt
-            {
-                if (lines[i].PointB.IsInExplosion(explosion))
-                    lines[i].PointB.Position = new Vector3(lines[i].PointB.Position.x, explosion.GetY(lines[i].PointB.Position.x)[1]);
-                AddLinePosition(lines[i].PointB, true, true);
             }
         }
 
@@ -125,7 +139,7 @@ namespace Tanks
             if (angleStart >= angleStop)
                 angleStart -= 360;
             int numberOfPoints = (int)(explosion.Radius * pointsPerDegree * Mathf.Abs(angleStop - angleStart));
-            Debug.Log($"Start angle {angleStart}, stop angle {angleStop}, number of points {numberOfPoints}");
+            Print($"Start angle {angleStart}, stop angle {angleStop}, number of points {numberOfPoints}");
 
             List<Vector3> positions = new List<Vector3>();
 
@@ -141,7 +155,7 @@ namespace Tanks
             
             Vector3 GetCirclePosition(float angle)
             {
-                Debug.Log("Angle: " + angle);
+                Print("Angle: " + angle);
                 angle *= Mathf.Deg2Rad;
 
                 Vector3 position = new Vector3(Mathf.Cos(angle) * explosion.Radius, Mathf.Sin(angle) * explosion.Radius);
@@ -185,7 +199,7 @@ namespace Tanks
             newLinePositions.RemoveRange(firstPoint.PositionIndex, count);
             firstPoint.ConnectedToPrevious = true;
             lastPoint.ConnectedToNext = true;
-            Debug.Log($"Removed {count} objects betweed index {firstPoint.PositionIndex} and {lastPoint.PositionIndex}");
+            Print($"Removed {count} objects betweed index {firstPoint.PositionIndex} and {lastPoint.PositionIndex}");
             return count;
         }
 
@@ -218,7 +232,7 @@ namespace Tanks
                 float x2 = -p / 2 - Mathf.Sqrt(discriminant);
                 intersections = new Vector3[] { new Vector3(x1, k * x1 + m), new Vector3(x2, k * x2 + m) };
             }
-            Debug.Log($"Intersections 1: {intersections[0] + transform.position}, 2: {intersections[1] + transform.position}");
+            Print($"Intersections 1: {intersections[0] + transform.position}, 2: {intersections[1] + transform.position}");
             return intersections;
         }
 

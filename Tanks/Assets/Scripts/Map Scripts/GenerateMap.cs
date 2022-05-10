@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Tanks.MapPoint;
 
     public class GenerateMap : MonoBehaviour
     {
@@ -40,7 +41,6 @@ using UnityEngine.Rendering;
             
             if (drawDebugLines) 
                 DrawDebugLine(LinePositions);
-
         }
 
         private void DrawDebugLine(Vector3[] positions)
@@ -170,10 +170,10 @@ using UnityEngine.Rendering;
                 if (!points[i].CanReachFloor)
                     continue;
 
-                points[i].vertexIndex = i+1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
-                int pastIndex = points[i].vertexIndex - verticesPerPosition;
+                points[i].VertexIndex = i+1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
+                int pastIndex = points[i].VertexIndex - verticesPerPosition;
                 for (int j = 0; j < verticesPerPosition - 1; j++)
-                    AddQuad(pastIndex + j, points[i].vertexIndex + j, j < 2);
+                    AddQuad(pastIndex + j, points[i].VertexIndex + j, j < 2);
                 points[i].IsConnected = true;
             }
 
@@ -183,15 +183,15 @@ using UnityEngine.Rendering;
             {
                 if (!points[i].IsConnected)
                 {
-                    previousIndex = points[i - 1].vertexIndex;
-                    points[i].vertexIndex = AddVertex(points[i].position, true);
+                    previousIndex = points[i - 1].VertexIndex;
+                    points[i].VertexIndex = AddVertex(points[i].position, true);
                     if (nextIndex < i)
                         nextIndex = GetNextConnectedPoint(i);
-                    AddQuad(previousIndex, points[i].vertexIndex, true);
-                    quads.Add(new Quad(points[i].vertexIndex + 1, previousIndex + 1, points[nextIndex].vertexIndex + 1, -1, true));
+                    AddQuad(previousIndex, points[i].VertexIndex, true);
+                    quads.Add(new Quad(points[i].VertexIndex + 1, previousIndex + 1, points[nextIndex].VertexIndex + 1, -1, true));
 
                     if (nextIndex == i + 1)
-                        AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
+                        AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex, true);
 
                     points[i].IsConnected = true;
                 }
@@ -220,75 +220,6 @@ using UnityEngine.Rendering;
                 return index;
             }
         }
-
-        //private void GenerateQuads()
-        //{
-        //    vertices = new List<Vector3>();
-        //    triangleIndices = new List<int>();
-        //    quads = new List<Quad>();
-        //    int verticesPerPosition = 4;
-
-        //    for (int i = 0; i < LinePositions.Length; i++)
-        //    {
-        //        if (i < 1)
-        //        {
-        //            AddFirstSide(LinePositions[i]);
-        //            continue;
-        //        }
-        //        int vertexIndex = i + 1 != LinePositions.Length ? AddVertex(LinePositions[i]) : AddLastSide(LinePositions[i]);
-        //        int pastIndex = vertexIndex - verticesPerPosition;
-        //        for (int j = 0; j < verticesPerPosition - 1; j++)
-        //            AddToQuad(pastIndex + j, vertexIndex + j, j < 2);
-        //    }
-
-        //    CreateMesh(CreateSubMeshDescriptors(quads));
-
-        //    void AddToQuad(int pastIndex, int vertexIndex, bool isTopside)
-        //    {
-        //        quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
-        //    }
-        //}
-
-        //private void ConnectPoints(Point[] points)
-        //{
-        //    for (int i = 0; i < points.Length; i++)
-        //        if (!points[i].IsConnected)
-        //            points[i].vertexIndex = AddVertex(points[i].position, true);
-
-        //    int nextIndex = 0, lastIndex = 0;
-        //    for (int i = 0; i < points.Length - 2; i++)
-        //    {
-        //        if (points[i].IsConnected && GetNextConnectedPoint(i) - i >= 2)
-        //        {
-        //            lastIndex = GetNextConnectedPoint(i);
-        //            int currentIndex = i;
-        //            while (currentIndex < lastIndex)
-        //            {
-        //                quads.Add(new Quad(points[i].vertexIndex + 1, points[currentIndex + 1].vertexIndex + 1,
-        //                                    points[currentIndex + 2].vertexIndex + 1, points[currentIndex + 3].vertexIndex + 1 + 1, true));
-        //                AddQuad(points[i].vertexIndex, points[currentIndex + 1].vertexIndex, true);
-        //                AddQuad(points[currentIndex + 1].vertexIndex, points[currentIndex + 2].vertexIndex, true);
-        //                AddQuad(points[currentIndex + 2].vertexIndex, points[currentIndex + 3].vertexIndex, true);
-        //                points[currentIndex + 1].IsConnected = points[currentIndex + 2].IsConnected = true;
-        //                currentIndex += 2;
-        //            }
-        //        }
-        //        else if (!points[i + 1].IsConnected)
-        //        {
-        //            nextIndex = i + 1;
-        //            lastIndex = i + 2;
-        //            points[nextIndex].IsConnected = true;
-        //            AddTriangle(points[i].vertexIndex, points[nextIndex].vertexIndex, points[lastIndex].vertexIndex, true);
-        //            AddQuad(points[i].vertexIndex, points[nextIndex].vertexIndex, true);
-        //            AddQuad(points[nextIndex].vertexIndex, points[lastIndex].vertexIndex, true);
-        //        }
-        //    }
-
-        //    void AddTriangle(int vertexA, int vertexB, int vertexC, bool isTopside)
-        //    {
-        //        quads.Add(new Quad(vertexB + 1, vertexA + 1, vertexC + 1, -1, isTopside));
-        //    }
-        //}
 
         int AddVertex(Vector3 vertex, bool onlyTop = false)
         {
@@ -370,10 +301,12 @@ using UnityEngine.Rendering;
         }
     }
 
+namespace Tanks.MapPoint
+{
     public struct Point
     {
         public readonly Vector3 position;
-        public int vertexIndex;
+        public int VertexIndex { get; set; }
         public bool IsConnected { get; set; }
         public bool CanReachFloor { get; set; }
         public Point(Vector3 position)
@@ -381,9 +314,11 @@ using UnityEngine.Rendering;
             this.position = position;
             IsConnected = false;
             CanReachFloor = true;
-            vertexIndex = -1;
+            VertexIndex = -1;
         }
     }
+}
+    
 
     public struct Quad
     {
