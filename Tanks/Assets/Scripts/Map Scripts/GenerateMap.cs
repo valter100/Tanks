@@ -12,10 +12,11 @@ public class GenerateMap : MonoBehaviour
     }
 
     [Header("Debug Variables")]
-    [SerializeField] private bool generateNewMap;
+    [SerializeField] private bool generateNewSeed;
+    [SerializeField] private bool generateOldSeed;
     [SerializeField] private bool drawDebugLines = false;
     [SerializeField] private bool printDebug;
-    [SerializeField] private string seed; //TODO implementera en seed
+    [SerializeField] private string mapSeed;
     private int pointsInSlope;
 
     [Header("Generation Variables")]
@@ -73,12 +74,17 @@ public class GenerateMap : MonoBehaviour
 
     private void Update()
     {
-        if (generateNewMap)
+        if (generateNewSeed || generateOldSeed)
         {
             foreach (Transform child in transform)
                 Destroy(child.gameObject);
-            GenerateRandomMap();
-            generateNewMap = false;
+
+            if (generateOldSeed)
+                GenerateRandomMap(mapSeed);
+            else
+                GenerateRandomMap();
+
+            generateNewSeed = generateOldSeed = false;
         }
 
         if (drawDebugLines)
@@ -104,8 +110,13 @@ public class GenerateMap : MonoBehaviour
         GenerateQuads();
     }
 
-    private void GenerateRandomMap()
+    private void GenerateRandomMap(string seed = "")
     {
+        if (seed == "")
+            seed = System.DateTime.Now.Ticks.ToString();
+
+        mapSeed = seed;
+        Random.InitState(seed.GetHashCode());
         GenerateLinePositions();
         CreatePositions();
         GenerateQuads();
@@ -241,8 +252,6 @@ public class GenerateMap : MonoBehaviour
                     lerpAmount = Mathf.Log(i + 1.0f, pointsInSlope);
                     modifiedAmplitude = baseAmplitude + Mathf.Lerp(GetRandomHeight() * slopeAmplitude, 0, 1 - lerpAmount);
                 }
-
-                Print($"Lerp amount {lerpAmount}, added amplitude {modifiedAmplitude - baseAmplitude}");
                 
                 slopeHeights[i] = Mathf.Lerp(randomizeSlopes ? modifiedAmplitude : baseAmplitude, height, lerpAmount);
                 
