@@ -74,7 +74,7 @@ namespace Tanks
         }
 
         private void HandleExplosion(int i)
-        {//TODO fixa sprängning av kanter
+        {
             if (i == 0) //Hantera första punkt
             {
                 if (lines[i].PointA.IsInExplosion(explosion))
@@ -127,7 +127,7 @@ namespace Tanks
         }
 
         private void AddPointsAlongCircle(int startIndex, int stopIndex)
-        {
+        {   //TODO kika på extremfall som får cirkeln att placeras i luften
             Point startPoint = points[startIndex];
             Point stopPoint = points[stopIndex];
 
