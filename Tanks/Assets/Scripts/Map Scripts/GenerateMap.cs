@@ -6,28 +6,70 @@ using Tanks.MapPoint;
 
 public class GenerateMap : MonoBehaviour
 {
+    enum GenerationMethod
+    {
+        Lerp, Points, Wave
+    }
+
+    [Header("Debug Variables")]
     [SerializeField] private bool generateNewMap;
     [SerializeField] private bool drawDebugLines = false;
+    [SerializeField] private bool printDebug;
+    [SerializeField] private string seed; //TODO implementera en seed
+    private int pointsInSlope;
 
-    [Min(0.1f)]
-    [SerializeField] private float pointsPerWidth = 3;
-    [SerializeField] private float amplitude = 1.75f;
+    [Header("Generation Variables")]
+    [SerializeField] private GenerationMethod generationMethod;
+    [Range(0.1f, 6.0f)]
+    [SerializeField] private float pointsPerWidth;
     [Range(0.0f, 1.0f)]
-    [SerializeField] private float smoothFactor = 0.9f;
-    [SerializeField] private float width = 20f;
-    [SerializeField] private float height = 6f;
-    [SerializeField] private float depth = 3f;
-    [SerializeField] private float bottomDepth = 1f;
+    [SerializeField] private float smoothFactor;
+    [Tooltip("How far down past the edge the overhang goes")]
     [SerializeField] private float overhangHeight;
+    [SerializeField] private bool randomizeSlopes = true;
+
+    [Header("Point options")]
+    [Min(1)]
+    [SerializeField] private int minPointDistance;
+    [Min(2)]
+    [SerializeField] private int maxPointDistance;
+
+    [Header("Wave options")]
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float waveWidthMin;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float waveWidthMax;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float waveAmplitudeMin;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float waveAmplitudeMax;
+    [Tooltip("How often a new wave is started")]
+    [Range(0.01f, 1.0f)]
+    [SerializeField] private float changeFrequency;
+
+
+    [Header("Map Dimensions")]
+    [Min(0.1f)]
+    [SerializeField] private float amplitude;
+    [SerializeField] private float width;
+    [SerializeField] private float height;
+    [SerializeField] private float depth;
+    [Tooltip("How far out the bottom of the map is")]
+    [Min(0)]
+    [SerializeField] private float bottomDepth;
     [SerializeField] private float slopeWidth;
+    [Range(0, 1)]
+    [SerializeField] private float slopeAmplitudePercentage;
 
     private float[] heights;
     public Vector3[] LinePositions { get; private set; }
 
-    List<int> triangleIndices;
-    List<Vector3> vertices;
-    List<Quad> quads;
+    private List<int> triangleIndices;
+    private List<Vector3> vertices;
+    private List<Quad> quads;
     void Start() => GenerateRandomMap();
+
+    private void Print(string text) { if (printDebug) { Debug.Log(text); } }
 
     private void Update()
     {
@@ -46,10 +88,14 @@ public class GenerateMap : MonoBehaviour
 
     private void DrawDebugLine(Vector3[] positions)
     {
+        Vector3 basePosition = transform.position;
+        Vector3 forwardPosition = basePosition + new Vector3(0, 0, -0.25f);
         if (positions.Length <= 1)
             return;
         for (int i = 1; i < positions.Length; i++)
-            Debug.DrawLine(positions[i - 1] + transform.position, positions[i] + transform.position, Color.green);
+            Debug.DrawLine(positions[i - 1] + basePosition, positions[i] + basePosition, Color.green);
+        Debug.DrawLine(positions[0] + forwardPosition, positions[pointsInSlope] + forwardPosition, Color.magenta);
+        Debug.DrawLine(positions[positions.Length -1] + forwardPosition, positions[positions.Length - 1 - pointsInSlope] + forwardPosition, Color.magenta);
     }
 
     public void UpdateLinePositions(Vector3[] newLinePositions)
@@ -60,54 +106,149 @@ public class GenerateMap : MonoBehaviour
 
     private void GenerateRandomMap()
     {
-        float heightToAmplitude = 2.5f;
-        if (height < amplitude * heightToAmplitude)
-            height = amplitude * heightToAmplitude;
-        GenerateRandomHeights();
-        SmoothenHeights();
-        AddSideSlopes();
+        GenerateLinePositions();
         CreatePositions();
         GenerateQuads();
         GenerateObjects();
+    }
+
+    private void GenerateLinePositions()
+    {
+        GenerateRandomHeights();
+        switch (generationMethod)
+        {
+            case GenerationMethod.Lerp:
+                for (int i = 1; i < heights.Length; i++)
+                    heights[i] = Mathf.Lerp(heights[i], heights[i - 1], smoothFactor);
+                break;
+            case GenerationMethod.Points:
+                SmoothenTowardsPoints();
+                break;
+            case GenerationMethod.Wave:
+                SmoothenAlongWave();
+                break;
+        }
+        AddSideSlopes();
     }
 
     private float GetRandomHeight() => Random.value * 2.0f - 1.0f;
 
     private void GenerateRandomHeights()
     {
+        float heightToAmplitude = 2.5f;
+        if (height < amplitude * heightToAmplitude)
+            height = amplitude * heightToAmplitude;
+
         heights = new float[(int)(pointsPerWidth * width)];
         for (int i = 0; i < heights.Length; i++)
             heights[i] = GetRandomHeight();
     }
 
-    private void SmoothenHeights()
+    private void SmoothenTowardsPoints()
     {
-        for (int i = 1; i < heights.Length; i++)
-            heights[i] = Mathf.Lerp(heights[i], heights[i - 1], smoothFactor);
+        int nextValue;
+        List<int> pointIndices = new List<int>() { 0 };
+        if (minPointDistance > maxPointDistance)
+            maxPointDistance = minPointDistance;
+
+        while (pointIndices[pointIndices.Count - 1] < heights.Length - 1)
+        {
+            nextValue = pointIndices[pointIndices.Count - 1] + Random.Range(minPointDistance, maxPointDistance);
+            nextValue = nextValue >= heights.Length ? heights.Length - 1 : nextValue;
+            pointIndices.Add(nextValue);
+            Print("Added index value: " + nextValue);
+        }
+
+        int pointIndex = 0;
+        for (int i = 0; i < heights.Length; i++)
+        {
+            if (i == pointIndices[pointIndex + 1])
+            {
+                ++pointIndex;
+                continue;
+            }
+            float percentBetween = (i - pointIndices[pointIndex]) / (float)(pointIndices[pointIndex + 1] - pointIndices[pointIndex]);
+            float targetHeight = Mathf.Lerp(heights[pointIndices[pointIndex]], heights[pointIndices[pointIndex + 1]], percentBetween);
+            heights[i] = Mathf.Lerp(heights[i], targetHeight, smoothFactor);
+        }
+    }
+
+    private void SmoothenAlongWave()
+    {
+        float targetHeight;
+        float waveWidth = 0;
+        float waveAmplitude = 0;
+        if (waveWidthMin > waveWidthMax)
+            waveWidthMax = waveWidthMin;
+        if (waveAmplitudeMin > waveAmplitudeMax)
+            waveAmplitudeMin = waveAmplitudeMax;
+
+        for (int i = 0; i < heights.Length; i++)
+        {
+            targetHeight = GetTargetHeightFor(i);
+            heights[i] = Mathf.Lerp(heights[i], targetHeight, smoothFactor);
+        }
+
+        void GetRandomWave()
+        {
+            waveWidth = Mathf.PI / (Random.Range(waveWidthMin, waveWidthMax) * heights.Length / 2.0f + 1);
+            waveAmplitude = amplitude * Random.Range(waveAmplitudeMin, waveAmplitudeMax);
+            Print($"wave width {waveWidth}, amplitude {waveAmplitude}");
+        }
+
+        float GetTargetHeightFor(int i)
+        {
+            float sinusValue = Mathf.Sin(i * waveWidth);
+            if (sinusValue > -changeFrequency && sinusValue < changeFrequency)
+                GetRandomWave();
+            return sinusValue * waveAmplitude;
+        }
     }
 
     private void AddSideSlopes()
     {
-        float baseAmplitude = -0.9f;
-        int numberOfPoints = (int)(slopeWidth * pointsPerWidth);
+        float baseAmplitude = -1f;
+        pointsInSlope = (int)(slopeWidth * pointsPerWidth);
         List<float> heightList = new List<float>();
-        var firstSlope = GetSlope(heights[0]);
-        var lastSlope = GetSlope(heights[heights.Length - 1]);
+        var firstSlope = GetSlope(heights[0], false);
+        var lastSlope = GetSlope(heights[heights.Length - 1], true);
 
         for (int i = 0; i < firstSlope.Length; i++)
             heightList.Add(firstSlope[i]);
         for (int i = 0; i < heights.Length; i++)
             heightList.Add(heights[i]);
-        for (int i = lastSlope.Length - 1; i >= 0; i--)
+        for (int i = 0; i < lastSlope.Length; i++)
             heightList.Add(lastSlope[i]);
 
         heights = heightList.ToArray();
 
-        float[] GetSlope(float height)
+        float[] GetSlope(float height, bool isBackwards)
         {
-            float[] slopeHeights = new float[numberOfPoints];
-            for (int i = 0; i < numberOfPoints; i++)
-                slopeHeights[i] = Mathf.Lerp(baseAmplitude, height, Mathf.Log(i + 1.0f, numberOfPoints));
+            float[] slopeHeights = new float[pointsInSlope];
+            float modifiedAmplitude;
+            float slopeAmplitude = amplitude * slopeAmplitudePercentage;
+
+            for (int i = 0; i < pointsInSlope; i++)
+            {
+                float lerpAmount;
+                if (isBackwards)
+                {
+                    lerpAmount = Mathf.Log(pointsInSlope - i, pointsInSlope);
+                    modifiedAmplitude = baseAmplitude + Mathf.Lerp(GetRandomHeight() * slopeAmplitude, 0, lerpAmount);
+                }
+                else
+                {
+                    lerpAmount = Mathf.Log(i + 1.0f, pointsInSlope);
+                    modifiedAmplitude = baseAmplitude + Mathf.Lerp(GetRandomHeight() * slopeAmplitude, 0, 1 - lerpAmount);
+                }
+
+                Print($"Lerp amount {lerpAmount}, added amplitude {modifiedAmplitude - baseAmplitude}");
+                
+                slopeHeights[i] = Mathf.Lerp(randomizeSlopes ? modifiedAmplitude : baseAmplitude, height, lerpAmount);
+                
+                if (isBackwards && i == pointsInSlope -1)
+                    slopeHeights[i] = Mathf.Lerp(slopeHeights[i], slopeHeights[i - 1], 0.69f);
+            }
             return slopeHeights;
         }
     }
@@ -172,7 +313,7 @@ public class GenerateMap : MonoBehaviour
             points[i].IsConnected = true;
         }
 
-        //TODO kolla �ver algoritmen f�r att koppla trianglarna med andra punkter d� den kan bli fel om flera okopplade sitter n�ra varandra
+        //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
         int previousIndex, nextIndex = 0;
         for (int i = 0; i < points.Length; i++)
         {
@@ -205,7 +346,7 @@ public class GenerateMap : MonoBehaviour
             int index = startIndex;
             if (index + 1 >= points.Length)
             {
-                Debug.LogError($"Index was {index} the length of points is {points.Length}");
+                Print($"Index was {index} the length of points is {points.Length}");
                 return -1;
             }
 

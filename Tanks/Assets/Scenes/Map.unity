@@ -401,16 +401,36 @@ PrefabInstance:
       value: 10.04
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: range.x
+      value: -1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: amplitude
-      value: 2.97
+      value: 1.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: printDebug
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: slopeWidth
-      value: 0.16
+      value: 4.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: bottomDepth
+      value: 2.29
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: smoothFactor
-      value: 0.68
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveWidthMax
+      value: 0.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveWidthMin
+      value: 0.58
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: drawDebugLines
@@ -418,12 +438,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: pointsPerWidth
-      value: 2.05
+      value: 2.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: changeFrequency
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: randomizeSlopes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: generationMethod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: maxPointDistance
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: minPointDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveAmplitudeMax
+      value: 0.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveAmplitudeMin
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: slopeAmplitudePercentage
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079919, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 601699f97e078b243ac3043a958c904b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 979e555061338e84ba069951e0ddae66, type: 3}
 --- !u!1 &1166192178

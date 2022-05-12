@@ -74,7 +74,7 @@ namespace Tanks
         }
 
         private void HandleExplosion(int i)
-        {//TODO fixa sprängning av kanter
+        {
             if (i == 0) //Hantera första punkt
             {
                 if (lines[i].PointA.IsInExplosion(explosion))
@@ -98,7 +98,6 @@ namespace Tanks
                 }
                 else
                     HandleLastPoint();
-
             }
 
             void HandleFirstPoint()
@@ -128,7 +127,7 @@ namespace Tanks
         }
 
         private void AddPointsAlongCircle(int startIndex, int stopIndex)
-        {
+        {   //TODO kika på extremfall som får cirkeln att placeras i luften
             Point startPoint = points[startIndex];
             Point stopPoint = points[stopIndex];
 
@@ -142,8 +141,6 @@ namespace Tanks
             Print($"Start angle {angleStart}, stop angle {angleStop}, number of points {numberOfPoints}");
 
             List<Vector3> positions = new List<Vector3>();
-
-            
 
             for (int i = 0; i < numberOfPoints + 2; i++)
             {
@@ -232,7 +229,7 @@ namespace Tanks
                 float x2 = -p / 2 - Mathf.Sqrt(discriminant);
                 intersections = new Vector3[] { new Vector3(x1, k * x1 + m), new Vector3(x2, k * x2 + m) };
             }
-            //Print($"Intersections 1: {intersections[0] + transform.position}, 2: {intersections[1] + transform.position}");
+
             return intersections;
         }
 
