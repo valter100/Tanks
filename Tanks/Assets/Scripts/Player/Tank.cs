@@ -51,6 +51,9 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected Slider shootForceSlider;
     [SerializeField] protected float aimRadius;
 
+    [Header("Debug Settings")]
+    [SerializeField] protected bool debugTrajectory;
+
     protected float timeSinceLastEffect;
     protected int projectileIndex;
     protected bool hasFired = false;
@@ -119,6 +122,7 @@ public abstract class Tank : MonoBehaviour
 
     protected void Fire()
     {
+        Debug.Log("FIRED");
         // Precompute projectile
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();

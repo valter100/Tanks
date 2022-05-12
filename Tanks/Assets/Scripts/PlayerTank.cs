@@ -27,7 +27,9 @@ public class PlayerTank : Tank
 
         // Fire() must come before PreviewProjectileTrajectory()
         // (For unknown reason)
-        PreviewProjectileTrajectory();
+
+        if (debugTrajectory)
+            PreviewProjectileTrajectory();
     }
 
     public void Move()
@@ -75,6 +77,5 @@ public class PlayerTank : Tank
         percentage = Mathf.Clamp01(percentage);
         currentShootForce = percentage * maxShootForce;
         shootForceSlider.value = percentage;
-        Debug.Log("Shoot Force: " + currentShootForce);
     }
 }

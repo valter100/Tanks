@@ -20,6 +20,7 @@ public class BounceBomb : ExplodingProjectile
 
     protected override void OnCollision(Collider other)
     {
+        explosion.SetRadius(bouncesLeft + addedRadius);
         if (bouncesLeft <= 0)
             base.OnCollision(other);
         else if (yVelocityBefore < 0)
@@ -28,9 +29,7 @@ public class BounceBomb : ExplodingProjectile
 
     void Bounce()
     {
-        explosion.SetRadius(bouncesLeft + addedRadius);
         explosion.Explode();
-
         bouncesLeft--;
 
         float newYVelocity = yVelocityBefore * -1 * elasticity;

@@ -140,7 +140,6 @@ public abstract class Projectile : MonoBehaviour
     /// </summary>
     public PrecomputedResult? PrecomputeTrajectory(float timeToVisualize = 0.0f)
     {
-        Debug.Log("Rigidbody Velocity: " + rb.velocity);
         RaycastHit raycastHit;
 
         // For the duration of its life time

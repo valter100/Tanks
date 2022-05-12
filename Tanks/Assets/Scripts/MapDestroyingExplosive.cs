@@ -25,6 +25,13 @@ namespace Tanks
                 gameObject.GetComponent<TerrainDestruction>().DestroyTerrain(transform.position, explosionRadius);
         }
 
+        public void Explode(float newRadius)
+        {
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Map");
+            foreach (GameObject gameObject in gameObjects)
+                gameObject.GetComponent<TerrainDestruction>().DestroyTerrain(transform.position, newRadius);
+        }
+
         private void OnDrawGizmos()
         {
             if (debugRadius)
