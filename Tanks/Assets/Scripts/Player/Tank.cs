@@ -80,6 +80,7 @@ public abstract class Tank : MonoBehaviour
 
     protected virtual void Start()
     {
+        Debug.Log(player + " at start");
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -89,12 +90,13 @@ public abstract class Tank : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
         currentFuel = maxFuel;
+        Debug.Log(player + " at start");
     }
 
-    public virtual void ManualUpdate()
-    {
+    //public virtual void ManualUpdate()
+    //{
         
-    }
+    //}
 
     protected void PreviewProjectileTrajectory()
     {
@@ -113,6 +115,7 @@ public abstract class Tank : MonoBehaviour
 
     public Projectile InstantiateProjectile()
     {
+        Debug.Log(player);
         Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, gun.GetFirePoint()).GetComponent<Projectile>();
         projectile.ownTank = this;
         projectile.transform.parent = null;
@@ -123,6 +126,7 @@ public abstract class Tank : MonoBehaviour
     protected void Fire()
     {
         Debug.Log("FIRED");
+        Debug.Log(player + " after fire");
         // Precompute projectile
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
@@ -243,5 +247,11 @@ public abstract class Tank : MonoBehaviour
         {
             tankPart.GetComponent<Renderer>().material.color = color;
         }
+    }
+
+    public void SetHealth(float increase)
+    {
+        currentHealth += increase;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
     }
 }

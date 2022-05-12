@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private Tank tank;
 
+    [SerializeField] private PlayerTank playerTank;
+    [SerializeField] private AiTank aiTank;
+
     private static GameManager gameManager;
 
     public PlayerInfo Info => info;
@@ -19,6 +22,11 @@ public class Player : MonoBehaviour
     {
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        if (info.control == Control.Player)
+            playerTank = tank.GetComponent<PlayerTank>();
+        else if (info.control == Control.Bot)
+            aiTank = tank.GetComponent<AiTank>();
     }
 
     private void Update()
@@ -27,7 +35,11 @@ public class Player : MonoBehaviour
             return;
 
         inventory.ManualUpdate();
-        tank.ManualUpdate();
+
+        if (playerTank)
+            playerTank.ManualPlayerUpdate();
+        else if (aiTank)
+            aiTank.ManualAiUpdate();
     }
 
     public void Initialize(string name, Color color, Prefab tankPrefab, Control control, Vector3 position)

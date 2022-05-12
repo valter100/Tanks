@@ -14,7 +14,7 @@ public class PlayerTank : Tank
             playerController = GetComponent<PlayerController>();
     }
 
-    public override void ManualUpdate()
+    public void ManualPlayerUpdate()
     {
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
             Move();

@@ -4,17 +4,28 @@ using UnityEngine;
 
 public class AirDrop : MonoBehaviour
 {
+    public enum Type
+    {
+        Health,
+        Fule,
+        Amo
+
+    }
     public GameObject GroundDetection;
     public GameObject Canopy;
     //public Light DropLight;
     public ParticleSystem Smoke;
     private Rigidbody AirDropRB;
     private bool Landed = false;
+    private Type type;
+    //private static Random rnd;
 
     // Start is called before the first frame update
     void Start()
     {
         AirDropRB = transform.GetComponent<Rigidbody>();
+        int random = Random.Range(0, 3);
+        type = Type.Amo;
     }
 
     // Update is called once per frame
@@ -24,7 +35,7 @@ public class AirDrop : MonoBehaviour
 
         if(Physics.Raycast(transform.position, Vector3.down, out objectHit, 1))
         {
-            if(objectHit.collider.gameObject.name != "Tank")
+            if(objectHit.collider.gameObject.tag != "Tank")
             {
                 Landed = true;
             }
@@ -34,6 +45,14 @@ public class AirDrop : MonoBehaviour
         {
             DropHasLanded();
             Landed = false;
+        }
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Tank")
+        {
+            collision.gameObject.GetComponent<Tank>().SetHealth(10);
         }
     }
 
