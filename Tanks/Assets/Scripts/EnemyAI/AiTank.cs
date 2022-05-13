@@ -15,6 +15,7 @@ public class AiTank : Tank
 
     public override void ManualUpdate()
     {
+        Debug.Log("AI UPDATE");
         aiManager.Update();
     }
 

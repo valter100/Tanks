@@ -142,7 +142,7 @@ public abstract class Tank : MonoBehaviour
             animator.SetTrigger("Fire");
 
         Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
-        player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
+        //player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
 
         Projectile projectile = InstantiateProjectile();
 
