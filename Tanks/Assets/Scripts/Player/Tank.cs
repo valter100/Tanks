@@ -249,9 +249,15 @@ public abstract class Tank : MonoBehaviour
         }
     }
 
-    public void SetHealth(float increase)
+    public void SetHealth(float amount)
     {
-        currentHealth += increase;
+        currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+    }
+
+    public void SetFuel(float amount)
+    {
+        currentFuel += amount;
+        currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
     }
 }

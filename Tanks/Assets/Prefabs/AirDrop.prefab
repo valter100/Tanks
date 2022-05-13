@@ -4868,6 +4868,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd77d257cc597b4f9de5d32515bcbd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}
+  Crate: {fileID: 1822746696858827835}
   GroundDetection: {fileID: 1552294533782719614}
   Canopy: {fileID: 1552294533878393540}
   Smoke: {fileID: 1552294532635100500}

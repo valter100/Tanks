@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject airDropPrefab;
-    [SerializeField] private List<GameObject> airDrops;
+    [SerializeField] private List<AirDrop> airDrops;
 
     private bool pickingNextPlayer = false;
 
@@ -110,6 +110,9 @@ public class GameManager : MonoBehaviour
         }
 
         SetNextPlayer();
+        int random = Random.Range(0, 100);
+        //if (random > 70)
+            CreateNewAirDrop();
         pickingNextPlayer = false;
         yield return 0;
     }
@@ -138,7 +141,8 @@ public class GameManager : MonoBehaviour
     public void CreateNewAirDrop()
     {
         GenerateSpawnpoints generateSpawnpoints = GameObject.Find("Map").GetComponent<GenerateSpawnpoints>();
-        GameObject airDrop = Instantiate(airDropPrefab, generateSpawnpoints.GetNewSpawnpoint(), Quaternion.identity);
+        AirDrop airDrop = Instantiate(airDropPrefab, generateSpawnpoints.GetNewSpawnpoint(), Quaternion.identity).GetComponent<AirDrop>();
+        airDrop.SetCrateType();
         airDrop.transform.position += new Vector3(0, 10, 0);
         airDrops.Add(airDrop);
     }
