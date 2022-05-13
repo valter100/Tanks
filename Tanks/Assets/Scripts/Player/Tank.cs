@@ -62,6 +62,7 @@ public abstract class Tank : MonoBehaviour
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
+    [SerializeField] protected bool facingRight;
 
     public float GetFuelPercentage() => currentFuel / maxFuel;
 

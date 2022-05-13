@@ -122,6 +122,9 @@ MonoBehaviour:
   detonationParticles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
   startAmmoCount: 20
   canDamageSelf: 1
+  hitableLayers:
+    serializedVersion: 2
+    m_Bits: 336
   ownTank: {fileID: 0}
 --- !u!114 &4733216876846786093
 MonoBehaviour:

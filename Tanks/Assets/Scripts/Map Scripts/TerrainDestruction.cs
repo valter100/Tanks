@@ -6,6 +6,7 @@ namespace Tanks
 {
     public class TerrainDestruction : MonoBehaviour
     {
+        [SerializeField] ParticleSystem groundParticles;
         [SerializeField] float pointsPerDegree = 0.05f;
         [SerializeField] bool printDebug;
 
@@ -31,6 +32,8 @@ namespace Tanks
             Print("Previous line positions: " + points.Count);
             Print("New line positions: " + newLinePositions.Count);
             mapGenerator.UpdateLinePositions(newLinePositions.ToArray());
+
+            GenerateExplosionEffect(explosionOrigin, explosionRadius);
         }
 
         private void CreatePointsAndLines(Vector3[] positions)
@@ -305,6 +308,18 @@ namespace Tanks
                 float accuracy = 0.01f;
                 return LeftPoint.Position.x <= point.x && RightPoint.Position.x > point.x && (kxmy < accuracy || kxmy > -accuracy);
             }
+        }
+
+        void GenerateExplosionEffect(Vector3 position, float radius)
+        {
+            GameObject ground = GameObject.FindGameObjectWithTag("Map");
+            ParticleSystem.ShapeModule shape = groundParticles.shape;
+            ParticleSystem.MainModule main = groundParticles.main;
+            main.startColor = ground.GetComponent<Renderer>().material.color;
+            shape.radius = radius;
+            //groundParticles.startColor.min
+            Instantiate(groundParticles, position, Quaternion.identity);
+
         }
 
         public struct Explosion
