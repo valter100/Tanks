@@ -169,6 +169,9 @@ public abstract class Tank : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (currentHealth <= 0)
+            return;
+
         currentHealth = Math.Max(0.0f, currentHealth - damage);
 
         if (currentHealth > 0.0f)
@@ -182,6 +185,12 @@ public abstract class Tank : MonoBehaviour
         }
 
         healthSlider.value = currentHealth / maxHealth;
+    }
+
+    public void Explode()
+    {
+        explosion.SetDamage(explosionDamage);
+        explosion.Explode();
     }
 
     public void LinkPlayer(Player player)
@@ -243,5 +252,10 @@ public abstract class Tank : MonoBehaviour
         {
             tankPart.GetComponent<Renderer>().material.color = color;
         }
+    }
+
+    public void DestroyTank()
+    {
+        gameObject.SetActive(false);
     }
 }

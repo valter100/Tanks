@@ -46,6 +46,7 @@ public class Explosion : MonoBehaviour
         mapDestruction.Explode(radius);
 
         Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90, 0, 0));
+        transform.parent = null;
 
         Collider[] tankColliders = Physics.OverlapSphere(transform.position, radius);
 
