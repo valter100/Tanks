@@ -136,6 +136,9 @@ MonoBehaviour:
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 810559230231951312, guid: 545a67fc9032ab7438138bb619d133d7, type: 3}
   canDamageSelf: 0
+  hitableLayers:
+    serializedVersion: 2
+    m_Bits: 336
   ownTank: {fileID: 0}
   pushbackRadius: 10
   pushbackForce: 7500

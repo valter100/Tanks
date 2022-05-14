@@ -8,6 +8,7 @@ public class Explosion : MonoBehaviour
     [SerializeField] private ParticleSystem explosionEffect;
 
     private float damage;
+    private Tanks.MapDestroyingExplosive mapDestruction;
 
     public float Radius => radius;
 
@@ -43,7 +44,11 @@ public class Explosion : MonoBehaviour
 
     public void Explode()
     {
-        Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90,0,0));
+        mapDestruction = gameObject.AddComponent<Tanks.MapDestroyingExplosive>();
+        mapDestruction.Explode(radius);
+
+        Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90, 0, 0));
+        transform.parent = null;
 
         Collider[] tankColliders = Physics.OverlapSphere(transform.position, radius);
 
@@ -54,5 +59,10 @@ public class Explosion : MonoBehaviour
             if (tank)
                 tank.TakeDamage(damage);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

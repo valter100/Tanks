@@ -135,6 +135,9 @@ MonoBehaviour:
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
   canDamageSelf: 0
+  hitableLayers:
+    serializedVersion: 2
+    m_Bits: 336
   ownTank: {fileID: 0}
   spreadTimer: 0.5
   spreadCount: 3

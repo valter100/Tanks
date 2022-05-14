@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 9169650065926079919}
   - component: {fileID: 9169650065926079916}
   - component: {fileID: 9169650065926079917}
-  m_Layer: 0
+  - component: {fileID: 2066052636052854174}
+  m_Layer: 6
   m_Name: Map
   m_TagString: Map
   m_Icon: {fileID: 0}
@@ -49,15 +50,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateNewMap: 0
-  pointsPerWidth: 1.35
-  amplitude: 1.75
-  smoothFactor: 0.81
-  width: 20
-  height: 6
-  depth: 3
-  bottomDepth: 1
+  drawDebugLines: 0
+  printDebug: 0
+  seed: 
+  generationMethod: 0
+  pointsPerWidth: 2
+  smoothFactor: 1
   overhangHeight: 1.11
+  randomizeSlopes: 1
+  minPointDistance: 0
+  maxPointDistance: 0
+  waveWidthMin: 0
+  waveWidthMax: 0
+  waveAmplitudeMin: 0
+  waveAmplitudeMax: 0
+  changeFrequency: 0
+  amplitude: 3
+  width: 60
+  height: 12
+  depth: 5
+  bottomDepth: 1
   slopeWidth: 2.52
+  slopeAmplitudePercentage: 0
 --- !u!114 &6797612445077828031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,15 +99,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9169650065926079912}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75317e7f391a37b4d9b4425768c9e091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   minimumObjectDistance: 0.5
   heightAdjustment: 0.24
-  spawnPointPrefab: {fileID: 7577246470029748094, guid: 5570ca8ea3f5f664bb7c4b24b43d8a22, type: 3}
-  numberOfTanks: 4
+  ready: 0
 --- !u!23 &9169650065926079919
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -158,3 +171,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &2066052636052854174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169650065926079912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1460b8bf9ab6ef44bad9ceb6709ca311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundParticles: {fileID: 7379286072901264336, guid: 5d60e7c02b2d467419b18eb888fd8c29, type: 3}
+  pointsPerDegree: 0.05
+  printDebug: 0

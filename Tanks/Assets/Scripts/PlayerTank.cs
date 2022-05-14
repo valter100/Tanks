@@ -27,7 +27,9 @@ public class PlayerTank : Tank
 
         // Fire() must come before PreviewProjectileTrajectory()
         // (For unknown reason)
-        PreviewProjectileTrajectory();
+
+        if (debugTrajectory)
+            PreviewProjectileTrajectory();
     }
 
     public void Move()
@@ -36,16 +38,16 @@ public class PlayerTank : Tank
             chassi.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         else if (playerController.GetMovement().x < 0)
-            chassi.transform.rotation = Quaternion.Euler(0, -180, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, 180, 0);
 
-        Vector3 localDirection = chassi.transform.InverseTransformDirection(Vector3.right);
+        //Vector3 localDirection = chassi.transform.InverseTransformDirection(Vector3.right);
 
-        RaycastHit hit;
-        if (Physics.Raycast(chassi.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-        {
-            if (hit.normal.y < 0.85f)
-                return;
-        }
+        //RaycastHit hit;
+        //if (Physics.Raycast(chassi.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
+        //{
+        //    if (hit.normal.y < 0.85f)
+        //        return;
+        //}
 
         gameObject.transform.position += playerController.GetMovement() * movementSpeed;
         timeSinceLastEffect += Time.deltaTime;

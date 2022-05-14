@@ -11,10 +11,12 @@ public abstract class Projectile : Usable
     [SerializeField] protected ParticleSystem trailParticles;
     [SerializeField] protected ParticleSystem detonationParticles;
     [SerializeField] protected bool canDamageSelf;
+    [SerializeField] LayerMask hitableLayers;
 
     float startTime;
     protected Rigidbody rb;
     public Tank ownTank;
+    Vector3 oldPosition;
 
     public AttackPattern GetAttackPattern() => attackPattern;
     public float GetStartTime() => startTime;
@@ -60,6 +62,26 @@ public abstract class Projectile : Usable
         timeToLive -= Time.deltaTime;
         if (timeToLive <= 0.0f)
             Detonate(null);
+
+        //RaycastHit hit;
+
+        //oldPosition = transform.position;
+
+        //if(Physics.Linecast(transform.position, oldPosition, out hit, hitableLayers))
+        //{
+        //    if (hit.collider.gameObject.tag == "Water")
+        //    {
+        //        Destroy(gameObject);
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        OnCollision(hit.collider);
+        //    }
+
+        //}
+
+
     }
 
     /// <summary>

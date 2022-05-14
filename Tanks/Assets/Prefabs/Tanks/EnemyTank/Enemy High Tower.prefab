@@ -188,11 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c0f1ac10f554b49b3c10dfbe105c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  cameraController: {fileID: 0}
-  isActive: 0
-  playerName: 
-  playerColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 10
   maxShootForce: 250
   maxFuel: 100
@@ -203,32 +198,25 @@ MonoBehaviour:
   jumpForce: 0
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.5
-  projectiles:
-  - {fileID: 7936401087168736136, guid: d162a6d91c21f814ba3d2a209b116bac, type: 3}
-  - {fileID: 4666774405610918408, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
-  - {fileID: -8063847045595054941, guid: 3993da982c11aea4a83c040dbfad7e89, type: 3}
-  - {fileID: 6481296158931651720, guid: d90d4454beadc314bba6b501d2b98a73, type: 3}
-  - {fileID: 5288328317349611985, guid: f970a4f8397fea14fa7c1f2a2b5f06cf, type: 3}
-  ammo: 
-  currentProjectile: {fileID: 0}
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
   animator: {fileID: 0}
-  tankDamagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
-  tankDestroyedParticles: {fileID: 3828310254582438172, guid: 8c572b6d815a0704692b0bd8c0e89313, type: 3}
+  damagedParticles: {fileID: 0}
+  explosion: {fileID: 0}
+  explosionDamage: 0
   isSlowed: 0
+  player: {fileID: 0}
   rotatePoint: {fileID: 3022464576086988331}
   tankParts: []
-  cannon: {fileID: 7221551601483076717}
-  firePoint: {fileID: 8453251649798453178}
+  chassi: {fileID: 0}
+  tower: {fileID: 0}
+  gun: {fileID: 0}
   rumbleSpot: {fileID: 5955620086700898198}
   nameText: {fileID: 0}
-  healthText: {fileID: 0}
   healthSlider: {fileID: 5549606514419130708}
-  fuelText: {fileID: 0}
   fuelSlider: {fileID: 4569190864587535395}
   shootForceSlider: {fileID: 7039783255621376761}
-  projectileText: {fileID: 0}
   aimRadius: 250
+  debugTrajectory: 0
 --- !u!114 &4740248741754116074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe4e1de0dfeb524a835fb110ee04a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeTargetPosition: {fileID: 0}
   lowHealthTarget: 0
   highHealthTarget: 0
   closestTarget: 0
@@ -349,7 +338,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3022464576086988331}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.70050985, w: 0.71364284}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -514,7 +503,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 7082530614297442321}
   controller: {fileID: 0}
-  cam: {fileID: 0}
   firePoint: {fileID: 8453251649798453178}
 --- !u!1 &7714392116333407305
 GameObject:
@@ -894,6 +882,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7341998373167020666, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7749208525688846400, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8976400902680636137, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}

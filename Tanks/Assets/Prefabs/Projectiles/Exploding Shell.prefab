@@ -97,7 +97,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.36411476
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5353926287226023679
 Rigidbody:
@@ -136,6 +136,9 @@ MonoBehaviour:
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
   canDamageSelf: 1
+  hitableLayers:
+    serializedVersion: 2
+    m_Bits: 336
   ownTank: {fileID: 0}
   explosion: {fileID: -1507804714081709414}
 --- !u!114 &-1507804714081709414
@@ -150,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
+  radius: 2
   explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
 --- !u!114 &-6891325378449484819
 MonoBehaviour:

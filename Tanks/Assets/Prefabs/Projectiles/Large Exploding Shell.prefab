@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 1044203965700797904}
   - component: {fileID: 7731177330091447110}
   - component: {fileID: 1672302495151344001}
-  - component: {fileID: 7695789742423321731}
   - component: {fileID: 5353926287226023679}
   - component: {fileID: 4666774405610918408}
   - component: {fileID: -1507804714081709414}
   - component: {fileID: -6776930662685570134}
+  - component: {fileID: 5455063080945618697}
   m_Layer: 7
   m_Name: Large Exploding Shell
   m_TagString: Projectile
@@ -86,19 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &7695789742423321731
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 725691630527340521}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5353926287226023679
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,6 +123,9 @@ MonoBehaviour:
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
   canDamageSelf: 1
+  hitableLayers:
+    serializedVersion: 2
+    m_Bits: 336
   ownTank: {fileID: 0}
   explosion: {fileID: -1507804714081709414}
 --- !u!114 &-1507804714081709414
@@ -150,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 7
+  radius: 4
   explosionEffect: {fileID: 5509785784624008221, guid: 2ff44e8969298f74fb784b77712bafbe, type: 3}
 --- !u!114 &-6776930662685570134
 MonoBehaviour:
@@ -164,3 +154,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8fc088663db964291e835a6a19ff2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &5455063080945618697
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725691630527340521}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.48807436, y: 0.6199908, z: 0.36357954}
+  m_Center: {x: -0.011185384, y: -0.025987817, z: -0.0063221217}

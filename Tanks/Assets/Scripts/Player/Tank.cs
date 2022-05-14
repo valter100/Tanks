@@ -45,6 +45,9 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected Gun gun;
     [SerializeField] protected Transform rumbleSpot;
 
+    [Header("Debug Settings")]
+    [SerializeField] protected bool debugTrajectory;
+
     protected float timeSinceLastEffect;
     protected int projectileIndex;
     protected bool hasFired = false;
@@ -53,6 +56,7 @@ public abstract class Tank : MonoBehaviour
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
+    [SerializeField] protected bool facingRight;
 
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
@@ -116,6 +120,7 @@ public abstract class Tank : MonoBehaviour
 
     protected void Fire()
     {
+        Debug.Log("FIRED");
         // Precompute projectile
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
@@ -135,7 +140,8 @@ public abstract class Tank : MonoBehaviour
             animator.SetTrigger("Fire");
 
         Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
-        player.Inventory.SelectedItem.usable.gameObject.GetComponent<Projectile>().GetAttackPattern().Fire(this);
+
+        //player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
 
         Projectile projectile = InstantiateProjectile();
 
@@ -162,6 +168,9 @@ public abstract class Tank : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (currentHealth <= 0)
+            return;
+
         currentHealth = Math.Max(0.0f, currentHealth - damage);
 
         if (currentHealth > 0.0f)
@@ -173,6 +182,12 @@ public abstract class Tank : MonoBehaviour
         {
             animator.SetTrigger("Destroyed");
         }
+    }
+
+    public void Explode()
+    {
+        explosion.SetDamage(explosionDamage);
+        explosion.Explode();
     }
 
     public void LinkPlayer(Player player)
@@ -227,6 +242,11 @@ public abstract class Tank : MonoBehaviour
         {
             tankPart.GetComponent<Renderer>().material.color = color;
         }
+    }
+
+    public void DestroyTank()
+    {
+        gameObject.SetActive(false);
     }
 
 }
