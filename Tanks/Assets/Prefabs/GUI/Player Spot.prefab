@@ -206,7 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   color: {r: 0, g: 0, b: 0, a: 0}
-  tankType: 0
+  tankPrefab: 0
   control: 0
 --- !u!114 &8865349181372841912
 MonoBehaviour:
@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   addPlayerButtonPrefab: {fileID: 4434226030566633920, guid: 44c176e70260e4b5e8b5cec4c19bced0, type: 3}
+  startWithTank: 0
 --- !u!1 &840769340319989564
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +573,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 541120167768112167}
   controller: {fileID: 0}
-  cam: {fileID: 0}
 --- !u!1 &8100019638124444817
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +670,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 8510433355136897261}
   controller: {fileID: 0}
-  cam: {fileID: 0}
   firePoint: {fileID: 6998292060535889734}
 --- !u!1 &9177791626124543157
 GameObject:

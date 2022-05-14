@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0.11764706, a: 0.9607843}
+  m_Color: {r: 0, g: 0, b: 0.15686275, a: 0.98039216}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3952,7 +3952,7 @@ GameObject:
   - component: {fileID: 877823544}
   - component: {fileID: 877823543}
   m_Layer: 0
-  m_Name: Prefab
+  m_Name: Prefabs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4467,6 +4467,10 @@ PrefabInstance:
     - target: {fileID: 697985301444082092, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865349181372841912, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
+      propertyPath: startWithTank
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
@@ -5830,7 +5834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0.11764706, a: 0.9607843}
+  m_Color: {r: 0, g: 0, b: 0.15686275, a: 0.98039216}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6296,7 +6300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0.11764706, a: 0.9607843}
+  m_Color: {r: 0, g: 0, b: 0.15686275, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6735,7 +6739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0.11764706, a: 0.9607843}
+  m_Color: {r: 0, g: 0, b: 0.15686275, a: 0.98039216}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7625,7 +7629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0.11764706, a: 0.9607843}
+  m_Color: {r: 0, g: 0, b: 0.15686275, a: 0.98039216}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7986,6 +7990,10 @@ PrefabInstance:
     - target: {fileID: 697985301444082092, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8865349181372841912, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
+      propertyPath: startWithTank
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
@@ -9724,10 +9732,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Spot 1
       objectReference: {fileID: 0}
-    - target: {fileID: 697985301444082083, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 697985301444082092, guid: 36a71b8a80a8d408bb9fb316ce632191, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -9989,7 +9993,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 1021697000129314677}
   controller: {fileID: 0}
-  cam: {fileID: 0}
 --- !u!33 &1993263394492022881
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -10174,7 +10177,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatePoint: {fileID: 9202155744617960383}
   controller: {fileID: 0}
-  cam: {fileID: 0}
   firePoint: {fileID: 7543899233514527764}
 --- !u!114 &2906507754823353632
 MonoBehaviour:

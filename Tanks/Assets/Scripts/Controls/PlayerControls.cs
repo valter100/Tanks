@@ -55,7 +55,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""NextProjectile"",
+                    ""name"": ""NextItem"",
                     ""type"": ""Button"",
                     ""id"": ""333a64cf-9296-45b9-ad66-1e0ef6c51559"",
                     ""expectedControlType"": ""Button"",
@@ -64,7 +64,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""PreviousProjectile"",
+                    ""name"": ""PreviousItem"",
                     ""type"": ""Button"",
                     ""id"": ""ec214f1d-1fa0-47c9-a1ce-dd5ec020a188"",
                     ""expectedControlType"": ""Button"",
@@ -85,6 +85,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": ""AutoFocusCamera"",
                     ""type"": ""Button"",
                     ""id"": ""3bcb4532-35d6-4245-b087-6db5300737b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""4cee6fe4-8457-47b4-beb5-61ee7c1a83e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""42ef6302-8c73-4be9-9e75-b7722d1dfc5e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -198,7 +216,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
-                    ""action"": ""NextProjectile"",
+                    ""action"": ""NextItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -209,7 +227,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Desktop"",
-                    ""action"": ""PreviousProjectile"",
+                    ""action"": ""PreviousItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -232,6 +250,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Desktop"",
                     ""action"": ""AutoFocusCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4baf8ef-1728-457c-8411-2c03a970e546"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37949de0-c664-43a2-b413-b169f338e703"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -262,10 +302,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Tank_Move = m_Tank.FindAction("Move", throwIfNotFound: true);
         m_Tank_Shoot = m_Tank.FindAction("Shoot", throwIfNotFound: true);
         m_Tank_Aim = m_Tank.FindAction("Aim", throwIfNotFound: true);
-        m_Tank_NextProjectile = m_Tank.FindAction("NextProjectile", throwIfNotFound: true);
-        m_Tank_PreviousProjectile = m_Tank.FindAction("PreviousProjectile", throwIfNotFound: true);
+        m_Tank_NextItem = m_Tank.FindAction("NextItem", throwIfNotFound: true);
+        m_Tank_PreviousItem = m_Tank.FindAction("PreviousItem", throwIfNotFound: true);
         m_Tank_FocusCamera = m_Tank.FindAction("FocusCamera", throwIfNotFound: true);
         m_Tank_AutoFocusCamera = m_Tank.FindAction("AutoFocusCamera", throwIfNotFound: true);
+        m_Tank_Inventory = m_Tank.FindAction("Inventory", throwIfNotFound: true);
+        m_Tank_Back = m_Tank.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,10 +370,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Tank_Move;
     private readonly InputAction m_Tank_Shoot;
     private readonly InputAction m_Tank_Aim;
-    private readonly InputAction m_Tank_NextProjectile;
-    private readonly InputAction m_Tank_PreviousProjectile;
+    private readonly InputAction m_Tank_NextItem;
+    private readonly InputAction m_Tank_PreviousItem;
     private readonly InputAction m_Tank_FocusCamera;
     private readonly InputAction m_Tank_AutoFocusCamera;
+    private readonly InputAction m_Tank_Inventory;
+    private readonly InputAction m_Tank_Back;
     public struct TankActions
     {
         private @PlayerControls m_Wrapper;
@@ -339,10 +383,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Tank_Move;
         public InputAction @Shoot => m_Wrapper.m_Tank_Shoot;
         public InputAction @Aim => m_Wrapper.m_Tank_Aim;
-        public InputAction @NextProjectile => m_Wrapper.m_Tank_NextProjectile;
-        public InputAction @PreviousProjectile => m_Wrapper.m_Tank_PreviousProjectile;
+        public InputAction @NextItem => m_Wrapper.m_Tank_NextItem;
+        public InputAction @PreviousItem => m_Wrapper.m_Tank_PreviousItem;
         public InputAction @FocusCamera => m_Wrapper.m_Tank_FocusCamera;
         public InputAction @AutoFocusCamera => m_Wrapper.m_Tank_AutoFocusCamera;
+        public InputAction @Inventory => m_Wrapper.m_Tank_Inventory;
+        public InputAction @Back => m_Wrapper.m_Tank_Back;
         public InputActionMap Get() { return m_Wrapper.m_Tank; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -361,18 +407,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Aim.started -= m_Wrapper.m_TankActionsCallbackInterface.OnAim;
                 @Aim.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnAim;
                 @Aim.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnAim;
-                @NextProjectile.started -= m_Wrapper.m_TankActionsCallbackInterface.OnNextProjectile;
-                @NextProjectile.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnNextProjectile;
-                @NextProjectile.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnNextProjectile;
-                @PreviousProjectile.started -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousProjectile;
-                @PreviousProjectile.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousProjectile;
-                @PreviousProjectile.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousProjectile;
+                @NextItem.started -= m_Wrapper.m_TankActionsCallbackInterface.OnNextItem;
+                @NextItem.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnNextItem;
+                @NextItem.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnNextItem;
+                @PreviousItem.started -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousItem;
+                @PreviousItem.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousItem;
+                @PreviousItem.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnPreviousItem;
                 @FocusCamera.started -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
                 @FocusCamera.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
                 @FocusCamera.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnFocusCamera;
                 @AutoFocusCamera.started -= m_Wrapper.m_TankActionsCallbackInterface.OnAutoFocusCamera;
                 @AutoFocusCamera.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnAutoFocusCamera;
                 @AutoFocusCamera.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnAutoFocusCamera;
+                @Inventory.started -= m_Wrapper.m_TankActionsCallbackInterface.OnInventory;
+                @Inventory.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnInventory;
+                @Inventory.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnInventory;
+                @Back.started -= m_Wrapper.m_TankActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_TankActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_TankActionsCallbackInterface.OnBack;
             }
             m_Wrapper.m_TankActionsCallbackInterface = instance;
             if (instance != null)
@@ -386,18 +438,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Aim.started += instance.OnAim;
                 @Aim.performed += instance.OnAim;
                 @Aim.canceled += instance.OnAim;
-                @NextProjectile.started += instance.OnNextProjectile;
-                @NextProjectile.performed += instance.OnNextProjectile;
-                @NextProjectile.canceled += instance.OnNextProjectile;
-                @PreviousProjectile.started += instance.OnPreviousProjectile;
-                @PreviousProjectile.performed += instance.OnPreviousProjectile;
-                @PreviousProjectile.canceled += instance.OnPreviousProjectile;
+                @NextItem.started += instance.OnNextItem;
+                @NextItem.performed += instance.OnNextItem;
+                @NextItem.canceled += instance.OnNextItem;
+                @PreviousItem.started += instance.OnPreviousItem;
+                @PreviousItem.performed += instance.OnPreviousItem;
+                @PreviousItem.canceled += instance.OnPreviousItem;
                 @FocusCamera.started += instance.OnFocusCamera;
                 @FocusCamera.performed += instance.OnFocusCamera;
                 @FocusCamera.canceled += instance.OnFocusCamera;
                 @AutoFocusCamera.started += instance.OnAutoFocusCamera;
                 @AutoFocusCamera.performed += instance.OnAutoFocusCamera;
                 @AutoFocusCamera.canceled += instance.OnAutoFocusCamera;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
             }
         }
     }
@@ -416,9 +474,11 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
-        void OnNextProjectile(InputAction.CallbackContext context);
-        void OnPreviousProjectile(InputAction.CallbackContext context);
+        void OnNextItem(InputAction.CallbackContext context);
+        void OnPreviousItem(InputAction.CallbackContext context);
         void OnFocusCamera(InputAction.CallbackContext context);
         void OnAutoFocusCamera(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
 }

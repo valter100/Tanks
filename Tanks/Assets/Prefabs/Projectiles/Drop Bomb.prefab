@@ -127,13 +127,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5be7a3ac6c6f14886abd1ed2581478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Drop Bomb
+  description: The Drop Bomb will after a short duration lose all of its velocity
+    and plummet down.
   attackPattern: {fileID: 8159165948748337676}
   clip: {fileID: 0}
   damage: 3
   timeToLive: 10
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 2
   canDamageSelf: 1
   ownTank: {fileID: 0}
   explosion: {fileID: 5804621341593681060}

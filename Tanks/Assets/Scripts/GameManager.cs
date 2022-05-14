@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject map;
 
-    private bool pickingNextPlayer = false;
+    private bool inPlayerTransition = false;
 
     public List<Player> Players => players;
     public Player CurrentPlayer => currentPlayer;
@@ -68,6 +68,14 @@ public class GameManager : MonoBehaviour
         yield return 0;
     }
 
+    private void Update()
+    {
+        if (currentPlayer != null)
+        {
+            currentPlayer.ManualUpdate();
+        }
+    }
+
     public Player AddNewPlayer()
     {
         Player player = Instantiate(playerPrefab, transform).GetComponent<Player>();
@@ -87,14 +95,17 @@ public class GameManager : MonoBehaviour
             Debug.Log("Draw");
         }
 
-        if (!pickingNextPlayer)
+        if (!inPlayerTransition)
             StartCoroutine(Coroutine_PlayerTransition());
     }
 
     private IEnumerator Coroutine_PlayerTransition()
     {
-        pickingNextPlayer = true;
-        float delay = currentPlayer.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetTimeToLive();
+        inPlayerTransition = true;
+        float delay;
+
+        try { delay = currentPlayer.Inventory.SelectedItem.usable.GetComponent<Projectile>().GetTimeToLive(); }
+        catch { delay = 1.5f; }
 
         while (delay > 0.0f)
         {
@@ -108,29 +119,36 @@ public class GameManager : MonoBehaviour
         }
 
         SetNextPlayer();
-        pickingNextPlayer = false;
+        inPlayerTransition = false;
         yield return 0;
     }
 
     public void SetNextPlayer()
     {
+        // Unready current player
         if (currentPlayer != null)
             currentPlayer.Unready();
 
-        currentPlayerIndex++;
-        if (currentPlayerIndex >= players.Count)
-            currentPlayerIndex = 0;
-
-        for (int i = currentPlayerIndex; i < players.Count; i++)
+        // Deactivate destoryed players
+        foreach (Player player in players)
         {
-            if (players[i].Tank.gameObject.activeInHierarchy)
-            {
-                currentPlayerIndex = i;
-                currentPlayer = players[currentPlayerIndex];
-                currentPlayer.Ready();
-                return;
-            }
+            if (player.gameObject.activeInHierarchy && player.Tank.Destroyed())
+                player.gameObject.SetActive(false);
         }
+
+        // Find next player
+        for (int i = 0; i < players.Count; ++i)
+        {
+            ++currentPlayerIndex;
+            currentPlayerIndex %= players.Count;
+
+            if (players[currentPlayerIndex].gameObject.activeInHierarchy)
+                break;
+        }
+
+        // Ready next player
+        currentPlayer = players[currentPlayerIndex];
+        currentPlayer.Ready();
     }
 
 }

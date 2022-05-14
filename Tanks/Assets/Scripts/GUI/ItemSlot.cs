@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
     [SerializeField] public Item item;
-    [SerializeField] private bool selected;
+    [SerializeField] private GameObject displayObject;
 
     private int amount;
 
     private Inventory inventory;
     private TextMeshProUGUI amountText;
     private GameObject frame;
+
+    public bool Selected => frame.activeSelf;
 
     void Start()
     {
@@ -30,37 +32,56 @@ public class ItemSlot : MonoBehaviour
         {
             if (item.amount != amount)
             {
-                amount = item.amount;
-                amountText.text = amount == 0 ? "" : amount.ToString();
+                if (item.amount <= 0)
+                    SetItem(null);
+
+                else
+                {
+                    amount = item.amount;
+                    amountText.text = amount == 0 ? "" : amount.ToString();
+                }
             }
         }
             
         else if (amount != 0)
-            Clear();
+            SetItem(null);
     }
 
-    public void OnClick()
+    public void OnClick_Select()
     {
-        inventory.ItemSlotClicked(this);
+        if (item != null)
+            inventory.ItemSlotClicked(this);
     }
 
     public void Select()
     {
-        selected = true;
         frame.SetActive(true);
     }
 
     public void Deselect()
     {
-        selected = false;
         frame.SetActive(false);
     }
 
-    public void Clear()
+    public void SetItem(Item item)
     {
-        item = null;
-        amount = 0;
-        amountText.text = "";
+        this.item = item;
+
+        if (displayObject != null)
+            Destroy(displayObject);
+
+        if (item != null)
+        {
+            displayObject = Instantiate(item.usable.gameObject, transform);
+            amount = item.amount;
+            amountText.text = amount == 0 ? "" : amount.ToString();
+        }
+
+        else
+        {
+            amount = 0;
+            amountText.text = "";
+        }
     }
 
 }

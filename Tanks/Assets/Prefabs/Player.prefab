@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedIndex: 0
-  items: []
 --- !u!114 &1264086255749784218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedIndex: 0
-  items: []
 --- !u!114 &3823063396374894990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,3 +166,4 @@ MonoBehaviour:
   info: {fileID: 132257059415062008}
   inventory: {fileID: 6030061955627928919}
   tank: {fileID: 0}
+  playerHudPrefab: {fileID: 3046453689212861432, guid: b6a7388551f664dfb95028a317c81fc6, type: 3}

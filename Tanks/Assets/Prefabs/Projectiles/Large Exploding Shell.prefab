@@ -127,13 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6690a147b03725745a125d3932b275df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Large Shell
+  description: The Large Shell ...
   attackPattern: {fileID: -6776930662685570134}
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 4
   timeToLive: 10
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 3
   canDamageSelf: 1
   ownTank: {fileID: 0}
   explosion: {fileID: -1507804714081709414}

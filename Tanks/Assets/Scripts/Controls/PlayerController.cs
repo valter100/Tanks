@@ -58,12 +58,17 @@ public class PlayerController : MonoBehaviour
 
     public bool Trigger_PreviousItem()
     {
-        return playerControls.Tank.PreviousProjectile.triggered;
+        return playerControls.Tank.PreviousItem.triggered;
     }
 
     public bool Trigger_NextItem()
     {
-        return playerControls.Tank.NextProjectile.triggered;
+        return playerControls.Tank.NextItem.triggered;
+    }
+
+    public bool Trigger_Inventory()
+    {
+        return playerControls.Tank.Inventory.triggered;
     }
 
 }

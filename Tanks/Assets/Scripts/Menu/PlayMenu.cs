@@ -25,6 +25,12 @@ public class PlayMenu : Menu
     {
         Camera.main.transform.localPosition = cameraPosition;
         Camera.main.transform.rotation = cameraRotation;
+
+        AddPlayerButton[] addPlayerButtons = transform.GetComponentsInChildren<AddPlayerButton>();
+
+        foreach (AddPlayerButton addPlayerButton in addPlayerButtons)
+            if (addPlayerButton.gameObject.activeInHierarchy && addPlayerButton.playerSpot.GetComponent<PlayerSpot>().StartWithTank)
+                addPlayerButton.OnClick_AddPlayer();
     }
 
     protected override void OnDisable()

@@ -581,12 +581,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36c94d84c52d04e8ea9765ae2e69e954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankCustomization: {fileID: 0}
+  playerInfo: {fileID: 0}
   colorIndex: 0
   nametag: {fileID: 6918927965673087478}
   colorOption: {fileID: 428815133400298070}
   tankOption: {fileID: 6102745002112298250}
   controlOption: {fileID: 6571001184501571752}
+  colorNames:
+  - Red
+  - Orange
+  - Yellow
+  - Lime
+  - Green
+  - Cyan
+  - Light Blue
+  - Dark Blue
+  - Purple
+  - Pink
+  - Magenta
+  - White
+  - Light Gray
+  - Dark Gray
+  - Black
+  colors:
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 1, g: 0.5294118, b: 0, a: 0}
+  - {r: 1, g: 1, b: 0, a: 0}
+  - {r: 0, g: 1, b: 0, a: 0}
+  - {r: 0, g: 0.5882353, b: 0, a: 0}
+  - {r: 0, g: 1, b: 1, a: 0}
+  - {r: 0, g: 0.6666667, b: 1, a: 0}
+  - {r: 0, g: 0, b: 1, a: 0}
+  - {r: 0.5294118, g: 0, b: 1, a: 0}
+  - {r: 1, g: 0, b: 1, a: 0}
+  - {r: 1, g: 0, b: 0.5882353, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.54901963, g: 0.54901963, b: 0.54901963, a: 0}
+  - {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &7353830308896141877
 MonoBehaviour:
   m_ObjectHideFlags: 0

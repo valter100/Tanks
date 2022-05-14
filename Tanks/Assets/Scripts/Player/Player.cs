@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private PlayerInfo info;
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private Tank tank;
+    [SerializeField] private GameObject playerHudPrefab;
 
     private static GameManager gameManager;
 
@@ -21,11 +23,8 @@ public class Player : MonoBehaviour
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    private void Update()
+    public void ManualUpdate()
     {
-        if (gameManager.CurrentPlayer != this)
-            return;
-
         inventory.ManualUpdate();
         tank.ManualUpdate();
     }
@@ -49,7 +48,14 @@ public class Player : MonoBehaviour
 
         inventory.Clear();
         foreach (GameObject prefab in Prefabs.Items.Values)
-            inventory.AddItem(prefab, 12);
+            inventory.AddItem(prefab.GetComponent<Usable>(), Random.Range(6, 12));
+
+        // PlayerHUD
+
+        GameObject canvas = GameObject.Find("Canvas");
+        PlayerHUD playerHud = Instantiate(playerHudPrefab, canvas.transform).GetComponent<PlayerHUD>();
+        playerHud.LinkPlayer(this);
+        playerHud.transform.SetAsFirstSibling();
     }
 
     public void Ready()

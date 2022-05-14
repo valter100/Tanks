@@ -126,13 +126,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99789bab1a5de33429bc436cf9d44bca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Shockwave Bomb
+  description: The Shockwave Bomb will on impact release a shockwave, knocking back
+    neaby tanks.
   attackPattern: {fileID: -8432250830994518478}
   clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 0
   timeToLive: 10
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 810559230231951312, guid: 545a67fc9032ab7438138bb619d133d7, type: 3}
-  startAmmoCount: 2
   canDamageSelf: 0
   ownTank: {fileID: 0}
   pushbackRadius: 10

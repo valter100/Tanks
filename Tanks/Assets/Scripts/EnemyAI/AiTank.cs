@@ -51,7 +51,6 @@ public class AiTank : Tank
             currentFuel -= 0.05f; // should be changed for the correct value;
         else
             currentFuel -= 0.05f * 2;
-        fuelSlider.value = currentFuel / maxFuel;
     }
 
     public void Aim(Transform enemyTarget)

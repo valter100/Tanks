@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
         maxDistanceToTarget = Screen.currentResolution.height * 0.25f;
 
         ViewSettings sideView = new ViewSettings();
-        sideView.position = new Vector3(0.0f, 7.0f, -50.0f);
+        sideView.position = new Vector3(0.0f, 7.0f, -60.0f);
         sideView.rotation = Vector3.zero;
         sideView.minFOV = 15.0f;
         sideView.FOV = 25.0f;
@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour
         sideView.allowZoom = true;
 
         ViewSettings focusView = new ViewSettings();
-        focusView.position = new Vector3(0.0f, 7.0f, -10);
+        focusView.position = new Vector3(0.0f, 7.0f, -15);
         focusView.rotation = Vector3.zero;
         focusView.FOV = 60.0f;
         focusView.allowTranslation = false;
@@ -99,7 +99,7 @@ public class CameraController : MonoBehaviour
 
         if (view == View.Side || view == View.Focus)
         {
-            //targetPosition = new Vector3(focusPoint.transform.position.x, focusPoint.transform.position.y, transform.position.z);
+            targetPosition = new Vector3(focusPoint.transform.position.x, focusPoint.transform.position.y, transform.position.z);
         }
 
         else if (view == View.FirstPerson)

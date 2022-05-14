@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class PlayerSpot : MonoBehaviour
 {
-    [SerializeField] GameObject addPlayerButtonPrefab;
+    [SerializeField] private GameObject addPlayerButtonPrefab;
+    [SerializeField] private bool startWithTank;
+
+    public bool StartWithTank => startWithTank;
 
     void Start()
     {
         GameObject playMenu = GameObject.Find("Canvas").transform.Find("Play Menu").gameObject;
-        GameObject addPlayerButton = Instantiate(addPlayerButtonPrefab, playMenu.transform);
-        addPlayerButton.GetComponent<AddPlayerButton>().playerSpot = gameObject;
+        AddPlayerButton addPlayerButton = Instantiate(addPlayerButtonPrefab, playMenu.transform).GetComponent<AddPlayerButton>();
+        addPlayerButton.playerSpot = gameObject;
         addPlayerButton.GetComponent<FollowInWorldObject>().followObject = transform;
-
         gameObject.SetActive(false);
     }
 }

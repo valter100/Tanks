@@ -25,6 +25,7 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected ParticleSystem fireParticles;
     [SerializeField] protected Animator animator;
     [SerializeField] protected ParticleSystem damagedParticles;
+    [SerializeField] protected float aimRadius;
 
     [Header("Explosion")]
     [SerializeField] protected Explosion explosion;
@@ -44,13 +45,6 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected Gun gun;
     [SerializeField] protected Transform rumbleSpot;
 
-    [Header("GUI")]
-    [SerializeField] protected TMP_Text nameText;
-    [SerializeField] protected Slider healthSlider;
-    [SerializeField] protected Slider fuelSlider;
-    [SerializeField] protected Slider shootForceSlider;
-    [SerializeField] protected float aimRadius;
-
     protected float timeSinceLastEffect;
     protected int projectileIndex;
     protected bool hasFired = false;
@@ -64,6 +58,8 @@ public abstract class Tank : MonoBehaviour
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
 
+    public float GetPowerPercentage() => currentShootForce / maxShootForce;
+
     public float GetCurrentHealth() => currentHealth;
 
     public float GetMaxShootForce() => maxShootForce;
@@ -74,6 +70,7 @@ public abstract class Tank : MonoBehaviour
 
     public bool CanFire() => !hasFired && currentHealth > 0.0f;
 
+    public bool Destroyed() => currentHealth <= 0.0f;
 
     protected virtual void Start()
     {
@@ -110,7 +107,7 @@ public abstract class Tank : MonoBehaviour
 
     public Projectile InstantiateProjectile()
     {
-        Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, gun.GetFirePoint()).GetComponent<Projectile>();
+        Projectile projectile = Instantiate(player.Inventory.SelectedItem.usable.gameObject, gun.GetFirePoint()).GetComponent<Projectile>();
         projectile.ownTank = this;
         projectile.transform.parent = null;
         projectile.Fire(gun.transform.parent.transform.rotation, currentShootForce);
@@ -138,7 +135,7 @@ public abstract class Tank : MonoBehaviour
             animator.SetTrigger("Fire");
 
         Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
-        player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
+        player.Inventory.SelectedItem.usable.gameObject.GetComponent<Projectile>().GetAttackPattern().Fire(this);
 
         Projectile projectile = InstantiateProjectile();
 
@@ -176,14 +173,11 @@ public abstract class Tank : MonoBehaviour
         {
             animator.SetTrigger("Destroyed");
         }
-
-        healthSlider.value = currentHealth / maxHealth;
     }
 
     public void LinkPlayer(Player player)
     {
         this.player = player;
-        nameText.text = player.Info.name;
         SetColor(player.Info.color);
 
         if (player.Info.control == Control.Player)
@@ -200,11 +194,7 @@ public abstract class Tank : MonoBehaviour
 
     public void Ready()
     {
-        fuelSlider.gameObject.SetActive(true);
-        shootForceSlider.gameObject.SetActive(true);
-
         currentFuel = maxFuel;
-        fuelSlider.value = currentFuel / maxFuel;
         hasFired = false;
 
         if (cameraController == null)
@@ -216,8 +206,6 @@ public abstract class Tank : MonoBehaviour
 
     public void Unready()
     {
-        fuelSlider.gameObject.SetActive(false);
-        shootForceSlider.gameObject.SetActive(false);
         isSlowed = false;
         SetColor(player.Info.color);
     }
@@ -240,4 +228,5 @@ public abstract class Tank : MonoBehaviour
             tankPart.GetComponent<Renderer>().material.color = color;
         }
     }
+
 }
