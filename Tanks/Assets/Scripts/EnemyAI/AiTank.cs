@@ -5,7 +5,7 @@ using UnityEngine;
 public class AiTank : Tank
 {
     private AiManager aiManager;
-
+    private int randomInvetoryIndex;
     protected override void Start()
     {
         base.Start();
@@ -85,10 +85,10 @@ public class AiTank : Tank
         currentShootForce = v;
         rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
 
+        ChooseAmmoType();
+
         if (CanFire())
             Fire();
-
-
     }
 
     public override void Ready()
@@ -99,5 +99,18 @@ public class AiTank : Tank
     public override void LinkPlayer(Player player)
     {
         base.LinkPlayer(player);
+    }
+
+    private void ChooseAmmoType()
+    {
+        randomInvetoryIndex = Random.Range(0, player.Inventory.items.Count);
+        
+        if(player.Inventory.items[randomInvetoryIndex].amount <= 0)
+        {
+            ChooseAmmoType();
+        }
+
+        player.Inventory.selectedIndex = randomInvetoryIndex;
+        return;
     }
 }

@@ -84,7 +84,6 @@ public abstract class Tank : MonoBehaviour
 
     protected virtual void Start()
     {
-        Debug.Log(player + " at start");
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 

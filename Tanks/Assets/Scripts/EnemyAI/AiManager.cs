@@ -15,8 +15,8 @@ public class AiManager : MonoBehaviour
     public Transform activeTargetPosition;
     List<GameObject> targetTanks;
 
+    [SerializeField] private float maxShootingRange;
     private float distanceToEnemy;
-    private float maxShootingRange;
     private float fuel;
 
     [SerializeField] private bool lowHealthTarget, highHealthTarget, closestTarget, furthestTarget;
@@ -26,7 +26,6 @@ public class AiManager : MonoBehaviour
         activeState = startState;
         targetTanks = new List<GameObject>();
         thisTank = GetComponent<AiTank>();
-        maxShootingRange = thisTank.GetMaxShootForce();
 
         activeTargetPosition = null;
 

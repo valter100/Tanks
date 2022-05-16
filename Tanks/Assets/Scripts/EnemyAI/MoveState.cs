@@ -16,7 +16,7 @@ public class MoveState : State
         if (!oldPosition) oldPosition = thisTank.transform;
 
 
-        if (thisManager.GetDistanceToEnemy() < 15 || thisManager.GetFuel() <= 0 || oldPosition == thisTank.transform)
+        if (thisManager.GetDistanceToEnemy() < thisManager.GetMaxShootingRange() || thisManager.GetFuel() <= 0 || oldPosition == thisTank.transform)
         {
             thisManager.SetFireState();
             return;
