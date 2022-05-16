@@ -81,6 +81,7 @@ public abstract class Tank : MonoBehaviour
 
     protected virtual void Start()
     {
+        Debug.Log(player + " at start");
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -111,6 +112,7 @@ public abstract class Tank : MonoBehaviour
 
     public Projectile InstantiateProjectile()
     {
+        Debug.Log(player);
         Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, gun.GetFirePoint()).GetComponent<Projectile>();
         projectile.ownTank = this;
         projectile.transform.parent = null;
@@ -257,5 +259,17 @@ public abstract class Tank : MonoBehaviour
     public void DestroyTank()
     {
         gameObject.SetActive(false);
+    }
+    
+    public void SetHealth(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+    }
+
+    public void SetFuel(float amount)
+    {
+        currentFuel += amount;
+        currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
     }
 }

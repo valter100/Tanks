@@ -10,7 +10,8 @@ public class AiTank : Tank
     protected override void Start()
     {
         base.Start();
-        aiManager = GetComponent<AiManager>();
+        if(aiManager == null)
+            aiManager = GetComponent<AiManager>();
     }
 
     public void ManualAIUpdate()
