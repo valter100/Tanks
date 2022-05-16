@@ -538,6 +538,7 @@ MonoBehaviour:
   aimRadius: 250
   debugTrajectory: 0
   facingRight: 0
+  projectilePrefab: {fileID: 0}
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,8 +707,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c0f1ac10f554b49b3c10dfbe105c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  maxShootForce: 100
+  maxHealth: 15
+  maxShootForce: 20
   maxFuel: 100
   groundLayerMask:
     serializedVersion: 2
@@ -725,7 +726,8 @@ MonoBehaviour:
   isSlowed: 0
   player: {fileID: 0}
   rotatePoint: {fileID: 3022464576086988331, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
-  tankParts: []
+  tankParts:
+  - {fileID: 823687964183072229}
   chassi: {fileID: 823687964183072229}
   tower: {fileID: 3429087769263482813}
   gun: {fileID: 3975383469951734012}
@@ -737,6 +739,7 @@ MonoBehaviour:
   aimRadius: 250
   debugTrajectory: 0
   facingRight: 0
+  projectilePrefab: {fileID: 0}
 --- !u!114 &2626749122293949152
 MonoBehaviour:
   m_ObjectHideFlags: 0

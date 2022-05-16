@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     public PlayerInfo Info => info;
     public PlayerInventory Inventory => inventory;
     public Tank Tank => tank;
-    
+
 
     private void Start()
     {
@@ -24,9 +24,14 @@ public class Player : MonoBehaviour
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         if (info.control == Control.Player)
-            playerTank = tank.GetComponent<PlayerTank>();
+        {
+            
+        }
         else if (info.control == Control.Bot)
-            aiTank = tank.GetComponent<AiTank>();
+        {
+            
+        }
+
     }
 
     private void Update()
@@ -52,9 +57,19 @@ public class Player : MonoBehaviour
         info.control = control;
 
         // Tank
+        if (info.control == Control.Player)
+        {
+            tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<PlayerTank>();
+            playerTank = tank.GetComponent<PlayerTank>();
+        }
+        else if (info.control == Control.Bot)
+        {
+            tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<AiTank>();
+            aiTank = tank.GetComponent<AiTank>();
+        }
 
-        tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<Tank>();
         tank.LinkPlayer(this);
+
         tank.transform.position = position;
 
         // Inventory
@@ -66,7 +81,10 @@ public class Player : MonoBehaviour
 
     public void Ready()
     {
-        tank.Ready();
+        if (playerTank)
+            playerTank.Ready();
+        else if (aiTank)
+            aiTank.Ready();
     }
 
     public void Unready()

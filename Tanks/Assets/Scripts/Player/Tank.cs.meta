@@ -3,7 +3,23 @@ guid: 93d6ad12ce676124a8e4aace8de32316
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - movementEffect: {instanceID: 0}
+  - fireParticles: {instanceID: 0}
+  - animator: {instanceID: 0}
+  - damagedParticles: {instanceID: 0}
+  - explosion: {instanceID: 0}
+  - player: {instanceID: 0}
+  - rotatePoint: {instanceID: 0}
+  - chassi: {instanceID: 0}
+  - tower: {instanceID: 0}
+  - gun: {instanceID: 0}
+  - rumbleSpot: {instanceID: 0}
+  - nameText: {instanceID: 0}
+  - healthSlider: {instanceID: 0}
+  - fuelSlider: {instanceID: 0}
+  - shootForceSlider: {instanceID: 0}
+  - projectilePrefab: {fileID: 725691630527340521, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -11,7 +11,7 @@ public class StartState : State
            thisBehaviour.SetMoveState();
            return;
         }
-        else if (thisBehaviour.GetDistanceToEnemy() < thisBehaviour.GetMaxShootingRange() || thisBehaviour.GetFuel() <= 0)
+        else
         {
            thisBehaviour.SetFireState();
            return;

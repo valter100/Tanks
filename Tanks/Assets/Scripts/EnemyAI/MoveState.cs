@@ -11,7 +11,7 @@ public class MoveState : State
     private LayerMask groundLayer;
     public override void DoState(AiManager thisManager,Transform enemyTankPosition, AiTank thisTank)
     {
-        if (thisManager.GetDistanceToEnemy() < 4 || thisManager.GetFuel() <= 0)
+        if (thisManager.GetDistanceToEnemy() < 15 || thisManager.GetFuel() <= 0)
         {
             thisManager.SetFireState();
             return;

@@ -12,6 +12,7 @@ public class PlayerTank : Tank
 
         if (playerController == null)
             playerController = GetComponent<PlayerController>();
+        Debug.Log(player);
     }
 
     public void ManualPlayerUpdate()
@@ -31,7 +32,7 @@ public class PlayerTank : Tank
         if (debugTrajectory)
             PreviewProjectileTrajectory();
 
-        Debug.Log(player);
+        //Debug.Log(player);
     }
 
     public void Move()
@@ -79,5 +80,15 @@ public class PlayerTank : Tank
         percentage = Mathf.Clamp01(percentage);
         currentShootForce = percentage * maxShootForce;
         shootForceSlider.value = percentage;
+    }
+
+    public override void Ready()
+    {
+        base.Ready();
+    }
+
+    public override void LinkPlayer(Player player)
+    {
+        base.LinkPlayer(player);
     }
 }

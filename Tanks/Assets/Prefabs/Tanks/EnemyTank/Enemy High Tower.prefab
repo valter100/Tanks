@@ -199,6 +199,7 @@ MonoBehaviour:
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.5
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
+  fireSound: {fileID: 0}
   animator: {fileID: 0}
   damagedParticles: {fileID: 0}
   explosion: {fileID: 0}
@@ -217,6 +218,8 @@ MonoBehaviour:
   shootForceSlider: {fileID: 7039783255621376761}
   aimRadius: 250
   debugTrajectory: 0
+  facingRight: 0
+  projectilePrefab: {fileID: 0}
 --- !u!114 &4740248741754116074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,7 +341,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3022464576086988331}
-  m_LocalRotation: {x: -0, y: -0, z: -0.70476073, w: 0.7094452}
+  m_LocalRotation: {x: -0, y: -0, z: 0.68904275, w: 0.7247207}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -776,6 +779,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8868327361117539833}
     m_Modifications:
+    - target: {fileID: 1866626879848115511, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3049102817173278899, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -796,9 +803,13 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5458330031080980165, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5461925460376421636, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7341998373167020666, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_Pivot.x
@@ -886,7 +897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7749208525688846400, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 0.62547827
       objectReference: {fileID: 0}
     - target: {fileID: 8976400902680636137, guid: 2b789e03bdf11eb49943605fe7f12c8e, type: 3}
       propertyPath: m_AnchorMax.x
