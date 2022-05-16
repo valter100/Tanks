@@ -33,7 +33,7 @@ public class AiManager : MonoBehaviour
         UpdateTargetsList();
     }
 
-    public void Update()
+    public void ManualUpdate()
     {
         if (!activeTargetPosition)
             ChooseTarget();

@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject map;
+    [SerializeField] private GameObject airDropPrefab;
+    [SerializeField] private List<AirDrop> airDrops;
 
     private bool inPlayerTransition = false;
 
@@ -120,6 +122,10 @@ public class GameManager : MonoBehaviour
 
         SetNextPlayer();
         inPlayerTransition = false;
+
+        if (Random.Range(0f, 1f) < 0.3f)
+            CreateNewAirDrop();
+
         yield return 0;
     }
 
@@ -151,4 +157,12 @@ public class GameManager : MonoBehaviour
         currentPlayer.Ready();
     }
 
+    public void CreateNewAirDrop()
+    {
+        GenerateSpawnpoints generateSpawnpoints = GameObject.Find("Map").GetComponent<GenerateSpawnpoints>();
+        AirDrop airDrop = Instantiate(airDropPrefab, generateSpawnpoints.GetNewSpawnpoint(), Quaternion.identity).GetComponent<AirDrop>();
+        airDrop.SetCrateType();
+        airDrop.transform.position += new Vector3(0, 10, 0);
+        airDrops.Add(airDrop);
+    }
 }

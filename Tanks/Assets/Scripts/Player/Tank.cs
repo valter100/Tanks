@@ -96,11 +96,8 @@ public abstract class Tank : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
         currentFuel = maxFuel;
-    }
 
-    public virtual void ManualUpdate()
-    {
-        
+        Debug.Log(player);
     }
 
     protected void PreviewProjectileTrajectory()
@@ -129,8 +126,8 @@ public abstract class Tank : MonoBehaviour
 
     protected void Fire()
     {
-        Debug.Log("FIRED");
         // Precompute projectile
+
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
 
@@ -144,15 +141,11 @@ public abstract class Tank : MonoBehaviour
 
         player.Inventory.DecreaseAmountOfSelectedItem();
         hasFired = true;
+        Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
+        Projectile projectile = InstantiateProjectile();
 
         if (animator)
             animator.SetTrigger("Fire");
-
-        Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
-
-        //player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
-
-        Projectile projectile = InstantiateProjectile();
 
         // Update camera
 
@@ -214,6 +207,8 @@ public abstract class Tank : MonoBehaviour
             GetComponent<AiTank>().enabled = true;
             GetComponent<AiManager>().enabled = true;
         }
+
+        Debug.Log(player);
     }
 
     public void Ready()
@@ -256,6 +251,18 @@ public abstract class Tank : MonoBehaviour
     public void DestroyTank()
     {
         gameObject.SetActive(false);
+    }
+
+    public void AddHealth(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+    }
+
+    public void AddFuel(float amount)
+    {
+        currentFuel += amount;
+        currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
     }
 
 }
