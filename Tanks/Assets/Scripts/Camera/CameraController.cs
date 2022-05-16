@@ -43,11 +43,11 @@ public class CameraController : MonoBehaviour
         maxDistanceToTarget = Screen.currentResolution.height * 0.25f;
 
         ViewSettings sideView = new ViewSettings();
-        sideView.position = new Vector3(0, 7, -45);
-        sideView.rotation = new Vector3(15, 0, 0);
-        sideView.minFOV = 30;
+        sideView.position = new Vector3(0, 17, -25);
+        sideView.rotation = new Vector3(12, 0, 0);
+        sideView.minFOV = 20;
         sideView.FOV = 45;
-        sideView.maxFOV = 70;
+        sideView.maxFOV = 80;
         sideView.allowTranslation = true;
         sideView.allowZoom = true;
 

@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 0}
-  offset: {x: 0, y: 3.5, z: 0}
+  offset: {x: 0, y: 2.5, z: 0}
 --- !u!1 &8201894538370163801
 GameObject:
   m_ObjectHideFlags: 0

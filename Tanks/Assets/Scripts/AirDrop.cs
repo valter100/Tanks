@@ -62,10 +62,10 @@ public class AirDrop : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        Tank tank = collision.gameObject.GetComponent<Tank>();
-
-        if (tank != null)
+        if (collision.gameObject.tag == "Tank")
         {
+            Tank tank = collision.gameObject.GetComponent<Tank>();
+
             switch (type)
             {
                 case Type.Health:
@@ -80,6 +80,8 @@ public class AirDrop : MonoBehaviour
                     tank.GetPlayer().Inventory.AddItem(Prefabs.Usables[usablePrefab].GetComponent<Usable>(), amount, true);
                     break;
             }
+
+            Crate.SetActive(false);
         }
 
         else if (collision.gameObject.tag == "Water")

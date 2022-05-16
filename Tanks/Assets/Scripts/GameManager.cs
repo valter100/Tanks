@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (currentPlayer != null)
+        {
+            currentPlayer.ManualUpdate();
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
@@ -77,14 +82,6 @@ public class GameManager : MonoBehaviour
         }
         
         yield return 0;
-    }
-
-    private void Update()
-    {
-        if (currentPlayer != null)
-        {
-            currentPlayer.ManualUpdate();
-        }
     }
 
     public Player AddNewPlayer()
