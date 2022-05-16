@@ -512,7 +512,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  movementSpeed: 1
+  movementSpeed: 25
   jumpForce: 100
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.25
@@ -539,7 +539,6 @@ MonoBehaviour:
   aimRadius: 250
   debugTrajectory: 0
   facingRight: 0
-  projectilePrefab: {fileID: 0}
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,13 +726,13 @@ MonoBehaviour:
   explosionDamage: 3
   isSlowed: 0
   player: {fileID: 0}
-  rotatePoint: {fileID: 3022464576086988331, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  rotatePoint: {fileID: 2168714140922752080}
   tankParts:
   - {fileID: 823687964183072229}
   chassi: {fileID: 823687964183072229}
   tower: {fileID: 3429087769263482813}
   gun: {fileID: 3975383469951734012}
-  rumbleSpot: {fileID: 5955620086700898198, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  rumbleSpot: {fileID: 6458958948821315585}
   nameText: {fileID: 2356583793397656385}
   healthSlider: {fileID: 2840559886408133184}
   fuelSlider: {fileID: 6126757462696722231}
@@ -741,7 +740,6 @@ MonoBehaviour:
   aimRadius: 250
   debugTrajectory: 0
   facingRight: 0
-  projectilePrefab: {fileID: 0}
 --- !u!114 &2626749122293949152
 MonoBehaviour:
   m_ObjectHideFlags: 0

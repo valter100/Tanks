@@ -29,12 +29,12 @@ public class AiTank : Tank
 
         Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
 
-        RaycastHit hit;
-        if (Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-        {
-            if (hit.normal.y < 0.85f)
-                return;
-        }
+        //RaycastHit hit;
+        //if (Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
+        //{
+        //    if (hit.normal.y < 0.9f)
+        //        return;
+        //}
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;

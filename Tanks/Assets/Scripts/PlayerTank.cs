@@ -49,7 +49,7 @@ public class PlayerTank : Tank
         //        return;
         //}
 
-        gameObject.transform.position += playerController.GetMovement() * movementSpeed;
+        gameObject.transform.position += playerController.GetMovement() * movementSpeed * Time.deltaTime;
         timeSinceLastEffect += Time.deltaTime;
         if (timeSinceLastEffect > timeBetweenEffectSpawn)
         {

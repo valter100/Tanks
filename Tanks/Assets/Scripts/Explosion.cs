@@ -48,17 +48,30 @@ public class Explosion : MonoBehaviour
         Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90, 0, 0));
         transform.parent = null;
 
-        Collider[] tankColliders = Physics.OverlapSphere(transform.position, radius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 
-        foreach (Collider collider in tankColliders)
+        foreach (Collider collider in colliders)
         {
             if (collider.gameObject.tag != "Tank")
                 continue;
 
-            Tank tank = collider.gameObject.GetComponentInParent<Player>().Tank;
 
-            if (tank)
-                tank.TakeDamage(damage);
+            try
+            {
+                if (collider.gameObject.GetComponentInParent<Player>().Tank)
+                {
+                    Tank tank = collider.gameObject.GetComponentInParent<Player>().Tank;
+
+                    if (tank)
+                        tank.TakeDamage(damage);
+
+                }
+            }
+            catch
+            {
+                continue;
+            }
+
         }
     }
 
