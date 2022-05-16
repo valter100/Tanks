@@ -342,7 +342,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3072952813707866530, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: printDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: objectsPerWidth

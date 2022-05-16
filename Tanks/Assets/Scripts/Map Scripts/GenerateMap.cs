@@ -274,8 +274,6 @@ public class GenerateMap : MonoBehaviour
             LinePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
             InitialTopside[i] = LinePositions[i] + new Vector3(0, -overhangHeight);
         }
-
-        
     }
 
     private Point[] PositionsToPoints()
@@ -329,8 +327,14 @@ public class GenerateMap : MonoBehaviour
             points[i].IsConnected = true;
         }
 
+        GenerateTriangles(points);
+
+        CreateMesh(CreateSubMeshDescriptors(quads));
+    }
+
+    private void GenerateTriangles(Point[] points)
+    {
         //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
-        //TODO kanske gör det omlott
         int previousIndex, nextIndex = 0;
         for (int i = 0; i < points.Length; i++)
         {
@@ -341,7 +345,7 @@ public class GenerateMap : MonoBehaviour
                 if (nextIndex < i)
                     nextIndex = GetNextConnectedPoint(i);
                 AddQuad(previousIndex, points[i].VertexIndex);
-                AddTriangle(points[i], points[nextIndex]);
+                AddTriangle(points[i].VertexIndex, points[nextIndex].VertexIndex);
 
                 if (nextIndex == i + 1)
                     AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex);
@@ -351,26 +355,11 @@ public class GenerateMap : MonoBehaviour
 
         }
 
-        CreateMesh(CreateSubMeshDescriptors(quads));
-
-        void AddQuad(int pastIndex, int vertexIndex)
+        int SecureAddVertex(Point point)
         {
-            bool isTopside = IsAboveGrass(vertices[pastIndex], vertices[vertexIndex]);
-            quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
-        }
-
-        void AddTriangle(Point currentPoint, Point nextPoint)
-        {
-            bool isTopside = IsAboveGrass(vertices[currentPoint.VertexIndex + 1], vertices[nextPoint.VertexIndex + 1], false);
-            quads.Add(new Quad(currentPoint.VertexIndex + 1, previousIndex + 1, nextPoint.VertexIndex + 1, -1, isTopside));
-        }
-
-        bool IsAboveGrass(Vector3 topLeft, Vector3 topRight, bool requireBoth = true)
-        {
-            if (requireBoth)
-                return GetClosestOverhangPosition(topLeft.x).y < topLeft.y && GetClosestOverhangPosition(topRight.x).y < topRight.y;
-            return GetClosestOverhangPosition(topLeft.x).y < topLeft.y || GetClosestOverhangPosition(topRight.x).y < topRight.y;
-
+            if (!point.IsIndexed)
+                point.VertexIndex = AddVertex(point.position, true);
+            return point.VertexIndex;
         }
 
         int GetNextConnectedPoint(int startIndex)
@@ -387,6 +376,25 @@ public class GenerateMap : MonoBehaviour
                     return -1;
             return index;
         }
+
+        void AddTriangle(int currentIndex, int nextIndex)
+        {
+            bool isTopside = IsQuadAboveGrass(vertices[currentIndex + 1], vertices[nextIndex + 1], false);
+            quads.Add(new Quad(currentIndex + 1, previousIndex + 1, nextIndex + 1, -1, isTopside));
+        }
+    }
+
+    private void AddQuad(int pastIndex, int vertexIndex)
+    {
+        bool isTopside = IsQuadAboveGrass(vertices[pastIndex], vertices[vertexIndex]);
+        quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+    }
+
+    private bool IsQuadAboveGrass(Vector3 topLeft, Vector3 topRight, bool requireBoth = true)
+    {
+        if (requireBoth)
+            return GetClosestOverhangPosition(topLeft.x).y < topLeft.y && GetClosestOverhangPosition(topRight.x).y < topRight.y;
+        return GetClosestOverhangPosition(topLeft.x).y < topLeft.y || GetClosestOverhangPosition(topRight.x).y < topRight.y;
     }
 
     Vector3 GetClosestOverhangPosition(float positionX)
@@ -412,11 +420,12 @@ public class GenerateMap : MonoBehaviour
         if (onlyTop)
             return index;
 
+        //If above overhangPosition use old overhang instead
         Vector3 overhangPosition = GetClosestOverhangPosition(vertex.x);
         if (overhangPosition.y < vertex.y)
             vertices.Add(overhangPosition - new Vector3(0, 0, GetOverhangDepth(overhangPosition.y + overhangHeight)));
         else
-            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth(vertex.y)));
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth(overhangPosition.y + overhangHeight)));
 
         vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
         return index;
@@ -432,7 +441,7 @@ public class GenerateMap : MonoBehaviour
         vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, depth));
         vertices.Add(new Vector3(vertex.x, 0, depth));
         int index = AddVertex(vertex);
-        quads.Add(new Quad(index, index - 2, index + 1, index + 2, true));
+        quads.Add(new Quad(index, index - 2, index + 1, index + 2, IsQuadAboveGrass(vertex, vertex)));
         quads.Add(new Quad(index - 2, index - 1, index + 2, index + 3));
     }
 
@@ -441,7 +450,7 @@ public class GenerateMap : MonoBehaviour
         int index = AddVertex(vertex);
         vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, depth));
         vertices.Add(new Vector3(vertex.x, 0, depth));
-        quads.Add(new Quad(index + 1, index + 2, index + 0, index + 4, true));
+        quads.Add(new Quad(index + 1, index + 2, index + 0, index + 4, IsQuadAboveGrass(vertex, vertex)));
         quads.Add(new Quad(index + 2, index + 3, index + 4, index + 5));
         return index;
     }
@@ -497,6 +506,7 @@ namespace Tanks.MapPoint
         public int VertexIndex { get; set; }
         public bool IsConnected { get; set; }
         public bool CanReachFloor { get; set; }
+        public bool IsIndexed => VertexIndex != -1;
         public Point(Vector3 position)
         {
             this.position = position;
