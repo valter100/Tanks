@@ -487,7 +487,7 @@ Transform:
   m_GameObject: {fileID: 8375430385975182193}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.07, y: 0.98, z: 0.50938606}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 1978194765825190997}
   - {fileID: 6586551794317655309}
@@ -517,10 +517,11 @@ MonoBehaviour:
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.25
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
-  fireSound: {fileID: 8300000, guid: 10a275810c72d6d4aba11564dbc4c5b6, type: 3}
+  fireSound: {fileID: 8300000, guid: 2ff0a1785696c49408b957dd8c691de1, type: 3}
   animator: {fileID: 2657026208458003744}
   damagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
   explosion: {fileID: 6763284902321818684}
+  explosionSound: {fileID: 8300000, guid: 2efbc36ff19b3124d8c121ea6a7b47a0, type: 3}
   explosionDamage: 3
   isSlowed: 0
   player: {fileID: 0}
@@ -718,10 +719,11 @@ MonoBehaviour:
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.5
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
-  fireSound: {fileID: 0}
+  fireSound: {fileID: 8300000, guid: 2ff0a1785696c49408b957dd8c691de1, type: 3}
   animator: {fileID: 2657026208458003744}
   damagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
   explosion: {fileID: 6763284902321818684}
+  explosionSound: {fileID: 8300000, guid: 2efbc36ff19b3124d8c121ea6a7b47a0, type: 3}
   explosionDamage: 3
   isSlowed: 0
   player: {fileID: 0}
@@ -733,9 +735,9 @@ MonoBehaviour:
   gun: {fileID: 3975383469951734012}
   rumbleSpot: {fileID: 5955620086700898198, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
   nameText: {fileID: 2356583793397656385}
-  healthSlider: {fileID: 5549606514419130708, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
-  fuelSlider: {fileID: 4569190864587535395, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
-  shootForceSlider: {fileID: 7039783255621376761, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
+  healthSlider: {fileID: 2840559886408133184}
+  fuelSlider: {fileID: 6126757462696722231}
+  shootForceSlider: {fileID: 855066007436251629}
   aimRadius: 250
   debugTrajectory: 0
   facingRight: 0

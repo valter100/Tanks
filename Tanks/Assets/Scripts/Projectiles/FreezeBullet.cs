@@ -14,7 +14,7 @@ public class FreezeBullet : Projectile
     {
         if (other != null)
         {
-            PlayerTank tank = other.gameObject.GetComponent<PlayerTank>();
+            Tank tank = other.gameObject.GetComponent<Tank>();
 
             if (CanDamage(tank))
             {

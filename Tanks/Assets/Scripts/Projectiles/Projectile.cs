@@ -132,7 +132,7 @@ public abstract class Projectile : MonoBehaviour
     /// <summary>
     /// Returns whether or not the provided Tank is a Tank, and that it can be damanged
     /// </summary>
-    protected bool CanDamage(PlayerTank tank)
+    protected bool CanDamage(Tank tank)
     {
         if (tank == null)
             return false;

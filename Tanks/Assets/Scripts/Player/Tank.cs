@@ -29,6 +29,7 @@ public abstract class Tank : MonoBehaviour
 
     [Header("Explosion")]
     [SerializeField] protected Explosion explosion;
+    [SerializeField] protected AudioClip explosionSound;
     [SerializeField] protected float explosionDamage;
 
     [Header("Status Effects")]
@@ -139,7 +140,7 @@ public abstract class Tank : MonoBehaviour
 
         // Fire projectile
 
-        //player.Inventory.DecreaseAmountOfSelectedItem();
+        player.Inventory.DecreaseAmountOfSelectedItem();
         hasFired = true;
 
         if (animator)
@@ -194,6 +195,7 @@ public abstract class Tank : MonoBehaviour
     public void Explode()
     {
         explosion.SetDamage(explosionDamage);
+        GetComponent<AudioSource>().PlayOneShot(explosionSound);
         explosion.Explode();
     }
 

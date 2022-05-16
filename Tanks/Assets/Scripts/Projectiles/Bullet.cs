@@ -17,9 +17,9 @@ public class Bullet : Projectile
 
     protected override void Detonate(Collider other)
     {
-        if (other != null)
+        if (other != null && other.gameObject.tag == "Tank")
         {
-            PlayerTank tank = other.gameObject.GetComponent<PlayerTank>();
+            Tank tank = other.gameObject.GetComponentInParent<Player>().Tank;
 
             if (CanDamage(tank))
                 tank.TakeDamage(damage);

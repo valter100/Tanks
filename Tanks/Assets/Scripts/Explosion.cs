@@ -52,7 +52,10 @@ public class Explosion : MonoBehaviour
 
         foreach (Collider collider in tankColliders)
         {
-            Tank tank = collider.GetComponent<Tank>();
+            if (collider.gameObject.tag != "Tank")
+                continue;
+
+            Tank tank = collider.gameObject.GetComponentInParent<Player>().Tank;
 
             if (tank)
                 tank.TakeDamage(damage);
