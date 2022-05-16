@@ -27,6 +27,15 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Coroutine_StartMatch());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+            Debug.Log("Quit");
+        }
+    }
+
     private IEnumerator Coroutine_StartMatch()
     {
         GameObject gameInfoObject = GameObject.Find("Game Info");
