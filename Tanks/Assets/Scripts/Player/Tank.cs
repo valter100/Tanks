@@ -65,6 +65,9 @@ public abstract class Tank : MonoBehaviour
     protected Ray ray;
     [SerializeField] protected bool facingRight;
 
+
+    [SerializeField] GameObject projectilePrefab;
+
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
@@ -93,7 +96,7 @@ public abstract class Tank : MonoBehaviour
         currentHealth = maxHealth;
         currentFuel = maxFuel;
 
-        Debug.Log(player);
+        //Debug.Log(player);
     }
 
     protected void PreviewProjectileTrajectory()
@@ -113,8 +116,8 @@ public abstract class Tank : MonoBehaviour
 
     public Projectile InstantiateProjectile()
     {
-        Debug.Log(player);
         Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, gun.GetFirePoint()).GetComponent<Projectile>();
+
         projectile.ownTank = this;
         projectile.transform.parent = null;
         projectile.Fire(gun.transform.parent.transform.rotation, currentShootForce);
@@ -136,7 +139,7 @@ public abstract class Tank : MonoBehaviour
 
         // Fire projectile
 
-        player.Inventory.DecreaseAmountOfSelectedItem();
+        //player.Inventory.DecreaseAmountOfSelectedItem();
         hasFired = true;
 
         if (animator)
@@ -195,7 +198,7 @@ public abstract class Tank : MonoBehaviour
         explosion.Explode();
     }
 
-    public void LinkPlayer(Player player)
+    public virtual void LinkPlayer(Player player)
     {
         this.player = player;
         nameText.text = player.Info.name;
@@ -212,10 +215,10 @@ public abstract class Tank : MonoBehaviour
             GetComponent<AiManager>().enabled = true;
         }
 
-        Debug.Log(player);
+        //Debug.Log(player);
     }
 
-    public void Ready()
+    public virtual void Ready()
     {
         fuelSlider.gameObject.SetActive(true);
         shootForceSlider.gameObject.SetActive(true);
@@ -229,6 +232,8 @@ public abstract class Tank : MonoBehaviour
 
         cameraController.focusPoint.FollowObject(gameObject);
         cameraController.Transition(CameraController.View.Side, 1.0f);
+
+        Debug.Log("ready");
     }
 
     public void Unready()

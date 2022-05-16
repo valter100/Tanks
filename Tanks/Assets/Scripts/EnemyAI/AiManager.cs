@@ -42,6 +42,8 @@ public class AiManager : MonoBehaviour
         fuel = thisTank.GetFuelPercentage();
        
         activeState.DoState(this, activeTargetPosition, thisTank);
+
+        Debug.Log(activeState);
     }
 
     public float GetFuel() => fuel;
@@ -51,6 +53,8 @@ public class AiManager : MonoBehaviour
     public State GetActiveState() => activeState;
     public void SetFireState() => activeState = fireState;
     public void SetMoveState() => activeState = moveState;
+
+    public void SetStateToStartState() => activeState = startState;
 
     public void ChooseTarget()
     {
