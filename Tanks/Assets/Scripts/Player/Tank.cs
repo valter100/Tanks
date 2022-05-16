@@ -147,7 +147,6 @@ public abstract class Tank : MonoBehaviour
 
         Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
         GetComponent<AudioSource>().PlayOneShot(fireSound);
-        //player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
 
         Projectile projectile = InstantiateProjectile();
 
