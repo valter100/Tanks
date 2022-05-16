@@ -12,10 +12,11 @@ public class GenerateMap : MonoBehaviour
     }
 
     [Header("Debug Variables")]
-    [SerializeField] private bool generateNewMap;
+    [SerializeField] private bool generateNewSeed;
+    [SerializeField] private bool generateOldSeed;
     [SerializeField] private bool drawDebugLines = false;
     [SerializeField] private bool printDebug;
-    [SerializeField] private string seed; //TODO implementera en seed
+    [SerializeField] private string mapSeed;
     private int pointsInSlope;
 
     [Header("Generation Variables")]
@@ -63,6 +64,7 @@ public class GenerateMap : MonoBehaviour
 
     private float[] heights;
     public Vector3[] LinePositions { get; private set; }
+    private Vector3[] InitialTopside;
 
     private List<int> triangleIndices;
     private List<Vector3> vertices;
@@ -73,12 +75,17 @@ public class GenerateMap : MonoBehaviour
 
     private void Update()
     {
-        if (generateNewMap)
+        if (generateNewSeed || generateOldSeed)
         {
             foreach (Transform child in transform)
                 Destroy(child.gameObject);
-            GenerateRandomMap();
-            generateNewMap = false;
+
+            if (generateOldSeed)
+                GenerateRandomMap(mapSeed);
+            else
+                GenerateRandomMap();
+
+            generateNewSeed = generateOldSeed = false;
         }
 
         if (drawDebugLines)
@@ -104,15 +111,20 @@ public class GenerateMap : MonoBehaviour
         GenerateQuads();
     }
 
-    private void GenerateRandomMap()
+    private void GenerateRandomMap(string seed = "")
     {
-        GenerateLinePositions();
-        CreatePositions();
+        if (seed == "")
+            seed = System.DateTime.Now.Ticks.ToString();
+
+        mapSeed = seed;
+        Random.InitState(seed.GetHashCode());
+        GenerateHeights();
+        SetLinePositions();
         GenerateQuads();
         GenerateObjects();
     }
 
-    private void GenerateLinePositions()
+    private void GenerateHeights()
     {
         GenerateRandomHeights();
         switch (generationMethod)
@@ -156,7 +168,7 @@ public class GenerateMap : MonoBehaviour
             nextValue = pointIndices[pointIndices.Count - 1] + Random.Range(minPointDistance, maxPointDistance);
             nextValue = nextValue >= heights.Length ? heights.Length - 1 : nextValue;
             pointIndices.Add(nextValue);
-            Print("Added index value: " + nextValue);
+            Print("Added point generation index value: " + nextValue);
         }
 
         int pointIndex = 0;
@@ -241,8 +253,6 @@ public class GenerateMap : MonoBehaviour
                     lerpAmount = Mathf.Log(i + 1.0f, pointsInSlope);
                     modifiedAmplitude = baseAmplitude + Mathf.Lerp(GetRandomHeight() * slopeAmplitude, 0, 1 - lerpAmount);
                 }
-
-                Print($"Lerp amount {lerpAmount}, added amplitude {modifiedAmplitude - baseAmplitude}");
                 
                 slopeHeights[i] = Mathf.Lerp(randomizeSlopes ? modifiedAmplitude : baseAmplitude, height, lerpAmount);
                 
@@ -253,13 +263,17 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
-    private void CreatePositions()
+    private void SetLinePositions()
     {
         float widthPerPoint = 1.0f / pointsPerWidth;
         float trueWidth = width + slopeWidth * 2;
         LinePositions = new Vector3[heights.Length];
+        InitialTopside = new Vector3[heights.Length];
         for (int i = 0; i < heights.Length; i++)
+        {
             LinePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
+            InitialTopside[i] = LinePositions[i] + new Vector3(0, -overhangHeight);
+        }
     }
 
     private Point[] PositionsToPoints()
@@ -309,10 +323,17 @@ public class GenerateMap : MonoBehaviour
             points[i].VertexIndex = i + 1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
             int pastIndex = points[i].VertexIndex - verticesPerPosition;
             for (int j = 0; j < verticesPerPosition - 1; j++)
-                AddQuad(pastIndex + j, points[i].VertexIndex + j, j < 2);
+                AddQuad(pastIndex + j, points[i].VertexIndex + j);
             points[i].IsConnected = true;
         }
 
+        GenerateTriangles(points);
+
+        CreateMesh(CreateSubMeshDescriptors(quads));
+    }
+
+    private void GenerateTriangles(Point[] points)
+    {
         //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
         int previousIndex, nextIndex = 0;
         for (int i = 0; i < points.Length; i++)
@@ -323,22 +344,22 @@ public class GenerateMap : MonoBehaviour
                 points[i].VertexIndex = AddVertex(points[i].position, true);
                 if (nextIndex < i)
                     nextIndex = GetNextConnectedPoint(i);
-                AddQuad(previousIndex, points[i].VertexIndex, true);
-                quads.Add(new Quad(points[i].VertexIndex + 1, previousIndex + 1, points[nextIndex].VertexIndex + 1, -1, true));
+                AddQuad(previousIndex, points[i].VertexIndex);
+                AddTriangle(points[i].VertexIndex, points[nextIndex].VertexIndex);
 
                 if (nextIndex == i + 1)
-                    AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex, true);
+                    AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex);
 
                 points[i].IsConnected = true;
             }
 
         }
 
-        CreateMesh(CreateSubMeshDescriptors(quads));
-
-        void AddQuad(int pastIndex, int vertexIndex, bool isTopside)
+        int SecureAddVertex(Point point)
         {
-            quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+            if (!point.IsIndexed)
+                point.VertexIndex = AddVertex(point.position, true);
+            return point.VertexIndex;
         }
 
         int GetNextConnectedPoint(int startIndex)
@@ -355,6 +376,39 @@ public class GenerateMap : MonoBehaviour
                     return -1;
             return index;
         }
+
+        void AddTriangle(int currentIndex, int nextIndex)
+        {
+            bool isTopside = IsQuadAboveGrass(vertices[currentIndex + 1], vertices[nextIndex + 1], false);
+            quads.Add(new Quad(currentIndex + 1, previousIndex + 1, nextIndex + 1, -1, isTopside));
+        }
+    }
+
+    private void AddQuad(int pastIndex, int vertexIndex)
+    {
+        bool isTopside = IsQuadAboveGrass(vertices[pastIndex], vertices[vertexIndex]);
+        quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+    }
+
+    private bool IsQuadAboveGrass(Vector3 topLeft, Vector3 topRight, bool requireBoth = true)
+    {
+        if (requireBoth)
+            return GetClosestOverhangPosition(topLeft.x).y < topLeft.y && GetClosestOverhangPosition(topRight.x).y < topRight.y;
+        return GetClosestOverhangPosition(topLeft.x).y < topLeft.y || GetClosestOverhangPosition(topRight.x).y < topRight.y;
+    }
+
+    Vector3 GetClosestOverhangPosition(float positionX)
+    {
+        float previousDistance = float.PositiveInfinity, newDistance;
+        for (int i = 0; i < InitialTopside.Length; i++)
+        {
+            newDistance = Mathf.Abs(positionX - InitialTopside[i].x);
+            if (newDistance >= previousDistance)
+                return InitialTopside[i - 1];
+            previousDistance = newDistance;
+        }
+
+        return InitialTopside[InitialTopside.Length - 1];
     }
 
     int AddVertex(Vector3 vertex, bool onlyTop = false)
@@ -365,12 +419,19 @@ public class GenerateMap : MonoBehaviour
         vertices.Add(vertex);
         if (onlyTop)
             return index;
-        vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth()));
+
+        //If above overhangPosition use old overhang instead
+        Vector3 overhangPosition = GetClosestOverhangPosition(vertex.x);
+        if (overhangPosition.y < vertex.y)
+            vertices.Add(overhangPosition - new Vector3(0, 0, GetOverhangDepth(overhangPosition.y + overhangHeight)));
+        else
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth(overhangPosition.y + overhangHeight)));
+
         vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
         return index;
-        float GetOverhangDepth()
+        float GetOverhangDepth(float targetHeight)
         {
-            float angle = Mathf.Atan(bottomDepth / vertex.y);
+            float angle = Mathf.Atan(bottomDepth / targetHeight);
             return overhangHeight * Mathf.Tan(angle);
         }
     }
@@ -380,7 +441,7 @@ public class GenerateMap : MonoBehaviour
         vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, depth));
         vertices.Add(new Vector3(vertex.x, 0, depth));
         int index = AddVertex(vertex);
-        quads.Add(new Quad(index, index - 2, index + 1, index + 2, true));
+        quads.Add(new Quad(index, index - 2, index + 1, index + 2, IsQuadAboveGrass(vertex, vertex)));
         quads.Add(new Quad(index - 2, index - 1, index + 2, index + 3));
     }
 
@@ -389,7 +450,7 @@ public class GenerateMap : MonoBehaviour
         int index = AddVertex(vertex);
         vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, depth));
         vertices.Add(new Vector3(vertex.x, 0, depth));
-        quads.Add(new Quad(index + 1, index + 2, index + 0, index + 4, true));
+        quads.Add(new Quad(index + 1, index + 2, index + 0, index + 4, IsQuadAboveGrass(vertex, vertex)));
         quads.Add(new Quad(index + 2, index + 3, index + 4, index + 5));
         return index;
     }
@@ -445,6 +506,7 @@ namespace Tanks.MapPoint
         public int VertexIndex { get; set; }
         public bool IsConnected { get; set; }
         public bool CanReachFloor { get; set; }
+        public bool IsIndexed => VertexIndex != -1;
         public Point(Vector3 position)
         {
             this.position = position;

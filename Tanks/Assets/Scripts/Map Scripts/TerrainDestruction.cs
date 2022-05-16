@@ -69,7 +69,7 @@ namespace Tanks
                 {
                     if (!points[i].ConnectedToNext && !points[j].ConnectedToPrevious)
                     {
-                        Print("Adding pojnts to cuurkel");
+                        Print("Adding points to cicle");
                         AddPointsAlongCircle(i, j);
                     }
                 }
@@ -141,6 +141,8 @@ namespace Tanks
             if (angleStart >= angleStop)
                 angleStart -= 360;
             int numberOfPoints = (int)(explosion.Radius * pointsPerDegree * Mathf.Abs(angleStop - angleStart));
+            if (numberOfPoints < 2)
+                numberOfPoints = 2;
             Print($"Start angle {angleStart}, stop angle {angleStop}, number of points {numberOfPoints}");
 
             List<Vector3> positions = new List<Vector3>();
@@ -195,7 +197,7 @@ namespace Tanks
 
         private int RemovePointRange(Point firstPoint, Point lastPoint)
         {
-            int count = lastPoint.PositionIndex - firstPoint.PositionIndex;
+            int count = lastPoint.PositionIndex - firstPoint.PositionIndex + 1;
             newLinePositions.RemoveRange(firstPoint.PositionIndex, count);
             firstPoint.ConnectedToPrevious = true;
             lastPoint.ConnectedToNext = true;
@@ -305,7 +307,7 @@ namespace Tanks
             public bool IsPointOnLineSegment(Vector3 point)
             {   //Checks if point is within bounds and if kx + m - y = 0
                 float kxmy = K * point.x + M - point.y;
-                float accuracy = 0.01f;
+                float accuracy = 0.5f;
                 return LeftPoint.Position.x <= point.x && RightPoint.Position.x > point.x && (kxmy < accuracy || kxmy > -accuracy);
             }
         }

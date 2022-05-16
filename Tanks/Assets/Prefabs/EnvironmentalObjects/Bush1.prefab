@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 996827068840717984}
   - component: {fileID: -6822303999829061546}
   - component: {fileID: 1963566118229853915}
-  - component: {fileID: 2649408877815966825}
   - component: {fileID: -7286238009146398317}
+  - component: {fileID: 2921126087373714389}
   m_Layer: 0
   m_Name: Bush1
   m_TagString: Untagged
@@ -115,19 +115,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!65 &2649408877815966825
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6806623264713002176}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.9511223, y: 2.1806126, z: 2.2179308}
-  m_Center: {x: -0.09181023, y: 0.10219693, z: -0.9671173}
 --- !u!114 &-7286238009146398317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,3 +127,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d902145b7469c41824d3d798792bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateAroundZ: 1
+--- !u!135 &2921126087373714389
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6806623264713002176}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1854204
+  m_Center: {x: -0.086687475, y: 0.14936128, z: -0.9671173}

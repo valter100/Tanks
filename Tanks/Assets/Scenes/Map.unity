@@ -293,8 +293,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684547492}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.09821557, y: 0, z: 0, w: 0.99516517}
+  m_LocalPosition: {x: 12.99, y: 13.83, z: -36.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -340,6 +340,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3072952813707866530, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: printDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objectsPerWidth
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objects.Array.data[0]
+      value: 
+      objectReference: {fileID: 6806623264713002176, guid: 58fc57e7626280149932846ce9e2909a, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objects.Array.data[1]
+      value: 
+      objectReference: {fileID: 4300002036050326642, guid: 8bb01187b71370f48a9221026c62a967, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objects.Array.data[2]
+      value: 
+      objectReference: {fileID: 4591165065254574267, guid: 9207f8eefa0c0bf488bec3b13877b4bc, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objects.Array.data[3]
+      value: 
+      objectReference: {fileID: 588183761583343122, guid: f2c3c220d36b6ca4381fb19f51a615d6, type: 3}
     - target: {fileID: 9169650065926079912, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_Name
       value: Map (1)
@@ -410,7 +438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: printDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: slopeWidth
@@ -737,4 +765,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsPerDegree: 0.05
-  printDebug: 0
+  printDebug: 1

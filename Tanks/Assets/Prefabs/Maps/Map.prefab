@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9169650065926079914}
   - component: {fileID: 9169650065926079915}
+  - component: {fileID: 3072952813707866530}
   - component: {fileID: 6797612445077828031}
   - component: {fileID: 3036856133504881423}
   - component: {fileID: 9169650065926079919}
@@ -49,13 +50,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7b2ca3147285448ae622413cf08d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generateNewMap: 0
+  generateNewSeed: 0
+  generateOldSeed: 0
   drawDebugLines: 0
   printDebug: 0
-  seed: 
+  mapSeed: 
   generationMethod: 0
-  pointsPerWidth: 2
-  smoothFactor: 1
+  pointsPerWidth: 1.35
+  smoothFactor: 0.81
   overhangHeight: 1.11
   randomizeSlopes: 1
   minPointDistance: 0
