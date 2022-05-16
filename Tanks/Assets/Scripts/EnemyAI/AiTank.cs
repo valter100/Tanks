@@ -1,5 +1,4 @@
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 
@@ -11,12 +10,14 @@ public class AiTank : Tank
     {
         base.Start();
         aiManager = GetComponent<AiManager>();
+        Debug.Log(player);
     }
 
     public void ManualAIUpdate()
     {
+        if (hasFired) return;
+
         aiManager.ManualUpdate();
-        Debug.Log(player);
     }
 
     public void Move(Transform enemyTankPosition)
@@ -60,7 +61,7 @@ public class AiTank : Tank
         float g = Physics.gravity.y;
         float x = transform.position.x - enemyTarget.position.x;
         float y = transform.position.y - enemyTarget.position.y;
-        float v = maxShootForce;//Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
+        float v = maxShootForce / 2;//Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
 
         float v2 = v * v;
         float v4 = v * v * v * v;
@@ -84,7 +85,19 @@ public class AiTank : Tank
         currentShootForce = v;
         rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
 
+        if (CanFire())
+            Fire();
 
-        Fire();
+
+    }
+
+    public override void Ready()
+    {
+        base.Ready();
+    }
+
+    public override void LinkPlayer(Player player)
+    {
+        base.LinkPlayer(player);
     }
 }

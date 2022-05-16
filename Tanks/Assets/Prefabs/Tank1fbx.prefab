@@ -536,6 +536,8 @@ MonoBehaviour:
   shootForceSlider: {fileID: 855066007436251629}
   aimRadius: 250
   debugTrajectory: 0
+  facingRight: 0
+  projectilePrefab: {fileID: 725691630527340521, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,7 +712,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  movementSpeed: 1
+  movementSpeed: 5
   jumpForce: 0
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.5
@@ -733,6 +735,8 @@ MonoBehaviour:
   shootForceSlider: {fileID: 7039783255621376761, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
   aimRadius: 250
   debugTrajectory: 0
+  facingRight: 0
+  projectilePrefab: {fileID: 725691630527340521, guid: b18ee1cd2ef4aca48a93675b5e0b73ca, type: 3}
 --- !u!114 &2626749122293949152
 MonoBehaviour:
   m_ObjectHideFlags: 0
