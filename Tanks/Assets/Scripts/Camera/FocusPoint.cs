@@ -126,6 +126,9 @@ public class FocusPoint : MonoBehaviour
             yield return null;
         }
 
+        if (gameObject == null)
+            yield return 0;
+
         FocusPointOffset focusPointOffset = gameObject.GetComponent<FocusPointOffset>();
         offset = focusPointOffset != null ? focusPointOffset.offset : Vector3.zero;
         followObject = gameObject;

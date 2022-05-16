@@ -60,7 +60,9 @@ public abstract class Tank : MonoBehaviour
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
-    
+
+    public Player GetPlayer() => player;
+
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
@@ -96,8 +98,6 @@ public abstract class Tank : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
         currentFuel = maxFuel;
-
-        Debug.Log(player);
     }
 
     protected void PreviewProjectileTrajectory()
@@ -173,6 +173,7 @@ public abstract class Tank : MonoBehaviour
         if (currentHealth <= 0)
             return;
 
+        MessagesManager.AddMessage((-damage).ToString("0.0")).SetColor(Color.red).SetWorldPosition(transform.position);
         currentHealth = Math.Max(0.0f, currentHealth - damage);
 
         if (currentHealth > 0.0f)
@@ -202,13 +203,12 @@ public abstract class Tank : MonoBehaviour
             GetComponent<PlayerTank>().enabled = true;
             GetComponent<PlayerController>().enabled = true;
         }
+
         else if (player.Info.control == Control.Bot)
         {
             GetComponent<AiTank>().enabled = true;
             GetComponent<AiManager>().enabled = true;
         }
-
-        Debug.Log(player);
     }
 
     public void Ready()
@@ -221,6 +221,8 @@ public abstract class Tank : MonoBehaviour
 
         cameraController.focusPoint.FollowObject(gameObject);
         cameraController.Transition(CameraController.View.Side, 1.0f);
+
+        MessagesManager.AddMessage("Ready!").SetWorldPosition(transform.position);
     }
 
     public void Unready()
@@ -257,12 +259,14 @@ public abstract class Tank : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        MessagesManager.AddMessage("+" + amount.ToString("0.0")).SetColor(Color.green).SetWorldPosition(transform.position);
     }
 
     public void AddFuel(float amount)
     {
         currentFuel += amount;
         currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
+        MessagesManager.AddMessage("+" + amount.ToString("0.0" + " Fuel")).SetColor(new Color(0f, 190f/255f, 1f)).SetWorldPosition(transform.position);
     }
 
 }

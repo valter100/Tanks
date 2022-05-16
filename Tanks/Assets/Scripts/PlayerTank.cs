@@ -30,8 +30,6 @@ public class PlayerTank : Tank
 
         if (debugTrajectory)
             PreviewProjectileTrajectory();
-
-        Debug.Log(player);
     }
 
     public void Move()

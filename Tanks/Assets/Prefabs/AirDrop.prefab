@@ -4872,7 +4872,7 @@ MonoBehaviour:
   Crate: {fileID: 1822746696858827835}
   GroundDetection: {fileID: 1552294533782719614}
   Canopy: {fileID: 1552294533878393540}
-  Smoke: {fileID: 1552294532635100500}
+  smokeParticles: {fileID: 1552294532635100500}
 --- !u!1 &1552294533640429275
 GameObject:
   m_ObjectHideFlags: 0

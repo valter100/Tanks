@@ -10,24 +10,24 @@ public class Prefabs : MonoBehaviour
     [SerializeField] private GameObject[] tankValues;
 
     [Header("Items")]
-    [SerializeField] private Prefab[] itemKeys;
-    [SerializeField] private GameObject[] itemValues;
+    [SerializeField] private Prefab[] usableKeys;
+    [SerializeField] private GameObject[] usableValues;
 
     public static Dictionary<Prefab, GameObject> All { get; private set; }
     public static Dictionary<Prefab, GameObject> Tanks { get; private set; }
-    public static Dictionary<Prefab, GameObject> Items { get; private set; }
+    public static Dictionary<Prefab, GameObject> Usables { get; private set; }
 
     private void Start()
     {
         All = new Dictionary<Prefab, GameObject>();
         Tanks = new Dictionary<Prefab, GameObject>();
-        Items = new Dictionary<Prefab, GameObject>();
+        Usables = new Dictionary<Prefab, GameObject>();
 
         FillDictionary(All, tankKeys, tankValues);
-        FillDictionary(All, itemKeys, itemValues);
+        FillDictionary(All, usableKeys, usableValues);
 
         FillDictionary(Tanks, tankKeys, tankValues);
-        FillDictionary(Items, itemKeys, itemValues);
+        FillDictionary(Usables, usableKeys, usableValues);
     }
 
     private void FillDictionary(Dictionary<Prefab, GameObject> dictionary, Prefab[] keys, GameObject[] values)
@@ -45,7 +45,7 @@ public enum Prefab
     TankTwo,
     TankThree,
 
-    // Items / Projectiles
+    // Usables > Projectiles
 
     BounceBomb,
     Bullet,

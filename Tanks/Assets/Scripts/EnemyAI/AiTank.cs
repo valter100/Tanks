@@ -17,7 +17,6 @@ public class AiTank : Tank
     public void ManualAIUpdate()
     {
         aiManager.ManualUpdate();
-        Debug.Log(player);
     }
 
     public void Move(Transform enemyTankPosition)

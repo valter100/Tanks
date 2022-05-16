@@ -161,7 +161,6 @@ public class GameManager : MonoBehaviour
     {
         GenerateSpawnpoints generateSpawnpoints = GameObject.Find("Map").GetComponent<GenerateSpawnpoints>();
         AirDrop airDrop = Instantiate(airDropPrefab, generateSpawnpoints.GetNewSpawnpoint(), Quaternion.identity).GetComponent<AirDrop>();
-        airDrop.SetCrateType();
         airDrop.transform.position += new Vector3(0, 10, 0);
         airDrops.Add(airDrop);
     }

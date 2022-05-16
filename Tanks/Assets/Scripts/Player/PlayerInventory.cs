@@ -11,6 +11,7 @@ public class PlayerInventory : MonoBehaviour
 
     private PlayerController playerController;
     private static Inventory inventory;
+    private Player player;
 
     /// <summary>
     /// Returns whether or not an item is selected.
@@ -30,6 +31,7 @@ public class PlayerInventory : MonoBehaviour
         items = new List<Item>();
         playerController = GetComponent<PlayerController>();
         selectedIndex = -1;
+        player = transform.parent.GetComponent<Player>();
     }
     
     public void ManualUpdate()
@@ -54,10 +56,13 @@ public class PlayerInventory : MonoBehaviour
             RemoveItem(selectedIndex);
     }
 
-    public void AddItem(Usable usable, int amount)
+    public void AddItem(Usable usable, int amount, bool message)
     {
         if (usable == null || amount <= 0)
             return;
+
+        if (message)
+            MessagesManager.AddMessage("+" + amount + " " + usable.Name + "s").SetColor(Color.yellow).SetDuration(3.5f).SetWorldPosition(player.Tank.transform.position);
 
         // Add new Item or increase amount of already existing Item
 

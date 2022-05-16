@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private Tank tank;
     [SerializeField] private GameObject playerHudPrefab;
+
     [SerializeField] private AiTank aiTank;
     [SerializeField] private PlayerTank playerTank;
 
@@ -60,8 +61,8 @@ public class Player : MonoBehaviour
         // Inventory
 
         inventory.Clear();
-        foreach (GameObject prefab in Prefabs.Items.Values)
-            inventory.AddItem(prefab.GetComponent<Usable>(), Random.Range(6, 12));
+        foreach (GameObject prefab in Prefabs.Usables.Values)
+            inventory.AddItem(prefab.GetComponent<Usable>(), Random.Range(6, 12), false);
 
         // PlayerHUD
 
