@@ -23,6 +23,7 @@ public abstract class Tank : MonoBehaviour
 
     [Header("Combat")]
     [SerializeField] protected ParticleSystem fireParticles;
+    [SerializeField] protected AudioClip fireSound;
     [SerializeField] protected Animator animator;
     [SerializeField] protected ParticleSystem damagedParticles;
 
@@ -142,6 +143,7 @@ public abstract class Tank : MonoBehaviour
             animator.SetTrigger("Fire");
 
         Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
+        GetComponent<AudioSource>().PlayOneShot(fireSound);
         //player.Inventory.SelectedItem.prefab.GetComponent<Projectile>().GetAttackPattern().Fire(this);
 
         Projectile projectile = InstantiateProjectile();

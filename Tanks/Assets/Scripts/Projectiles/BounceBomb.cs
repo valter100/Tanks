@@ -32,6 +32,8 @@ public class BounceBomb : ExplodingProjectile
         explosion.Explode();
         bouncesLeft--;
 
+        ownTank.GetComponent<AudioSource>().PlayOneShot(detonationSound);
+
         float newYVelocity = yVelocityBefore * -1 * elasticity;
 
         rb.velocity = new Vector3(rb.velocity.x, newYVelocity, 0);

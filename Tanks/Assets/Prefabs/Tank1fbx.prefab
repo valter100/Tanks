@@ -517,6 +517,7 @@ MonoBehaviour:
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.25
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
+  fireSound: {fileID: 8300000, guid: 10a275810c72d6d4aba11564dbc4c5b6, type: 3}
   animator: {fileID: 2657026208458003744}
   damagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
   explosion: {fileID: 6763284902321818684}
@@ -536,6 +537,7 @@ MonoBehaviour:
   shootForceSlider: {fileID: 855066007436251629}
   aimRadius: 250
   debugTrajectory: 0
+  facingRight: 0
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -715,6 +717,7 @@ MonoBehaviour:
   movementEffect: {fileID: 3263668519722676716, guid: abafae0dab5f9d04a9f68bd4c72828bd, type: 3}
   timeBetweenEffectSpawn: 0.5
   fireParticles: {fileID: 7567279438394797552, guid: ca1b7337256a6824fac3e0e94d2d141a, type: 3}
+  fireSound: {fileID: 0}
   animator: {fileID: 2657026208458003744}
   damagedParticles: {fileID: 3828310254582438172, guid: e8508b3fa2d082a48b438946a2df60f1, type: 3}
   explosion: {fileID: 6763284902321818684}
@@ -733,6 +736,7 @@ MonoBehaviour:
   shootForceSlider: {fileID: 7039783255621376761, guid: affe46eaae8b2074491d233d4bddc48f, type: 3}
   aimRadius: 250
   debugTrajectory: 0
+  facingRight: 0
 --- !u!114 &2626749122293949152
 MonoBehaviour:
   m_ObjectHideFlags: 0

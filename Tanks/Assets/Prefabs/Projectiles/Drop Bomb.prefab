@@ -97,7 +97,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.38467687
+  m_Radius: 0.50675523
   m_Center: {x: 0, y: 0.07613188, z: 0}
 --- !u!54 &5353926287226023679
 Rigidbody:
@@ -128,10 +128,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPattern: {fileID: 8159165948748337676}
-  clip: {fileID: 0}
   damage: 3
   timeToLive: 10
-  trailParticles: {fileID: 0}
+  detonationSound: {fileID: 8300000, guid: 2efbc36ff19b3124d8c121ea6a7b47a0, type: 3}
+  source: {fileID: 0}
+  trailParticles: {fileID: 4443060818130646089, guid: 8d20dc57c4cedec4ba1b399289652697, type: 3}
   detonationParticles: {fileID: 0}
   startAmmoCount: 2
   canDamageSelf: 1

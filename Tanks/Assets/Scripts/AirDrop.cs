@@ -94,6 +94,10 @@ public class AirDrop : MonoBehaviour
             }
             Crate.SetActive(false);
         }
+        else if(collision.gameObject.tag == "Water")
+        {
+            Crate.SetActive(false);
+        }
     }
 
     void DropHasLanded()

@@ -5,9 +5,10 @@ using UnityEngine;
 public abstract class Projectile : MonoBehaviour
 {
     [SerializeField] protected AttackPattern attackPattern;
-    [SerializeField] protected AudioClip clip;
     [SerializeField] protected float damage;
     [SerializeField] protected float timeToLive;
+    [SerializeField] protected AudioClip detonationSound;
+    [SerializeField] protected AudioSource source;
     [SerializeField] protected ParticleSystem trailParticles;
     [SerializeField] protected ParticleSystem detonationParticles;
     [SerializeField] protected int startAmmoCount;
@@ -122,8 +123,9 @@ public abstract class Projectile : MonoBehaviour
     {
         if (detonationParticles != null)
             Instantiate(detonationParticles, transform.position, Quaternion.identity, null);
+        if (detonationSound)
+            ownTank.GetComponent<AudioSource>().PlayOneShot(detonationSound);
 
-        ownTank.GetComponent<AudioSource>().PlayOneShot(clip);
         Destroy(gameObject);
     }
 

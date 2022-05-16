@@ -115,9 +115,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPattern: {fileID: 4733216876846786093}
-  clip: {fileID: 8300000, guid: f48531818931c994aad61c159442995a, type: 3}
   damage: 5
   timeToLive: 10
+  detonationSound: {fileID: 0}
+  source: {fileID: 0}
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
   startAmmoCount: 20
