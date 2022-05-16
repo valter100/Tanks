@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Drawing;
 using System;
 using Random = UnityEngine.Random;
+using System.Linq;
 //using System.Windows.Media;
 
 public class AirDrop : MonoBehaviour
@@ -11,90 +12,77 @@ public class AirDrop : MonoBehaviour
     public enum Type
     {
         Health,
-        Fule,
-        Amo
-    }
-
-    public enum AmoType
-    {
-        Bullet,
-        ExplodingBullet,
-        RollBomb,
-        Slowing,
-        BiggerExplosion,
-        DropBomb,
-        BounceBomb,
-        ShockWave
+        Fuel,
+        Item
     }
 
     [SerializeField] public Color color;
     [SerializeField] protected GameObject Crate;
+
     public GameObject GroundDetection;
     public GameObject Canopy;
     //public Light DropLight;
-    public ParticleSystem Smoke;
-    private Rigidbody AirDropRB;
-    private bool Landed = false;
+    public ParticleSystem smokeParticles;
+    private new Rigidbody rigidbody;
+    private bool landed;
     private Type type;
-    private AmoType amo;
-    private int amoTypes;
+    private Prefab usablePrefab;
     private int amount;
 
     public Type GetCrateType() => type;
 
-    public AmoType GetAmoType() => amo;
+    public Prefab GetUsablePrefab() => usablePrefab;
 
     public int GetAmount() => amount;
 
-    // Start is called before the first frame update
     void Start()
     {
-        AirDropRB = transform.GetComponent<Rigidbody>();
-        amoTypes = Enum.GetValues(typeof(AmoType)).Length;
-
+        rigidbody = GetComponent<Rigidbody>();
+        SetType();
     }
 
-    // Update is called once per frame
     void Update()
     {
         RaycastHit objectHit;
 
-        if(Physics.Raycast(transform.position, Vector3.down, out objectHit, 1))
+        if (Physics.Raycast(transform.position, Vector3.down, out objectHit, 1))
         {
-            if(objectHit.collider.gameObject.tag != "Tank")
+            if (objectHit.collider.gameObject.tag != "Tank")
             {
-                Landed = true;
+                landed = true;
             }
         }
 
-        if (Landed)
+        if (landed)
         {
             DropHasLanded();
-            Landed = false;
+            landed = false;
         }
     }
 
     public void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Tank")
+        Tank tank = collision.gameObject.GetComponent<Tank>();
+
+        if (tank != null)
         {
             switch (type)
             {
                 case Type.Health:
-                    collision.gameObject.GetComponent<Tank>().SetHealth(amount);
+                    tank.AddHealth(amount);
                     break;
-                case Type.Fule:
-                    collision.gameObject.GetComponent<Tank>().SetFuel(amount);
+
+                case Type.Fuel:
+                    tank.AddFuel(amount);
                     break;
-                case Type.Amo:
-                    //increase the amo amount based on the "amotype" and "amount"
-                    break;
-                default:
+
+                case Type.Item:
+                    tank.GetPlayer().Inventory.AddItem(Prefabs.Usables[usablePrefab].GetComponent<Usable>(), amount, true);
                     break;
             }
-            Crate.SetActive(false);
         }
-        else if(collision.gameObject.tag == "Water")
+
+        else if (collision.gameObject.tag == "Water")
         {
             Crate.SetActive(false);
         }
@@ -103,66 +91,72 @@ public class AirDrop : MonoBehaviour
     void DropHasLanded()
     {
         //DropLight.gameObject.SetActive(true);
-        Smoke.gameObject.SetActive(true);
-        AirDropRB.drag = 0;
-        AirDropRB.mass = 5000;
+        smokeParticles.gameObject.SetActive(true);
+        rigidbody.drag = 0;
+        rigidbody.mass = 5000;
         Destroy(GroundDetection);
         Destroy(Canopy);
     }
 
     private void SetColor(Type type)
     {
+        Color color;
+
         switch (type)
         {
             case Type.Health:
-                Crate.GetComponent<Renderer>().material.color = Color.red;
+                color = Color.green;
                 amount = 10;
                 break;
-            case Type.Fule:
-                Crate.GetComponent<Renderer>().material.color = new Color(139f/255f, 69f/255f, 19f/255f, 1f); //Should be brown
-                amount = 20;
+
+            case Type.Fuel:
+                color = new Color(0f, 190f/255f, 1f);
+                amount = 75;
                 break;
-            case Type.Amo:
-                //SetAmoType();
-                SetAmoColor(amo);
+
+            case Type.Item:
+                color = GetUsableColor();
                 amount = 2;
                 break;
+
             default:
+                color = Color.white;
+                amount = 0;
                 break;
         }
+
+        Crate.GetComponent<Renderer>().material.color = color;
     }
 
-    private void SetAmoColor(AmoType index)
+    private Color GetUsableColor()
     {
-        //Purple 147,112,219
-        //blue 0,0,255
-        //Green 0, 128, 0,
-        //Yellow 255, 255, 0
-        int enumLen = Enum.GetValues(typeof(AmoType)).Length;
-        float r = 0f + (int)index * 255f / (float)enumLen;
-        float g = 0f + (int)index * 255f / (float)enumLen;
-        float b = 255f - (int)index * 255f / (float)enumLen;
-        Crate.GetComponent<Renderer>().material.color = new Color(r/255f, g/255f, b/255f, 1f);
+        // Purple 147, 112, 219
+        // Blue     0,   0, 255
+        // Green    0, 128,   0
+        // Yellow 255, 255,   0
+
+        int index = Prefabs.Usables.Keys.ToList().FindIndex(prefab => prefab == usablePrefab);
+
+        float r =   0f + index * 255f / Prefabs.Usables.Count;
+        float g =   0f + index * 255f / Prefabs.Usables.Count;
+        float b = 255f - index * 255f / Prefabs.Usables.Count;
+        return new Color(r/255f, g/255f, b/255f, 1f);
     }
 
-    private void SetAmoType()
+    private void SetUsablePrefab()
     {
-        int random = Random.Range(0, 10 * amoTypes);
-        //Debug.Log(random);
-        int index = random / 10;
-        amo = (AmoType)index;
+        int index = Random.Range(0, Prefabs.Usables.Count);
+        usablePrefab = Prefabs.Usables.Keys.ElementAt(index);
     }
 
-    public void SetCrateType()
+    public void SetType()
     {
-        int random = Random.Range(0, 10 * Enum.GetValues(typeof(Type)).Length);
-        //Debug.Log(random);
-        int index = random / 10;
-        type = (Type)index;
-        if (type == Type.Amo)
-            SetAmoType();
+        type = (Type)Random.Range(0, Enum.GetValues(typeof(Type)).Length);
+
+        if (type == Type.Item)
+            SetUsablePrefab();
+
         SetColor(type);
     }
 
-    
 }

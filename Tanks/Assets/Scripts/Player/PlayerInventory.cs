@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerInventory : MonoBehaviour
 
     private PlayerController playerController;
     private static Inventory inventory;
+    private Player player;
 
     /// <summary>
     /// Returns whether or not an item is selected.
@@ -19,7 +21,7 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>
     /// Returns the selected item, or null if no item is selected.
     /// </summary>
-    [SerializeField] public Item SelectedItem => ItemSelected ? items[selectedIndex] : null;
+    public Item SelectedItem => ItemSelected ? items[selectedIndex] : null;
 
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class PlayerInventory : MonoBehaviour
         items = new List<Item>();
         playerController = GetComponent<PlayerController>();
         selectedIndex = -1;
+        player = transform.parent.GetComponent<Player>();
     }
     
     public void ManualUpdate()
@@ -49,36 +52,71 @@ public class PlayerInventory : MonoBehaviour
 
     public void DecreaseAmountOfSelectedItem()
     {
-        if (--items[selectedIndex].amount > 0)
-            return;
-
-        items.RemoveAt(selectedIndex);
-
-        if (items.Count == 0 || selectedIndex == items.Count)
-            --selectedIndex;
+        if (--items[selectedIndex].amount == 0)
+            RemoveItem(selectedIndex);
     }
 
-    public void AddItem(GameObject prefab, int amount)
+    public void AddItem(Usable usable, int amount, bool message)
     {
-        if (prefab == null || amount <= 0)
+        if (usable == null || amount <= 0)
             return;
 
-        int i = items.FindIndex(item => item.prefab == prefab);
+        if (message)
+            MessagesManager.AddMessage("+" + amount + " " + usable.Name + "s").SetColor(Color.yellow).SetDuration(3.5f).SetWorldPosition(player.Tank.transform.position);
+
+        // Add new Item or increase amount of already existing Item
+
+        int i = items.FindIndex(item => item.usable == usable);
 
         if (i == -1)
-            items.Add(new Item(prefab, amount));
+            items.Add(new Item(usable, amount));
         else
             items[i].amount += amount;
 
+        // Select Item if none was selected before
+
         if (!ItemSelected)
             IncrementSelectedItem(1);
+
+        // Order Items and save selected item
+
+        else
+        {
+            Item selectedItem = SelectedItem;
+            Order();
+            selectedIndex = items.FindIndex(item => item == selectedItem);
+        }
+
+        inventory.Reload(this);
+    }
+
+    public void RemoveItem(int i)
+    {
+        if (i >= items.Count)
+            return;
+
+        items.RemoveAt(i);
+
+        if (i < selectedIndex)
+            IncrementSelectedItem(-1);
+
+        else if (i == selectedIndex)
+        {
+            if (items.Count == 0 || i == items.Count)
+                IncrementSelectedItem(-1);
+        }
     }
 
     public void Clear()
     {
         selectedIndex = -1;
         items.Clear();
+        inventory.SelectItemSlot(-1);
+    }
+
+    private void Order()
+    {
+        items = items.OrderBy(item => item.usable.name).ToList();
     }
 
 }
-

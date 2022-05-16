@@ -6,15 +6,19 @@ public class MainMenu : Menu
 {
     [SerializeField] Vector3 cameraPosition;
     [SerializeField] Quaternion cameraRotation;
+    [SerializeField] Tank mainTank;
 
     protected override void Start()
     {
         base.Start();
+
+        Color[] colors = { Color.red, Color.yellow, Color.green, Color.blue, Color.cyan };
+        mainTank.SetColor(colors[Random.Range(0, colors.Length - 1)]);
     }
 
     protected override void Update()
     {
-
+        
     }
 
     protected override void OnEnable()

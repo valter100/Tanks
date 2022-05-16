@@ -26,6 +26,7 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected AudioClip fireSound;
     [SerializeField] protected Animator animator;
     [SerializeField] protected ParticleSystem damagedParticles;
+    [SerializeField] protected float aimRadius;
 
     [Header("Explosion")]
     [SerializeField] protected Explosion explosion;
@@ -40,21 +41,18 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected static CameraController cameraController;
     [SerializeField] protected Player player;
     [SerializeField] protected GameObject rotatePoint;
-    [SerializeField] protected GameObject[] tankParts;
+    [SerializeField] protected GameObject[] customColoredParts;
+    [SerializeField] protected GameObject[] baseColoredParts;
     [SerializeField] protected GameObject chassi;
     [SerializeField] protected Tower tower;
     [SerializeField] protected Gun gun;
     [SerializeField] protected Transform rumbleSpot;
 
-    [Header("GUI")]
-    [SerializeField] protected TMP_Text nameText;
-    [SerializeField] protected Slider healthSlider;
-    [SerializeField] protected Slider fuelSlider;
-    [SerializeField] protected Slider shootForceSlider;
-    [SerializeField] protected float aimRadius;
-
-    [Header("Debug Settings")]
+    [Header("Other")]
+    [SerializeField] private Color baseColor;
     [SerializeField] protected bool debugTrajectory;
+    [SerializeField] protected bool preview;
+    [SerializeField] protected bool facingRight;
 
     protected float timeSinceLastEffect;
     protected int projectileIndex;
@@ -64,12 +62,15 @@ public abstract class Tank : MonoBehaviour
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
-    [SerializeField] protected bool facingRight;
+
+    public Player GetPlayer() => player;
 
 
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
+
+    public float GetPowerPercentage() => currentShootForce / maxShootForce;
 
     public float GetCurrentHealth() => currentHealth;
 
@@ -81,21 +82,25 @@ public abstract class Tank : MonoBehaviour
 
     public bool CanFire() => !hasFired && currentHealth > 0.0f;
 
+    public bool Destroyed() => currentHealth <= 0.0f;
 
     protected virtual void Start()
     {
-        Debug.Log(player + " at start");
-        if (gameManager == null)
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (!preview)
+        {
+            if (gameManager == null)
+                gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        if (cameraController == null)
-            cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+            if (cameraController == null)
+                cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        }
+
+        foreach (GameObject baseColorPart in baseColoredParts)
+            baseColorPart.GetComponent<Renderer>().material.color = baseColor;
 
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
         currentFuel = maxFuel;
-
-        //Debug.Log(player);
     }
 
     protected void PreviewProjectileTrajectory()
@@ -115,8 +120,7 @@ public abstract class Tank : MonoBehaviour
 
     public Projectile InstantiateProjectile()
     {
-        Projectile projectile = Instantiate(player.Inventory.SelectedItem.prefab, gun.GetFirePoint()).GetComponent<Projectile>();
-
+        Projectile projectile = Instantiate(player.Inventory.SelectedItem.usable.gameObject, gun.GetFirePoint()).GetComponent<Projectile>();
         projectile.ownTank = this;
         projectile.transform.parent = null;
         projectile.Fire(gun.transform.parent.transform.rotation, currentShootForce);
@@ -125,8 +129,8 @@ public abstract class Tank : MonoBehaviour
 
     protected void Fire()
     {
-        //Debug.Log("FIRED");
         // Precompute projectile
+
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
 
@@ -140,14 +144,12 @@ public abstract class Tank : MonoBehaviour
 
         player.Inventory.DecreaseAmountOfSelectedItem();
         hasFired = true;
+        Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
+        GetComponent<AudioSource>().PlayOneShot(fireSound);
+        Projectile projectile = InstantiateProjectile();
 
         if (animator)
             animator.SetTrigger("Fire");
-
-        Instantiate(fireParticles, gun.GetFirePoint().position, Quaternion.identity, null);
-        GetComponent<AudioSource>().PlayOneShot(fireSound);
-
-        Projectile projectile = InstantiateProjectile();
 
         // Update camera
 
@@ -175,6 +177,7 @@ public abstract class Tank : MonoBehaviour
         if (currentHealth <= 0)
             return;
 
+        MessagesManager.AddMessage((-damage).ToString("0.0")).SetColor(Color.red).SetWorldPosition(transform.position);
         currentHealth = Math.Max(0.0f, currentHealth - damage);
 
         if (currentHealth > 0.0f)
@@ -186,8 +189,6 @@ public abstract class Tank : MonoBehaviour
         {
             animator.SetTrigger("Destroyed");
         }
-
-        healthSlider.value = currentHealth / maxHealth;
     }
 
     public void Explode()
@@ -200,7 +201,6 @@ public abstract class Tank : MonoBehaviour
     public virtual void LinkPlayer(Player player)
     {
         this.player = player;
-        nameText.text = player.Info.name;
         SetColor(player.Info.color);
 
         if (player.Info.control == Control.Player)
@@ -208,6 +208,7 @@ public abstract class Tank : MonoBehaviour
             GetComponent<PlayerTank>().enabled = true;
             GetComponent<PlayerController>().enabled = true;
         }
+
         else if (player.Info.control == Control.Bot)
         {
             GetComponent<AiTank>().enabled = true;
@@ -217,11 +218,7 @@ public abstract class Tank : MonoBehaviour
 
     public virtual void Ready()
     {
-        fuelSlider.gameObject.SetActive(true);
-        shootForceSlider.gameObject.SetActive(true);
-
         currentFuel = maxFuel;
-        fuelSlider.value = currentFuel / maxFuel;
         hasFired = false;
 
         if (cameraController == null)
@@ -229,12 +226,12 @@ public abstract class Tank : MonoBehaviour
 
         cameraController.focusPoint.FollowObject(gameObject);
         cameraController.Transition(CameraController.View.Side, 1.0f);
+
+        MessagesManager.AddMessage("Ready!").SetWorldPosition(transform.position);
     }
 
     public void Unready()
     {
-        fuelSlider.gameObject.SetActive(false);
-        shootForceSlider.gameObject.SetActive(false);
         isSlowed = false;
         SetColor(player.Info.color);
     }
@@ -252,9 +249,9 @@ public abstract class Tank : MonoBehaviour
 
     public void SetColor(Color color)
     {
-        foreach (GameObject tankPart in tankParts)
+        foreach (GameObject customColorPart in customColoredParts)
         {
-            tankPart.GetComponent<Renderer>().material.color = color;
+            customColorPart.GetComponent<Renderer>().material.color = color;
         }
     }
 
@@ -262,16 +259,19 @@ public abstract class Tank : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-    
-    public void SetHealth(float amount)
+
+    public void AddHealth(float amount)
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        MessagesManager.AddMessage("+" + amount.ToString("0.0")).SetColor(Color.green).SetWorldPosition(transform.position);
     }
 
-    public void SetFuel(float amount)
+    public void AddFuel(float amount)
     {
         currentFuel += amount;
         currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
+        MessagesManager.AddMessage("+" + amount.ToString("0.0" + " Fuel")).SetColor(new Color(0f, 190f/255f, 1f)).SetWorldPosition(transform.position);
     }
+
 }

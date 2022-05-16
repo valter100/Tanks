@@ -36,6 +36,18 @@ public class Hotbar : MonoBehaviour
     private void Start()
     {
         SetOpen(true);
+
+        playerName.text = "";
+        playerHealth.text = "";
+        playerFuel.text = "";
+        playerAngle.text = "";
+        playerPower.text = "";
+
+        itemName.text = "";
+        itemDescription.text = "";
+        itemDamage.text = "";
+        itemExplosiveRadius.text = "";
+        itemRange.text = "";
     }
 
     private void Update()
@@ -72,19 +84,38 @@ public class Hotbar : MonoBehaviour
             return;
         }
 
-        playerHealth.text = (int)(player.Tank.GetHealthPercentage() * 100.0f + 0.5f) + "%";
-        playerFuel.text = (int)(player.Tank.GetFuelPercentage() * 100.0f + 0.5f) + "%";
+        playerHealth.text = PercentageString(player.Tank.GetHealthPercentage());
+        playerFuel.text = PercentageString(player.Tank.GetFuelPercentage());
         playerAngle.text = "---";
-        playerPower.text = "---";
+        playerPower.text = PercentageString(player.Tank.GetPowerPercentage());
     }
-    
+
     private void UpdateItemPanel()
     {
-        itemName.text = itemSlot.item.prefab.name.SplitPascalCase();
-        itemDescription.text = "---";
-        itemDamage.text = "---";
-        itemExplosiveRadius.text = "---";
-        itemRange.text = "---";
+        itemName.text = itemSlot.item.usable.Name;
+        itemDescription.text = itemSlot.item.usable.Description;
+
+        Projectile projectile = itemSlot.item.usable.GetComponent<Projectile>();
+        bool isProjectile = projectile != null;
+
+        itemDamage.transform.parent.gameObject.SetActive(isProjectile);
+        itemExplosiveRadius.transform.parent.gameObject.SetActive(isProjectile);
+        itemRange.transform.parent.gameObject.SetActive(isProjectile);
+
+        if (isProjectile)
+        {
+            itemDamage.text = projectile.GetDamage().ToString("0");
+
+            ExplodingProjectile explodingProjectile = projectile.GetComponent<ExplodingProjectile>();
+
+            itemExplosiveRadius.text = explodingProjectile == null ? "-" : explodingProjectile.Radius.ToString("0.0" + "m");
+            itemRange.text = PercentageString(1.0f);
+        }
+    }
+
+    private string PercentageString(float value)
+    {
+        return (int)(value * 100.0f + 0.5f) + "%";
     }
 
 }

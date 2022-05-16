@@ -126,6 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8894ea5a4eea874c84a517344f45593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Freeze Bullet
+  description: The Freeze Bullet inflicts the Freeze effect on any tank hit, which
+    slows down their movement.
   attackPattern: {fileID: -7747302832281112204}
   damage: 2
   timeToLive: 10
@@ -133,7 +136,6 @@ MonoBehaviour:
   source: {fileID: 0}
   trailParticles: {fileID: 4443060818130646089, guid: 8d20dc57c4cedec4ba1b399289652697, type: 3}
   detonationParticles: {fileID: 5509785784624008221, guid: 8c2e73ff2cd40fa4dbcc677806986bb2, type: 3}
-  startAmmoCount: 5
   canDamageSelf: 0
   hitableLayers:
     serializedVersion: 2

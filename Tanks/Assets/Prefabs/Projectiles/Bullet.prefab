@@ -114,6 +114,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60c7507583308f943a875996c5459831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Bullet
+  description: The Bullet causes direct damage to any hit tank, but will not explode
+    or destroy terrain.
   attackPattern: {fileID: 4733216876846786093}
   damage: 5
   timeToLive: 10
@@ -121,7 +124,6 @@ MonoBehaviour:
   source: {fileID: 0}
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 6032078564293347604, guid: 32c8b30ec69cdcc49abe7ccd2469e31f, type: 3}
-  startAmmoCount: 20
   canDamageSelf: 1
   hitableLayers:
     serializedVersion: 2

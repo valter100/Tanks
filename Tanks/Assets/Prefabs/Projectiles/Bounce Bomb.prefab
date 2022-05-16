@@ -127,6 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f51677aae71e0304aab451f1d30f67b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Bounce Bomb
+  description: The Bounce Bomb will bounce on impact two times which causes an explosion
+    for each bounce.
   attackPattern: {fileID: -3755382965088315169}
   damage: 2
   timeToLive: 10
@@ -134,7 +137,6 @@ MonoBehaviour:
   source: {fileID: 0}
   trailParticles: {fileID: 4443060818130646089, guid: 8d20dc57c4cedec4ba1b399289652697, type: 3}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 4
   canDamageSelf: 0
   hitableLayers:
     serializedVersion: 2

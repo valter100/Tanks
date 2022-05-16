@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 
@@ -13,41 +14,20 @@ public class CustomizationPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI colorOption;
     [SerializeField] private TextMeshProUGUI tankOption;
     [SerializeField] private TextMeshProUGUI controlOption;
+    [SerializeField] private Tank tank;
 
-    private static string[] colorNames =
-    {
-        "Red", "Orange", "Yellow",
-        "Green", "Dark green", "Cyan",
-        "Light blue", "Dark blue", "Purple",
-        "Pink", "Magenta", "White",
-        "Light gray", "Dark gray", "Black"
-    };
-
-    private static Color[] colors =
-    {
-        new Color(255,   0,   0),
-        new Color(255, 140,   0),
-        new Color(255, 255,   0),
-        new Color(  0, 255,   0),
-        new Color(  0, 160,   0),
-        new Color(  0, 255, 255),
-        new Color(  0, 170, 255),
-        new Color(  0,   0, 255),
-        new Color(135,   0, 255),
-        new Color(255,   0, 255),
-        new Color(255,   0, 150),
-        new Color(255, 255, 255),
-        new Color(140, 140, 140),
-        new Color( 60,  60,  60),
-        new Color(  0,   0,   0)
-    };
+    [SerializeField] private string[] colorNames;
+    [SerializeField] private Color[] colors;
 
     private void Start()
     {
-        playerInfo.color = colors[colorIndex];
-        UpdateOptionTexts();
-        transform.GetComponentInParent<PlayMenu>().customizationPanels.Add(this);
         nametag.text = "";
+        colorIndex = Random.Range(0, colors.Length - 1);
+        transform.GetComponentInParent<PlayMenu>().customizationPanels.Add(this);
+        tank = playerInfo.gameObject.transform.GetComponentInChildren<Tank>();
+
+        UpdateTankColor();
+        UpdateOptionTexts();
     }
 
     public void Update()
@@ -60,10 +40,7 @@ public class CustomizationPanel : MonoBehaviour
         if (--colorIndex == -1)
             colorIndex = colors.Length - 1;
 
-        playerInfo.color = colors[colorIndex];
-
-        // TODO: Change update tank
-
+        UpdateTankColor();
         UpdateOptionTexts();
     }
 
@@ -72,10 +49,7 @@ public class CustomizationPanel : MonoBehaviour
         if (++colorIndex == colors.Length)
             colorIndex = 0;
 
-        playerInfo.color = colors[colorIndex];
-
-        // TODO: Change update tank
-
+        UpdateTankColor();
         UpdateOptionTexts();
     }
 
@@ -86,8 +60,7 @@ public class CustomizationPanel : MonoBehaviour
         if (!Prefabs.Tanks.ContainsKey(playerInfo.tankPrefab))
             playerInfo.tankPrefab = Prefabs.Tanks.Last().Key;
 
-        // TODO: Change update tank
-
+        UpdateTankType();
         UpdateOptionTexts();
     }
 
@@ -98,8 +71,7 @@ public class CustomizationPanel : MonoBehaviour
         if (!Prefabs.Tanks.ContainsKey(playerInfo.tankPrefab))
             playerInfo.tankPrefab = Prefabs.Tanks.First().Key;
 
-        // TODO: Change update tank
-
+        UpdateTankType();
         UpdateOptionTexts();
     }
 
@@ -115,11 +87,31 @@ public class CustomizationPanel : MonoBehaviour
         UpdateOptionTexts();
     }
 
-    public void UpdateOptionTexts()
+    public void OnClick_RemovePlayer()
+    {
+        transform.GetComponentInParent<PlayMenu>().customizationPanels.Remove(this);
+        PlayerSpot playerSpot = tank.transform.parent.GetComponent<PlayerSpot>();
+        playerSpot.gameObject.SetActive(true);
+        playerSpot.Start();
+        Destroy(gameObject);
+    }
+
+    private void UpdateOptionTexts()
     {
         colorOption.text = colorNames[colorIndex];
         tankOption.text = playerInfo.tankPrefab.ToString().SplitPascalCase();
         controlOption.text = playerInfo.control.ToString().SplitPascalCase();
+    }
+
+    private void UpdateTankColor()
+    {
+        playerInfo.color = colors[colorIndex];
+        tank.SetColor(playerInfo.color);
+    }
+
+    private void UpdateTankType()
+    {
+        
     }
 
 }

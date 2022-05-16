@@ -127,6 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6690a147b03725745a125d3932b275df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Shell
+  description: The Shell ...
   attackPattern: {fileID: -6891325378449484819}
   damage: 3
   timeToLive: 10
@@ -134,7 +136,6 @@ MonoBehaviour:
   source: {fileID: 0}
   trailParticles: {fileID: 4443060818130646089, guid: 8d20dc57c4cedec4ba1b399289652697, type: 3}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 5
   canDamageSelf: 1
   hitableLayers:
     serializedVersion: 2

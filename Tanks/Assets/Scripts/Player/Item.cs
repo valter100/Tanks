@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Item
 {
-    public GameObject prefab;
+    public Usable usable;
     public int amount;
 
     public Item() { }
-    public Item(GameObject prefab, int amount)
+    public Item(Usable usable, int amount)
     {
-        this.prefab = prefab;
+        this.usable = usable;
         this.amount = amount;
     }
 }

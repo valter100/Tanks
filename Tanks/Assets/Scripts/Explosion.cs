@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] float radius;
-    [SerializeField] ParticleSystem explosionEffect;
+    [SerializeField] private float radius;
+    [SerializeField] private ParticleSystem explosionEffect;
 
-    float damage;
-    Tanks.MapDestroyingExplosive mapDestruction;
+    private float damage;
+    private Tanks.MapDestroyingExplosive mapDestruction;
+
+    public float Radius => radius;
 
     public void SetDamage(float newDamage)
     {

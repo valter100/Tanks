@@ -127,6 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24ffe96743909840b5ecae3bfd2e427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Roller Bomb
+  description: The Roller Bomb will not explode on impact, but will instead roll
+    for at most two seconds before exploding.
   attackPattern: {fileID: 737783228704338201}
   damage: 7
   timeToLive: 10
@@ -134,7 +137,6 @@ MonoBehaviour:
   source: {fileID: 0}
   trailParticles: {fileID: 4443060818130646089, guid: 8d20dc57c4cedec4ba1b399289652697, type: 3}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 3
   canDamageSelf: 1
   hitableLayers:
     serializedVersion: 2

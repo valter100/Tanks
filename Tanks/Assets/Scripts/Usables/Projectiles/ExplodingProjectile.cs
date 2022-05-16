@@ -7,6 +7,8 @@ public class ExplodingProjectile : Projectile
     [Header("Exploding Projectile Specifics")]
     [SerializeField] protected Explosion explosion;
 
+    public float Radius => explosion.Radius;
+
     private void Start()
     {
         explosion.SetDamage(damage);

@@ -126,6 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 430d903c75e0fc245a290c4a68478494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: Spread Bullet
+  description: The Spread Bullet ...
   attackPattern: {fileID: -1178211308454573183}
   damage: 2
   timeToLive: 3
@@ -133,7 +135,6 @@ MonoBehaviour:
   source: {fileID: 0}
   trailParticles: {fileID: 0}
   detonationParticles: {fileID: 0}
-  startAmmoCount: 4
   canDamageSelf: 0
   hitableLayers:
     serializedVersion: 2

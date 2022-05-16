@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Projectile : MonoBehaviour
+public abstract class Projectile : Usable
 {
     [SerializeField] protected AttackPattern attackPattern;
     [SerializeField] protected float damage;
@@ -11,7 +11,6 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] protected AudioSource source;
     [SerializeField] protected ParticleSystem trailParticles;
     [SerializeField] protected ParticleSystem detonationParticles;
-    [SerializeField] protected int startAmmoCount;
     [SerializeField] protected bool canDamageSelf;
     [SerializeField] LayerMask hitableLayers;
 
@@ -23,8 +22,8 @@ public abstract class Projectile : MonoBehaviour
     public AttackPattern GetAttackPattern() => attackPattern;
     public float GetStartTime() => startTime;
     public float GetTimeToLive() => timeToLive;
-    public int GetStartAmmoCount() => startAmmoCount;
     public float GetDamage() => damage;
+    public string GetDescription() => description;
 
     public struct PrecomputedResult
     {
@@ -143,6 +142,11 @@ public abstract class Projectile : MonoBehaviour
         return true;
     }
 
+    public override void Use()
+    {
+        throw new System.NotImplementedException();
+    }
+
     /// <summary>
     /// Fires this Projectile.
     /// </summary>
@@ -192,7 +196,6 @@ public abstract class Projectile : MonoBehaviour
             rb.velocity *= 1.0f - Time.fixedDeltaTime * rb.drag;
             rb.velocity += Physics.gravity * Time.fixedDeltaTime;
             rb.position += rb.velocity * Time.fixedDeltaTime;
-
         }
 
         Destroy(gameObject);

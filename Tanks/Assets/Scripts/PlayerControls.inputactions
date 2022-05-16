@@ -33,7 +33,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "NextProjectile",
+                    "name": "NextItem",
                     "type": "Button",
                     "id": "333a64cf-9296-45b9-ad66-1e0ef6c51559",
                     "expectedControlType": "Button",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PreviousProjectile",
+                    "name": "PreviousItem",
                     "type": "Button",
                     "id": "ec214f1d-1fa0-47c9-a1ce-dd5ec020a188",
                     "expectedControlType": "Button",
@@ -63,6 +63,24 @@
                     "name": "AutoFocusCamera",
                     "type": "Button",
                     "id": "3bcb4532-35d6-4245-b087-6db5300737b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "4cee6fe4-8457-47b4-beb5-61ee7c1a83e2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "42ef6302-8c73-4be9-9e75-b7722d1dfc5e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -176,7 +194,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Desktop",
-                    "action": "NextProjectile",
+                    "action": "NextItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -187,7 +205,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Desktop",
-                    "action": "PreviousProjectile",
+                    "action": "PreviousItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -210,6 +228,28 @@
                     "processors": "",
                     "groups": "Desktop",
                     "action": "AutoFocusCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4baf8ef-1728-457c-8411-2c03a970e546",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37949de0-c664-43a2-b413-b169f338e703",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

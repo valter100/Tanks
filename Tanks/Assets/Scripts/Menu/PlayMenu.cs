@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayMenu : Menu
 {
-    [SerializeField] Vector3 cameraPosition;
-    [SerializeField] Quaternion cameraRotation;
+    [SerializeField] private Vector3 cameraPosition;
+    [SerializeField] private Quaternion cameraRotation;
+    [SerializeField] private Button startButton;
 
     public List<CustomizationPanel> customizationPanels;
 
@@ -25,6 +27,12 @@ public class PlayMenu : Menu
     {
         Camera.main.transform.localPosition = cameraPosition;
         Camera.main.transform.rotation = cameraRotation;
+
+        AddPlayerButton[] addPlayerButtons = transform.GetComponentsInChildren<AddPlayerButton>();
+
+        foreach (AddPlayerButton addPlayerButton in addPlayerButtons)
+            if (addPlayerButton.gameObject.activeInHierarchy && addPlayerButton.playerSpot.GetComponent<PlayerSpot>().StartWithTank)
+                addPlayerButton.OnClick_AddPlayer();
     }
 
     protected override void OnDisable()
@@ -39,6 +47,9 @@ public class PlayMenu : Menu
 
     public void OnClick_Start()
     {
+        if (customizationPanels.Count < 2)
+            return;
+
         GameInfo gameInfo = GameObject.Find("Game Info").GetComponent<GameInfo>();
         gameInfo.SaveInfo();
 

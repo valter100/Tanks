@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private PlayerInfo info;
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private Tank tank;
+    [SerializeField] private GameObject playerHudPrefab;
+
     [SerializeField] private AiTank aiTank;
     [SerializeField] private PlayerTank playerTank;
 
@@ -17,23 +20,25 @@ public class Player : MonoBehaviour
     public PlayerInventory Inventory => inventory;
     public Tank Tank => tank;
 
-
     private void Start()
     {
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        if (info.control == Control.Player)
+            playerTank = tank.GetComponent<PlayerTank>();
+
+        else if (info.control == Control.Bot)
+            aiTank = tank.GetComponent<AiTank>();
     }
 
-    private void Update()
+    public void ManualUpdate()
     {
-        if (gameManager.CurrentPlayer != this)
-            return;
-
         inventory.ManualUpdate();
 
         if (playerTank)
             playerTank.ManualPlayerUpdate();
+
         else if (aiTank)
             aiTank.ManualAIUpdate();
     }
@@ -48,32 +53,31 @@ public class Player : MonoBehaviour
         info.control = control;
 
         // Tank
-        if (info.control == Control.Player)
-        {
-            tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<PlayerTank>();
-            playerTank = tank.GetComponent<PlayerTank>();
-        }
-        else if (info.control == Control.Bot)
-        {
-            tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<AiTank>();
-            aiTank = tank.GetComponent<AiTank>();
-        }
 
+        tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<Tank>();
         tank.LinkPlayer(this);
-
         tank.transform.position = position;
 
         // Inventory
 
         inventory.Clear();
-        foreach (GameObject prefab in Prefabs.Items.Values)
-            inventory.AddItem(prefab, 12);
+        foreach (GameObject prefab in Prefabs.Usables.Values)
+            inventory.AddItem(prefab.GetComponent<Usable>(), Random.Range(6, 12), false);
+
+        // PlayerHUD
+
+        GameObject canvas = GameObject.Find("Canvas");
+        PlayerHUD playerHud = Instantiate(playerHudPrefab, canvas.transform).GetComponent<PlayerHUD>();
+        playerHud.LinkPlayer(this);
+        playerHud.transform.SetAsFirstSibling();
     }
+
 
     public void Ready()
     {
         if (playerTank)
             playerTank.Ready();
+
         else if (aiTank)
             aiTank.Ready();
     }
@@ -82,4 +86,5 @@ public class Player : MonoBehaviour
     {
         tank.Unready();
     }
+
 }

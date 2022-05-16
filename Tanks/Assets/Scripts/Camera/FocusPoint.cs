@@ -56,7 +56,7 @@ public class FocusPoint : MonoBehaviour
                 if (raycastHit.transform != null && raycastHit.transform.gameObject.tag == "Tank")
                 {
                     FollowObject(raycastHit.transform.gameObject);
-                    cameraController.Transition(CameraController.View.Side, 0.8f);
+                    cameraController.Transition(CameraController.View.Side, 0.6f);
                     return;
                 }
 
@@ -125,6 +125,9 @@ public class FocusPoint : MonoBehaviour
             delay -= Time.deltaTime;
             yield return null;
         }
+
+        if (gameObject == null)
+            yield return 0;
 
         FocusPointOffset focusPointOffset = gameObject.GetComponent<FocusPointOffset>();
         offset = focusPointOffset != null ? focusPointOffset.offset : Vector3.zero;

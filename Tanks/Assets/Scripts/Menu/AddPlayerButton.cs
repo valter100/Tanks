@@ -15,6 +15,6 @@ public class AddPlayerButton : MonoBehaviour
         customizationPanel.GetComponent<CustomizationPanel>().playerInfo = playerSpot.GetComponent<PlayerInfo>();
 
         playerSpot.SetActive(true);
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

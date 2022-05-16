@@ -61,7 +61,6 @@ public class PlayerTank : Tank
             currentFuel -= playerController.GetMovement().magnitude;
         else
             currentFuel -= playerController.GetMovement().magnitude * 2;
-        fuelSlider.value = currentFuel / maxFuel;
     }
 
     public void Aim()
@@ -76,7 +75,6 @@ public class PlayerTank : Tank
         float percentage = Vector2.Distance(cannonScreenPos, playerController.GetMousePosition()) / aimRadius;
         percentage = Mathf.Clamp01(percentage);
         currentShootForce = percentage * maxShootForce;
-        shootForceSlider.value = percentage;
     }
 
     public override void Ready()

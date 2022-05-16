@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private bool open;
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private GUIManager guiManager;
     [SerializeField] private PlayerInventory playerInventory;
@@ -27,17 +28,13 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (playerController.Trigger_Inventory())
             ToggleOpen();
 
         if (gameManager.CurrentPlayer == null)
         {
-            if (selectedItemSlot != -1)
-            {
-                selectedItemSlot = -1;
-                for (int i = 0; i < itemSlots.Length; ++i)
-                    itemSlots[i].Clear();
-            }
+            if (playerInventory != null)
+                Clear();
         }
 
         else if (gameManager.CurrentPlayer.Inventory != playerInventory)
@@ -52,12 +49,16 @@ public class Inventory : MonoBehaviour
         selectedItemSlot = -1;
 
         for (int i = itemSlots.Length - 1; i >= 0; --i)
-            itemSlots[i].Clear();
+        {
+            itemSlots[i].Deselect();
+            itemSlots[i].SetItem(null);
+        }
     }
 
-    public void Reload()
+    public void Reload(PlayerInventory playerInventory)
     {
-        Link(playerInventory);
+        if (this.playerInventory == playerInventory)
+            Link(playerInventory);
     }
 
     private void Link(PlayerInventory playerInventory)
@@ -72,26 +73,33 @@ public class Inventory : MonoBehaviour
 
         for (int i = playerInventory.items.Count; i < itemSlots.Length; ++i)
         {
-            itemSlots[i].Clear();
+            itemSlots[i].SetItem(null);
         }
     }
 
     public void ItemSlotClicked(ItemSlot itemSlot)
     {
-        int i = -1;
-        while (itemSlots[++i] != itemSlot) ;
-        SelectItemSlot(i);
+        for (int i = 0; i < itemSlots.Length; ++i)
+        {
+            if (itemSlot == itemSlots[i])
+            {
+                SelectItemSlot(i);
+                break;
+            }
+        }
     }
 
     public void SelectItemSlot(int i)
     {
-        if (!open)
+        if (playerInventory == null)
             return;
 
-        if (selectedItemSlot >= 0 && selectedItemSlot < itemSlots.Length)
+        if (selectedItemSlot != -1)
             itemSlots[selectedItemSlot].Deselect();
 
-        itemSlots[i].Select();
+        if (i != -1)
+            itemSlots[i].Select();
+
         playerInventory.selectedIndex = selectedItemSlot = i;
     }
 
