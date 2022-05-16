@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum Setting
 {
@@ -38,6 +39,9 @@ public class Settings : MonoBehaviour
     [SerializeField] float defaultMenuMusicVolume;
     [SerializeField] float defaultInGameMusicVolume;
 
+    [Header("References")]
+    [SerializeField] AudioMixer mixer;
+
     // Get option
 
     public WindowMode GetWindowMode() => windowMode;
@@ -66,13 +70,19 @@ public class Settings : MonoBehaviour
                 return Increment(ref windowMode);
 
             case Setting.SoundVolume:
-                return Increment(ref soundVolume, soundVolumeIncrement);
+                {
+                    return GetVolumeValue(Increment(ref soundVolume, soundVolumeIncrement), "SoundEffectVolume");
+                }
 
             case Setting.MenuMusicVolume:
-                return Increment(ref menuMusicVolume, menuMusicVolumeIncrement);
+                {
+                    return GetVolumeValue(Increment(ref menuMusicVolume, menuMusicVolumeIncrement), "MenuMusicVolume");
+                }
 
             case Setting.InGameMusicVolume:
-                return Increment(ref inGameMusicVolume, inGameMusicVolumeIncrement);
+                {
+                    return GetVolumeValue(Increment(ref inGameMusicVolume, inGameMusicVolumeIncrement), "InGameMusicVolume");
+                }
         }
 
         return "Error";
@@ -103,6 +113,19 @@ public class Settings : MonoBehaviour
     public string GetString<T>(T value) where T : struct
     {
         return value.ToString().SplitPascalCase();
+    }
+
+    public string GetVolumeValue(string stringValue, string mixerName)
+    {
+        stringValue = stringValue.Split(' ')[0];
+        float value = float.Parse(stringValue);
+
+        if (value == 0)
+            value = 0.01f;
+
+        mixer.SetFloat(mixerName, Mathf.Log10(value / 100) * 30);
+
+        return stringValue + " %";
     }
 
 }

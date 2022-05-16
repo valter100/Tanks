@@ -4501,7 +4501,7 @@ AudioSource:
   m_GameObject: {fileID: 971628790}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5229458611743032190, guid: 019caff40b334af409d1ac5b4b4952dc, type: 2}
   m_audioClip: {fileID: 8300000, guid: 46d8b6c00b03116408241e7cfe3bae39, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
@@ -5684,6 +5684,7 @@ MonoBehaviour:
   defaultSoundVolume: 1
   defaultMenuMusicVolume: 0.8
   defaultInGameMusicVolume: 0.4
+  mixer: {fileID: 24100000, guid: 019caff40b334af409d1ac5b4b4952dc, type: 2}
 --- !u!4 &1109300536
 Transform:
   m_ObjectHideFlags: 0
