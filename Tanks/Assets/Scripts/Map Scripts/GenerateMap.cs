@@ -167,7 +167,7 @@ public class GenerateMap : MonoBehaviour
             nextValue = pointIndices[pointIndices.Count - 1] + Random.Range(minPointDistance, maxPointDistance);
             nextValue = nextValue >= heights.Length ? heights.Length - 1 : nextValue;
             pointIndices.Add(nextValue);
-            Print("Added index value: " + nextValue);
+            Print("Added point generation index value: " + nextValue);
         }
 
         int pointIndex = 0;
@@ -323,6 +323,7 @@ public class GenerateMap : MonoBehaviour
         }
 
         //TODO kolla över algoritmen för att koppla trianglarna med andra punkter då den kan bli fel om flera okopplade sitter nära varandra
+        //TODO kanske gör det omlott
         int previousIndex, nextIndex = 0;
         for (int i = 0; i < points.Length; i++)
         {

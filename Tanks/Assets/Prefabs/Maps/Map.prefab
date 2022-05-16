@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9169650065926079914}
   - component: {fileID: 9169650065926079915}
+  - component: {fileID: 3072952813707866530}
   - component: {fileID: 6797612445077828031}
   - component: {fileID: 3036856133504881423}
   - component: {fileID: 9169650065926079919}
@@ -48,16 +49,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7b2ca3147285448ae622413cf08d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generateNewMap: 0
+  generateNewSeed: 0
+  generateOldSeed: 0
+  drawDebugLines: 0
+  printDebug: 0
+  mapSeed: 
+  generationMethod: 0
   pointsPerWidth: 1.35
-  amplitude: 1.75
   smoothFactor: 0.81
+  overhangHeight: 1.11
+  randomizeSlopes: 1
+  minPointDistance: 0
+  maxPointDistance: 0
+  waveWidthMin: 0
+  waveWidthMax: 0
+  waveAmplitudeMin: 0
+  waveAmplitudeMax: 0
+  changeFrequency: 0
+  amplitude: 1.75
   width: 20
   height: 6
   depth: 3
   bottomDepth: 1
-  overhangHeight: 1.11
   slopeWidth: 2.52
+  slopeAmplitudePercentage: 0
+--- !u!114 &3072952813707866530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169650065926079912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1460b8bf9ab6ef44bad9ceb6709ca311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointsPerDegree: 0.05
+  printDebug: 0
 --- !u!114 &6797612445077828031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,8 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumObjectDistance: 0.5
   heightAdjustment: 0.24
-  spawnPointPrefab: {fileID: 7577246470029748094, guid: 5570ca8ea3f5f664bb7c4b24b43d8a22, type: 3}
-  numberOfTanks: 4
+  ready: 0
 --- !u!23 &9169650065926079919
 MeshRenderer:
   m_ObjectHideFlags: 0
