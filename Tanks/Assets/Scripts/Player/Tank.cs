@@ -90,11 +90,8 @@ public abstract class Tank : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
         currentFuel = maxFuel;
-    }
 
-    public virtual void ManualUpdate()
-    {
-        
+        Debug.Log(player);
     }
 
     protected void PreviewProjectileTrajectory()
@@ -123,7 +120,7 @@ public abstract class Tank : MonoBehaviour
 
     protected void Fire()
     {
-        Debug.Log("FIRED");
+        //Debug.Log("FIRED");
         // Precompute projectile
         Projectile precomputedProjectile = InstantiateProjectile();
         Projectile.PrecomputedResult? result = precomputedProjectile.PrecomputeTrajectory();
@@ -210,6 +207,8 @@ public abstract class Tank : MonoBehaviour
             GetComponent<AiTank>().enabled = true;
             GetComponent<AiManager>().enabled = true;
         }
+
+        Debug.Log(player);
     }
 
     public void Ready()

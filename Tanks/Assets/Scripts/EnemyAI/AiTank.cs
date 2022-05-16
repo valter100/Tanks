@@ -13,10 +13,10 @@ public class AiTank : Tank
         aiManager = GetComponent<AiManager>();
     }
 
-    public override void ManualUpdate()
+    public void ManualAIUpdate()
     {
-        Debug.Log("AI UPDATE");
-        aiManager.Update();
+        aiManager.ManualUpdate();
+        Debug.Log(player);
     }
 
     public void Move(Transform enemyTankPosition)
