@@ -119,7 +119,7 @@ public class AirDrop : MonoBehaviour
                 amount = 20;
                 break;
             case Type.Amo:
-                SetAmoType();
+                //SetAmoType();
                 SetAmoColor(amo);
                 amount = 2;
                 break;
@@ -144,6 +144,7 @@ public class AirDrop : MonoBehaviour
     private void SetAmoType()
     {
         int random = Random.Range(0, 10 * amoTypes);
+        //Debug.Log(random);
         int index = random / 10;
         amo = (AmoType)index;
     }
@@ -151,6 +152,7 @@ public class AirDrop : MonoBehaviour
     public void SetCrateType()
     {
         int random = Random.Range(0, 10 * Enum.GetValues(typeof(Type)).Length);
+        //Debug.Log(random);
         int index = random / 10;
         type = (Type)index;
         if (type == Type.Amo)
