@@ -23,15 +23,6 @@ public class Player : MonoBehaviour
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        if (info.control == Control.Player)
-        {
-            
-        }
-        else if (info.control == Control.Bot)
-        {
-            
-        }
-
     }
 
     private void Update()

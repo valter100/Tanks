@@ -66,8 +66,6 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected bool facingRight;
 
 
-    [SerializeField] GameObject projectilePrefab;
-
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
@@ -139,7 +137,7 @@ public abstract class Tank : MonoBehaviour
 
         // Fire projectile
 
-        //player.Inventory.DecreaseAmountOfSelectedItem();
+        player.Inventory.DecreaseAmountOfSelectedItem();
         hasFired = true;
 
         if (animator)
@@ -213,8 +211,6 @@ public abstract class Tank : MonoBehaviour
             GetComponent<AiTank>().enabled = true;
             GetComponent<AiManager>().enabled = true;
         }
-
-        //Debug.Log(player);
     }
 
     public virtual void Ready()
@@ -231,8 +227,6 @@ public abstract class Tank : MonoBehaviour
 
         cameraController.focusPoint.FollowObject(gameObject);
         cameraController.Transition(CameraController.View.Side, 1.0f);
-
-        Debug.Log("ready");
     }
 
     public void Unready()
