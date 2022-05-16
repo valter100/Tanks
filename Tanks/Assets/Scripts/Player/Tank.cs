@@ -39,14 +39,18 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected static CameraController cameraController;
     [SerializeField] protected Player player;
     [SerializeField] protected GameObject rotatePoint;
-    [SerializeField] protected GameObject[] tankParts;
+    [SerializeField] protected GameObject[] customColoredParts;
+    [SerializeField] protected GameObject[] baseColoredParts;
     [SerializeField] protected GameObject chassi;
     [SerializeField] protected Tower tower;
     [SerializeField] protected Gun gun;
     [SerializeField] protected Transform rumbleSpot;
 
-    [Header("Debug Settings")]
+    [Header("Other")]
+    [SerializeField] private Color baseColor;
     [SerializeField] protected bool debugTrajectory;
+    [SerializeField] protected bool preview;
+    [SerializeField] protected bool facingRight;
 
     protected float timeSinceLastEffect;
     protected int projectileIndex;
@@ -56,8 +60,7 @@ public abstract class Tank : MonoBehaviour
     protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
-    [SerializeField] protected bool facingRight;
-
+    
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
     public float GetHealthPercentage() => currentHealth / maxHealth;
@@ -78,11 +81,17 @@ public abstract class Tank : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (gameManager == null)
-            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (!preview)
+        {
+            if (gameManager == null)
+                gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        if (cameraController == null)
-            cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+            if (cameraController == null)
+                cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        }
+
+        foreach (GameObject baseColorPart in baseColoredParts)
+            baseColorPart.GetComponent<Renderer>().material.color = baseColor;
 
         rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
@@ -238,9 +247,9 @@ public abstract class Tank : MonoBehaviour
 
     public void SetColor(Color color)
     {
-        foreach (GameObject tankPart in tankParts)
+        foreach (GameObject customColorPart in customColoredParts)
         {
-            tankPart.GetComponent<Renderer>().material.color = color;
+            customColorPart.GetComponent<Renderer>().material.color = color;
         }
     }
 

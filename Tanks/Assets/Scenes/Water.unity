@@ -1186,8 +1186,8 @@ MonoBehaviour:
   focusPoint: {fileID: 1247519813}
   followObject: {fileID: 0}
   transitioning: 0
-  translationalApproachSpeed: {x: 0, y: 0, z: 0}
-  FOVApproachSpeed: 0
+  translationalApproachSpeed: {x: 5, y: 5, z: 0}
+  FOVApproachSpeed: 10
 --- !u!114 &329977814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3221,12 +3221,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: {x: 8, y: 5, z: 0}
-  defaultOffset: {x: 0, y: 5, z: 0}
+  defaultOffset: {x: 0, y: 13, z: 0}
   offset: {x: 0, y: 0, z: 0}
   followObject: {fileID: 0}
   cameraController: {fileID: 329977813}
   playerController: {fileID: 1247519812}
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 2097796582}
 --- !u!4 &1247519814
 Transform:
   m_ObjectHideFlags: 0

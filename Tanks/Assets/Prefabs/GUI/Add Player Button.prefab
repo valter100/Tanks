@@ -158,11 +158,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4434226030566633920}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4d1b5b9d35be40a9a96ae0bf305ee4e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6338e0ad0fa0b40e49249f185b57d939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 0}
-  offset: {x: 0, y: 2, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!95 &8027905756851382998
 Animator:
   serializedVersion: 3

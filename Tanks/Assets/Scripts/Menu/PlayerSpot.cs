@@ -9,7 +9,7 @@ public class PlayerSpot : MonoBehaviour
 
     public bool StartWithTank => startWithTank;
 
-    void Start()
+    public void Start()
     {
         GameObject playMenu = GameObject.Find("Canvas").transform.Find("Play Menu").gameObject;
         AddPlayerButton addPlayerButton = Instantiate(addPlayerButtonPrefab, playMenu.transform).GetComponent<AddPlayerButton>();

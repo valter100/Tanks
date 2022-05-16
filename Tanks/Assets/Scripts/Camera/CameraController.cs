@@ -43,23 +43,23 @@ public class CameraController : MonoBehaviour
         maxDistanceToTarget = Screen.currentResolution.height * 0.25f;
 
         ViewSettings sideView = new ViewSettings();
-        sideView.position = new Vector3(0.0f, 7.0f, -60.0f);
-        sideView.rotation = Vector3.zero;
-        sideView.minFOV = 15.0f;
-        sideView.FOV = 25.0f;
-        sideView.maxFOV = 50.0f;
+        sideView.position = new Vector3(0, 7, -45);
+        sideView.rotation = new Vector3(15, 0, 0);
+        sideView.minFOV = 30;
+        sideView.FOV = 45;
+        sideView.maxFOV = 70;
         sideView.allowTranslation = true;
         sideView.allowZoom = true;
 
         ViewSettings focusView = new ViewSettings();
-        focusView.position = new Vector3(0.0f, 7.0f, -15);
+        focusView.position = new Vector3(0, 7, -15);
         focusView.rotation = Vector3.zero;
-        focusView.FOV = 60.0f;
+        focusView.FOV = 60;
         focusView.allowTranslation = false;
         focusView.allowZoom = false;
 
         ViewSettings firstPersonView = new ViewSettings();
-        firstPersonView.FOV = 60.0f;
+        firstPersonView.FOV = 60f;
         firstPersonView.allowTranslation = false;
         firstPersonView.allowZoom = false;
 
@@ -90,7 +90,7 @@ public class CameraController : MonoBehaviour
 
             if (scrollValue != 0.0f)
             {
-                targetFOV -= scrollValue * 0.005f * (viewSettings[view].maxFOV - viewSettings[view].minFOV);
+                targetFOV -= scrollValue * 0.004f * (viewSettings[view].maxFOV - viewSettings[view].minFOV);
                 targetFOV = Mathf.Clamp(targetFOV, viewSettings[view].minFOV, viewSettings[view].maxFOV);
             }
         }
@@ -122,7 +122,7 @@ public class CameraController : MonoBehaviour
     {
         Vector3 delta, change;
 
-        float percentageOfMaxDistance = Vector2.Distance(
+        /*float percentageOfMaxDistance = Vector2.Distance(
             mainCamera.WorldToScreenPoint(focusPoint.transform.position).ToV2(),
             new Vector2(Screen.currentResolution.width, Screen.currentResolution.height) * 0.5f)
             / maxDistanceToTarget;
@@ -132,7 +132,7 @@ public class CameraController : MonoBehaviour
             delta = targetPosition - transform.position;
             transform.position += delta * (percentageOfMaxDistance - 1.0f);
             return;
-        }
+        }*/
 
         delta = targetPosition - transform.position;
         change = delta.Mul(translationalApproachSpeed) * Time.deltaTime;
