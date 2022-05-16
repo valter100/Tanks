@@ -64,6 +64,7 @@ public class GenerateMap : MonoBehaviour
 
     private float[] heights;
     public Vector3[] LinePositions { get; private set; }
+    private Vector3[] InitialTopside;
 
     private List<int> triangleIndices;
     private List<Vector3> vertices;
@@ -117,13 +118,13 @@ public class GenerateMap : MonoBehaviour
 
         mapSeed = seed;
         Random.InitState(seed.GetHashCode());
-        GenerateLinePositions();
-        CreatePositions();
+        GenerateHeights();
+        SetLinePositions();
         GenerateQuads();
         GenerateObjects();
     }
 
-    private void GenerateLinePositions()
+    private void GenerateHeights()
     {
         GenerateRandomHeights();
         switch (generationMethod)
@@ -262,13 +263,19 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
-    private void CreatePositions()
+    private void SetLinePositions()
     {
         float widthPerPoint = 1.0f / pointsPerWidth;
         float trueWidth = width + slopeWidth * 2;
         LinePositions = new Vector3[heights.Length];
+        InitialTopside = new Vector3[heights.Length];
         for (int i = 0; i < heights.Length; i++)
+        {
             LinePositions[i] = new Vector3(i * widthPerPoint - trueWidth / 2.0f, height - amplitude + heights[i] * amplitude);
+            InitialTopside[i] = LinePositions[i] + new Vector3(0, -overhangHeight);
+        }
+
+        
     }
 
     private Point[] PositionsToPoints()
@@ -318,7 +325,7 @@ public class GenerateMap : MonoBehaviour
             points[i].VertexIndex = i + 1 != LinePositions.Length ? AddVertex(points[i].position) : AddLastSide(points[i].position);
             int pastIndex = points[i].VertexIndex - verticesPerPosition;
             for (int j = 0; j < verticesPerPosition - 1; j++)
-                AddQuad(pastIndex + j, points[i].VertexIndex + j, j < 2);
+                AddQuad(pastIndex + j, points[i].VertexIndex + j);
             points[i].IsConnected = true;
         }
 
@@ -333,11 +340,11 @@ public class GenerateMap : MonoBehaviour
                 points[i].VertexIndex = AddVertex(points[i].position, true);
                 if (nextIndex < i)
                     nextIndex = GetNextConnectedPoint(i);
-                AddQuad(previousIndex, points[i].VertexIndex, true);
-                quads.Add(new Quad(points[i].VertexIndex + 1, previousIndex + 1, points[nextIndex].VertexIndex + 1, -1, true));
+                AddQuad(previousIndex, points[i].VertexIndex);
+                AddTriangle(points[i], points[nextIndex]);
 
                 if (nextIndex == i + 1)
-                    AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex, true);
+                    AddQuad(points[i].VertexIndex, points[nextIndex].VertexIndex);
 
                 points[i].IsConnected = true;
             }
@@ -346,9 +353,24 @@ public class GenerateMap : MonoBehaviour
 
         CreateMesh(CreateSubMeshDescriptors(quads));
 
-        void AddQuad(int pastIndex, int vertexIndex, bool isTopside)
+        void AddQuad(int pastIndex, int vertexIndex)
         {
+            bool isTopside = IsAboveGrass(vertices[pastIndex], vertices[vertexIndex]);
             quads.Add(new Quad(pastIndex, pastIndex + 1, vertexIndex, vertexIndex + 1, isTopside));
+        }
+
+        void AddTriangle(Point currentPoint, Point nextPoint)
+        {
+            bool isTopside = IsAboveGrass(vertices[currentPoint.VertexIndex + 1], vertices[nextPoint.VertexIndex + 1], false);
+            quads.Add(new Quad(currentPoint.VertexIndex + 1, previousIndex + 1, nextPoint.VertexIndex + 1, -1, isTopside));
+        }
+
+        bool IsAboveGrass(Vector3 topLeft, Vector3 topRight, bool requireBoth = true)
+        {
+            if (requireBoth)
+                return GetClosestOverhangPosition(topLeft.x).y < topLeft.y && GetClosestOverhangPosition(topRight.x).y < topRight.y;
+            return GetClosestOverhangPosition(topLeft.x).y < topLeft.y || GetClosestOverhangPosition(topRight.x).y < topRight.y;
+
         }
 
         int GetNextConnectedPoint(int startIndex)
@@ -367,6 +389,20 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
+    Vector3 GetClosestOverhangPosition(float positionX)
+    {
+        float previousDistance = float.PositiveInfinity, newDistance;
+        for (int i = 0; i < InitialTopside.Length; i++)
+        {
+            newDistance = Mathf.Abs(positionX - InitialTopside[i].x);
+            if (newDistance >= previousDistance)
+                return InitialTopside[i - 1];
+            previousDistance = newDistance;
+        }
+
+        return InitialTopside[InitialTopside.Length - 1];
+    }
+
     int AddVertex(Vector3 vertex, bool onlyTop = false)
     {
         int index = vertices.Count;
@@ -375,12 +411,18 @@ public class GenerateMap : MonoBehaviour
         vertices.Add(vertex);
         if (onlyTop)
             return index;
-        vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth()));
+
+        Vector3 overhangPosition = GetClosestOverhangPosition(vertex.x);
+        if (overhangPosition.y < vertex.y)
+            vertices.Add(overhangPosition - new Vector3(0, 0, GetOverhangDepth(overhangPosition.y + overhangHeight)));
+        else
+            vertices.Add(new Vector3(vertex.x, vertex.y - overhangHeight, -GetOverhangDepth(vertex.y)));
+
         vertices.Add(new Vector3(vertex.x, 0, -bottomDepth));
         return index;
-        float GetOverhangDepth()
+        float GetOverhangDepth(float targetHeight)
         {
-            float angle = Mathf.Atan(bottomDepth / vertex.y);
+            float angle = Mathf.Atan(bottomDepth / targetHeight);
             return overhangHeight * Mathf.Tan(angle);
         }
     }
