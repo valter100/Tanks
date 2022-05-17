@@ -141,15 +141,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Player 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e5448b117682d412da12962167a1daf4, type: 2}
-  m_sharedMaterial: {fileID: 6508881501399955677, guid: e5448b117682d412da12962167a1daf4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f844037b0bd98418baa8a2beea47cc67, type: 2}
+  m_sharedMaterial: {fileID: 7686102161869473806, guid: f844037b0bd98418baa8a2beea47cc67, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

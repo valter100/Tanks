@@ -5246,8 +5246,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Poly Tanks
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e5448b117682d412da12962167a1daf4, type: 2}
-  m_sharedMaterial: {fileID: 6508881501399955677, guid: e5448b117682d412da12962167a1daf4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f844037b0bd98418baa8a2beea47cc67, type: 2}
+  m_sharedMaterial: {fileID: 7686102161869473806, guid: f844037b0bd98418baa8a2beea47cc67, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
