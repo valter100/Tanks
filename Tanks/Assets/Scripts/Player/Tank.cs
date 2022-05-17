@@ -92,7 +92,7 @@ public abstract class Tank : MonoBehaviour
                 gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
             if (cameraController == null)
-                cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+                cameraController = CameraController.Instance;
         }
 
         foreach (GameObject baseColorPart in baseColoredParts)

@@ -122,5 +122,24 @@ public static class Extensions
         return value = value.GetPrevious();
     }
 
+    /// <summary>
+    /// Returns a Vector2 as the result of rotating this Vector2 around origo by the provided radians.
+    /// </summary>
+    public static Vector2 RotateAroundZero(this Vector2 point, float radians)
+    {
+        return new Vector2(
+            Mathf.Cos(radians) * point.x - Mathf.Sin(radians) * point.y,
+            Mathf.Sin(radians) * point.x + Mathf.Cos(radians) * point.y);
+    }
+
+    /// <summary>
+    /// Returns a Vector2 as the result of rotating this Vector2 around the provided pivot point by the provided radians.
+    /// </summary>
+    public static Vector2 RotateAroundPivot(this Vector2 point, Vector2 pivot, float radians)
+    {
+        return new Vector2(
+            Mathf.Cos(radians) * (point.x - pivot.x) - Mathf.Sin(radians) * (point.y - pivot.y) + pivot.x,
+            Mathf.Sin(radians) * (point.x - pivot.x) + Mathf.Cos(radians) * (point.y - pivot.y) + pivot.y);
+    }
 
 }

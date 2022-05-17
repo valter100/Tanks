@@ -10,22 +10,29 @@ public class CameraController : MonoBehaviour
 
     public enum View { Side, Focus, FirstPerson };
 
-    [SerializeField] View view;
-    [SerializeField] Vector3 targetPosition;
-    [SerializeField] Quaternion targetRotation;
-    [SerializeField] float targetFOV;
+    [Header("References")]
+    [SerializeField] private Transform parentTransform;
+    [SerializeField] private CameraShake cameraShake;
     [SerializeField] public FocusPoint focusPoint;
-    [SerializeField] GameObject? followObject;
-    [SerializeField] bool transitioning;
-    [SerializeField] Vector3 translationalApproachSpeed;
-    [SerializeField] float FOVApproachSpeed;
+    [SerializeField] private GameObject? followObject;
 
-    Dictionary<View, ViewSettings> viewSettings;
-    Camera mainCamera;
-    float maxDistanceToTarget;
+    [Header("Values")]
+    [SerializeField] private View view;
+    [SerializeField] private Vector3 targetPosition;
+    [SerializeField] private Quaternion targetRotation;
+    [SerializeField] private float targetFOV;
+    [SerializeField] private bool transitioning;
+    [SerializeField] private Vector3 translationalApproachSpeed;
+    [SerializeField] private float FOVApproachSpeed;
+
+    private Dictionary<View, ViewSettings> viewSettings;
+    private Camera mainCamera;
+    private float maxDistanceToTarget;
 
     public bool allowTranslation => viewSettings[view].allowTranslation;
     public bool inTransition => transitioning;
+
+    public static CameraController Instance { get; private set; }
 
     private class ViewSettings
     {
@@ -34,11 +41,14 @@ public class CameraController : MonoBehaviour
         public bool allowTranslation, allowZoom;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
-        transform.localScale = Vector3.one;
+        Instance = this;
+
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+
         transitioning = false;
         maxDistanceToTarget = Screen.currentResolution.height * 0.25f;
 
@@ -73,7 +83,6 @@ public class CameraController : MonoBehaviour
         mainCamera.fieldOfView = targetFOV = viewSettings[view].maxFOV;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (transitioning)
@@ -99,23 +108,28 @@ public class CameraController : MonoBehaviour
 
         if (view == View.Side || view == View.Focus)
         {
-            targetPosition = new Vector3(focusPoint.transform.position.x, focusPoint.transform.position.y, transform.position.z);
+            targetPosition = new Vector3(focusPoint.transform.position.x, focusPoint.transform.position.y, parentTransform.position.z);
         }
 
         else if (view == View.FirstPerson)
         {
             if (followObject != null)
-                transform.position = targetPosition = followObject.transform.position;
-            transform.LookAt(focusPoint.transform.position);
+                parentTransform.position = targetPosition = followObject.transform.position;
+            parentTransform.LookAt(focusPoint.transform.position);
         }
 
         // Approach target values
 
-        if (transform.position != targetPosition)
+        if (parentTransform.position != targetPosition)
             ApproachTargetPosition();
 
         if (mainCamera.fieldOfView != targetFOV)
             ApproachTargetFOV();
+
+        // Apply trauma (camera shake)
+
+        transform.localPosition = new Vector3(cameraShake.Offset.x, cameraShake.Offset.y, 0f);
+        transform.localRotation = Quaternion.Euler(0f, 0f, cameraShake.Rotation);
     }
 
     private void ApproachTargetPosition()
@@ -134,13 +148,13 @@ public class CameraController : MonoBehaviour
             return;
         }*/
 
-        delta = targetPosition - transform.position;
+        delta = targetPosition - parentTransform.position;
         change = delta.Mul(translationalApproachSpeed) * Time.deltaTime;
 
         if (change.magnitude >= delta.magnitude || delta.magnitude < 0.001f)
-            transform.position = targetPosition;
+            parentTransform.position = targetPosition;
         else
-            transform.position += change;
+            parentTransform.position += change;
     }
 
     private void ApproachTargetFOV()
@@ -173,12 +187,12 @@ public class CameraController : MonoBehaviour
 
         if (view == View.FirstPerson)
         {
-            targetPosition = followObject != null ? followObject.transform.position : transform.position;
+            targetPosition = followObject != null ? followObject.transform.position : parentTransform.position;
 
-            Quaternion rotation = transform.rotation;
-            transform.LookAt(focusPoint.transform.position);
-            targetRotation = transform.rotation;
-            transform.rotation = rotation;
+            Quaternion rotation = parentTransform.rotation;
+            parentTransform.LookAt(focusPoint.transform.position);
+            targetRotation = parentTransform.rotation;
+            parentTransform.rotation = rotation;
         }
 
         else
@@ -271,21 +285,21 @@ public class CameraController : MonoBehaviour
         float lerpValue;
         float elapsedTime = 0.0f;
 
-        Vector3 startPosition = transform.position;
-        Quaternion startRotation = transform.rotation;
+        Vector3 startPosition = parentTransform.position;
+        Quaternion startRotation = parentTransform.rotation;
         float startFOV = mainCamera.fieldOfView;
 
         while (elapsedTime < duration)
         {
             lerpValue = (elapsedTime / duration).LerpValueSmoothstep();
 
-            transform.position = Vector3.Lerp(startPosition, targetPosition, lerpValue);
+            parentTransform.position = Vector3.Lerp(startPosition, targetPosition, lerpValue);
             mainCamera.fieldOfView = Mathf.Lerp(startFOV, targetFOV, lerpValue);
 
             if (lookAtFocusPoint)
-                transform.LookAt(focusPoint.transform.position);
+                parentTransform.LookAt(focusPoint.transform.position);
             else
-                transform.rotation = Quaternion.Lerp(startRotation, targetRotation, lerpValue);
+                parentTransform.rotation = Quaternion.Lerp(startRotation, targetRotation, lerpValue);
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -297,8 +311,8 @@ public class CameraController : MonoBehaviour
 
     private void InstantTransition()
     {
-        transform.position = targetPosition;
-        transform.rotation = targetRotation;
+        parentTransform.position = targetPosition;
+        parentTransform.rotation = targetRotation;
         mainCamera.fieldOfView = targetFOV;
     }
 
@@ -311,6 +325,6 @@ public class CameraController : MonoBehaviour
             return;
 
         followObject = gameObject;
-        transform.position = gameObject.transform.position;
+        parentTransform.position = gameObject.transform.position;
     }
 }

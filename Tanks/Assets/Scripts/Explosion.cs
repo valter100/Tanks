@@ -47,6 +47,7 @@ public class Explosion : MonoBehaviour
         mapDestruction = gameObject.AddComponent<Tanks.MapDestroyingExplosive>();
         mapDestruction.Explode(radius);
 
+        CameraShake.AddTrauma(damage * 0.1f);
         Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90, 0, 0));
         transform.parent = null;
 
@@ -57,7 +58,6 @@ public class Explosion : MonoBehaviour
             if (collider.gameObject.tag != "Tank")
                 continue;
 
-
             try
             {
                 if (collider.gameObject.GetComponentInParent<Player>().Tank)
@@ -66,14 +66,12 @@ public class Explosion : MonoBehaviour
 
                     if (tank)
                         tank.TakeDamage(damage);
-
                 }
             }
             catch
             {
                 continue;
             }
-
         }
     }
 
