@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6806623264713002176
+--- !u!1 &2219589788389130461
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,63 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4945680062715508162}
-  - component: {fileID: 6369768354030922622}
-  - component: {fileID: 996827068840717984}
-  - component: {fileID: -6822303999829061546}
-  - component: {fileID: 1963566118229853915}
-  - component: {fileID: -7286238009146398317}
-  - component: {fileID: 2921126087373714389}
+  - component: {fileID: 6898701656105644068}
+  - component: {fileID: 370846959232461065}
+  - component: {fileID: 34686007370938566}
   m_Layer: 0
-  m_Name: Bush1
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4945680062715508162
+--- !u!4 &6898701656105644068
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6806623264713002176}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_GameObject: {fileID: 2219589788389130461}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4945680062715508162}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!64 &6369768354030922622
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6806623264713002176}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!33 &996827068840717984
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!33 &370846959232461065
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6806623264713002176}
+  m_GameObject: {fileID: 2219589788389130461}
   m_Mesh: {fileID: -7633896560097655829, guid: 3b71e219abd323244b9b6d06c9ab3886, type: 3}
---- !u!23 &-6822303999829061546
+--- !u!23 &34686007370938566
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6806623264713002176}
+  m_GameObject: {fileID: 2219589788389130461}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -99,6 +81,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6806623264713002176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4945680062715508162}
+  - component: {fileID: 1963566118229853915}
+  - component: {fileID: -7286238009146398317}
+  - component: {fileID: 4162552941068510782}
+  m_Layer: 0
+  m_Name: Bush1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4945680062715508162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6806623264713002176}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children:
+  - {fileID: 6898701656105644068}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1963566118229853915
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -127,9 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d902145b7469c41824d3d798792bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateAroundZ: 1
---- !u!135 &2921126087373714389
-SphereCollider:
+--- !u!65 &4162552941068510782
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,5 +154,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.1854204
-  m_Center: {x: -0.086687475, y: 0.14936128, z: -0.9671173}
+  m_Size: {x: 2.013186, y: 2.0708902, z: 2.132229}
+  m_Center: {x: 0.9, y: 0.17, z: -0.1}

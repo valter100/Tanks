@@ -359,7 +359,7 @@ PrefabInstance:
     - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: objects.Array.data[1]
       value: 
-      objectReference: {fileID: 4300002036050326642, guid: 8bb01187b71370f48a9221026c62a967, type: 3}
+      objectReference: {fileID: 588183761583343122, guid: f2c3c220d36b6ca4381fb19f51a615d6, type: 3}
     - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: objects.Array.data[2]
       value: 
@@ -367,7 +367,7 @@ PrefabInstance:
     - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: objects.Array.data[3]
       value: 
-      objectReference: {fileID: 588183761583343122, guid: f2c3c220d36b6ca4381fb19f51a615d6, type: 3}
+      objectReference: {fileID: 787828567422048172, guid: 22b2c37a0de8a814fbe603affdb03c38, type: 3}
     - target: {fileID: 9169650065926079912, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_Name
       value: Map (1)
@@ -764,5 +764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1460b8bf9ab6ef44bad9ceb6709ca311, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundParticles: {fileID: 0}
   pointsPerDegree: 0.05
   printDebug: 1

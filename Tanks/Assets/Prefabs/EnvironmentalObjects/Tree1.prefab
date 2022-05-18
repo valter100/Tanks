@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4591165065254574267
+--- !u!1 &1030690336879058024
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4792998200593780188}
-  - component: {fileID: 2799520371380381508}
-  - component: {fileID: 8651122327839266984}
-  - component: {fileID: 765153798193813438}
-  - component: {fileID: 5901851767992617501}
-  - component: {fileID: -6811910361936171103}
+  - component: {fileID: 8090125140353631841}
+  - component: {fileID: 5253848017572681286}
+  - component: {fileID: 5258606916136606481}
   m_Layer: 0
-  m_Name: Tree1
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4792998200593780188
+--- !u!4 &8090125140353631841
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4591165065254574267}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_GameObject: {fileID: 1030690336879058024}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4792998200593780188}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!33 &2799520371380381508
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!33 &5253848017572681286
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4591165065254574267}
+  m_GameObject: {fileID: 1030690336879058024}
   m_Mesh: {fileID: -3142649664740890969, guid: c75f4bef73ef6354e974cb4b963c380f, type: 3}
---- !u!23 &8651122327839266984
+--- !u!23 &5258606916136606481
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4591165065254574267}
+  m_GameObject: {fileID: 1030690336879058024}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,8 +59,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: c75f4bef73ef6354e974cb4b963c380f, type: 3}
-  - {fileID: -3846018093981099296, guid: c75f4bef73ef6354e974cb4b963c380f, type: 3}
+  - {fileID: -6478536213147159724, guid: a6c0008f6dd4c2347b427012b0c7af8a, type: 3}
+  - {fileID: -3846018093981099296, guid: a6c0008f6dd4c2347b427012b0c7af8a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,6 +82,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4591165065254574267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4792998200593780188}
+  - component: {fileID: 765153798193813438}
+  - component: {fileID: 5901851767992617501}
+  - component: {fileID: -6811910361936171103}
+  m_Layer: 0
+  m_Name: Tree1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4792998200593780188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4591165065254574267}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
+  m_Children:
+  - {fileID: 8090125140353631841}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &765153798193813438
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -112,8 +143,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.043449, y: 2.1547008, z: 4.897499}
-  m_Center: {x: -0.017156124, y: 0.006241083, z: -1.4487475}
+  m_Size: {x: 4.3819685, y: 2.0911696, z: 2.1038573}
+  m_Center: {x: 1.1521021, y: -0.02552903, z: -0.023605155}
 --- !u!114 &-6811910361936171103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,4 +157,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d902145b7469c41824d3d798792bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateAroundZ: 1
