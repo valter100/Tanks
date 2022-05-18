@@ -4,25 +4,13 @@ using UnityEngine;
 
 public class MoveState : State
 {
-    private float distanceToEnemy;
-    private float maxShootingRange;
-    private float fuel;
-
-    private Transform oldPosition;
-
-    private LayerMask groundLayer;
     public override void DoState(AiManager thisManager,Transform enemyTankPosition, AiTank thisTank)
     {
-        if (!oldPosition) oldPosition = thisTank.transform;
-
-
-        if (thisManager.GetDistanceToEnemy() < 15 || thisManager.GetFuel() <= 0 || oldPosition == thisTank.transform)
+        if (thisManager.GetDistanceToEnemy() < thisManager.GetMaxShootingRange() || thisManager.GetFuel() <= 0)
         {
             thisManager.SetFireState();
             return;
         }
-
-        oldPosition = thisTank.transform;
 
         DoMove(enemyTankPosition, thisTank);
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AiTank : Tank
 {
     private AiManager aiManager;
-
+    private int randomInvetoryIndex;
     protected override void Start()
     {
         base.Start();
@@ -29,12 +29,6 @@ public class AiTank : Tank
 
         Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
 
-        //RaycastHit hit;
-        //if (Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-        //{
-        //    if (hit.normal.y < 0.9f)
-        //        return;
-        //}
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
@@ -50,9 +44,10 @@ public class AiTank : Tank
         }
 
         if (!isSlowed)
-            currentFuel -= 0.05f; // should be changed for the correct value;
+            currentFuel -= 0.1f; // should be changed for the correct value;
         else
-            currentFuel -= 0.05f * 2;
+            currentFuel -= 0.1f * 2;
+        fuelSlider.value = currentFuel / maxFuel;
     }
 
     public void Aim(Transform enemyTarget)
@@ -60,7 +55,14 @@ public class AiTank : Tank
         float g = Physics.gravity.y;
         float x = transform.position.x - enemyTarget.position.x;
         float y = transform.position.y - enemyTarget.position.y;
-        float v = maxShootForce / 2;//Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
+        float v = maxShootForce;
+        
+        if(Vector3.Distance(enemyTarget.position, transform.position) <= 10)
+        {
+            v = maxShootForce / 3;
+        }
+   
+       
 
         float v2 = v * v;
         float v4 = v * v * v * v;
@@ -77,17 +79,21 @@ public class AiTank : Tank
 
         if (float.IsNaN(trajectoryAngle))
         {
-            trajectoryAngle = 0;
+            trajectoryAngle = Random.Range(-90, 90);
         }
 
-        //return trajectoryAngle;
         currentShootForce = v;
-        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
+
+        float randomBias = Random.Range(-5.0f, 5.0f);
+
+        trajectoryAngle += randomBias;
+
+        gun.botAim(-trajectoryAngle);
+
+        ChooseAmmoType();
 
         if (CanFire())
             Fire();
-
-
     }
 
     public override void Ready()
@@ -98,5 +104,18 @@ public class AiTank : Tank
     public override void LinkPlayer(Player player)
     {
         base.LinkPlayer(player);
+    }
+
+    private void ChooseAmmoType()
+    {
+        randomInvetoryIndex = Random.Range(0, player.Inventory.items.Count);
+        
+        if(player.Inventory.items[randomInvetoryIndex].amount <= 0)
+        {
+            ChooseAmmoType();
+        }
+
+        player.Inventory.selectedIndex = randomInvetoryIndex;
+        return;
     }
 }

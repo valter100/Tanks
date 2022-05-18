@@ -32,6 +32,12 @@ public class Gun : MonoBehaviour
         //rotatePoint.transform.rotation = Quaternion.Euler(0, 0, rotationZ);
     }
 
+    public void botAim(float trajectoryAngle)
+    {
+        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
+    }
+
+
     public Transform GetFirePoint()
     {
         return firePoint;
