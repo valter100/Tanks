@@ -50,9 +50,9 @@ public class AiTank : Tank
         }
 
         if (!isSlowed)
-            currentFuel -= 0.05f; // should be changed for the correct value;
+            currentFuel -= 0.1f; // should be changed for the correct value;
         else
-            currentFuel -= 0.05f * 2;
+            currentFuel -= 0.1f * 2;
         fuelSlider.value = currentFuel / maxFuel;
     }
 
@@ -81,9 +81,12 @@ public class AiTank : Tank
             trajectoryAngle = 0;
         }
 
-        //return trajectoryAngle;
         currentShootForce = v;
-        rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
+
+        //return trajectoryAngle;
+        //rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
+
+        gun.botAim(trajectoryAngle);
 
         ChooseAmmoType();
 
