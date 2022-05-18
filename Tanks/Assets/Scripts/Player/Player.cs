@@ -11,9 +11,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Tank tank;
     [SerializeField] private GameObject playerHudPrefab;
 
-    [SerializeField] private AiTank aiTank;
-    [SerializeField] private PlayerTank playerTank;
-
     private static GameManager gameManager;
 
     public PlayerInfo Info => info;
@@ -24,23 +21,12 @@ public class Player : MonoBehaviour
     {
         if (gameManager == null)
             gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-        if (info.control == Control.Player)
-            playerTank = tank.GetComponent<PlayerTank>();
-
-        else if (info.control == Control.Bot)
-            aiTank = tank.GetComponent<AiTank>();
     }
 
     public void ManualUpdate()
     {
         inventory.ManualUpdate();
-
-        if (playerTank)
-            playerTank.ManualPlayerUpdate();
-
-        else if (aiTank)
-            aiTank.ManualAIUpdate();
+        tank.ManualUpdate();
     }
 
     public void Initialize(string name, Color color, Prefab tankPrefab, Control control, Vector3 position)
@@ -54,9 +40,23 @@ public class Player : MonoBehaviour
 
         // Tank
 
-        tank = Instantiate(Prefabs.Tanks[tankPrefab], transform).GetComponent<Tank>();
-        tank.LinkPlayer(this);
+        GameObject tankObject = Instantiate(Prefabs.Tanks[tankPrefab], transform);
+
+        if (control == Control.Player)
+        {
+            tank = tankObject.GetComponent<PlayerTank>();
+            tankObject.GetComponent<PlayerController>().enabled = true;
+        }
+
+        else if (control == Control.Bot)
+        {
+            tank = tankObject.GetComponent<AiTank>();
+            tankObject.GetComponent<AiManager>().enabled = true;
+        }
+
+        tank.enabled = true;
         tank.transform.position = position;
+        tank.LinkPlayer(this);
 
         // Inventory
 
@@ -75,11 +75,7 @@ public class Player : MonoBehaviour
 
     public void Ready()
     {
-        if (playerTank)
-            playerTank.Ready();
-
-        else if (aiTank)
-            aiTank.Ready();
+        tank.Ready();
     }
 
     public void Unready()

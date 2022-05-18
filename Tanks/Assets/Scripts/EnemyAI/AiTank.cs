@@ -1,19 +1,19 @@
 using System.Linq;
 using UnityEngine;
 
-
 public class AiTank : Tank
 {
     private AiManager aiManager;
     private int randomInvetoryIndex;
+
     protected override void Start()
     {
         base.Start();
-        if(aiManager == null)
+        if (aiManager == null)
             aiManager = GetComponent<AiManager>();
     }
 
-    public void ManualAIUpdate()
+    public override void ManualUpdate()
     {
         if (hasFired) return;
 
@@ -28,7 +28,6 @@ public class AiTank : Tank
             gameObject.transform.rotation = Quaternion.Euler(0, -180, 0);
 
         Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
-
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
@@ -47,7 +46,6 @@ public class AiTank : Tank
             currentFuel -= 0.1f; // should be changed for the correct value;
         else
             currentFuel -= 0.1f * 2;
-        fuelSlider.value = currentFuel / maxFuel;
     }
 
     public void Aim(Transform enemyTarget)
@@ -57,13 +55,11 @@ public class AiTank : Tank
         float y = transform.position.y - enemyTarget.position.y;
         float v = maxShootForce;
         
-        if(Vector3.Distance(enemyTarget.position, transform.position) <= 10)
+        if (Vector3.Distance(enemyTarget.position, transform.position) <= 10)
         {
             v = maxShootForce / 3;
         }
    
-       
-
         float v2 = v * v;
         float v4 = v * v * v * v;
 
@@ -96,21 +92,11 @@ public class AiTank : Tank
             Fire();
     }
 
-    public override void Ready()
-    {
-        base.Ready();
-    }
-
-    public override void LinkPlayer(Player player)
-    {
-        base.LinkPlayer(player);
-    }
-
     private void ChooseAmmoType()
     {
         randomInvetoryIndex = Random.Range(0, player.Inventory.items.Count);
         
-        if(player.Inventory.items[randomInvetoryIndex].amount <= 0)
+        if (player.Inventory.items[randomInvetoryIndex].amount <= 0)
         {
             ChooseAmmoType();
         }
@@ -118,4 +104,5 @@ public class AiTank : Tank
         player.Inventory.selectedIndex = randomInvetoryIndex;
         return;
     }
+
 }

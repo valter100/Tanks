@@ -9,10 +9,15 @@ using UnityEngine.UI;
 
 public abstract class Tank : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Max Stats")]
     [SerializeField] protected float maxHealth;
-    [SerializeField] protected float maxShootForce;
     [SerializeField] protected float maxFuel;
+    [SerializeField] protected float maxShootForce;
+
+    [Header("Current Stats")]
+    [SerializeField] protected float currentHealth;
+    [SerializeField] protected float currentFuel;
+    [SerializeField] protected float currentShootForce;
 
     [Header("Movement")]
     [SerializeField] protected LayerMask groundLayerMask;
@@ -55,11 +60,7 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected bool facingRight;
 
     protected float timeSinceLastEffect;
-    protected int projectileIndex;
     protected bool hasFired = false;
-    protected float currentFuel;
-    protected float currentHealth;
-    protected float currentShootForce;
     protected Rigidbody rb;
     protected Ray ray;
 
@@ -102,6 +103,8 @@ public abstract class Tank : MonoBehaviour
         currentHealth = maxHealth;
         currentFuel = maxFuel;
     }
+
+    public abstract void ManualUpdate();
 
     protected void PreviewProjectileTrajectory()
     {
@@ -202,18 +205,6 @@ public abstract class Tank : MonoBehaviour
     {
         this.player = player;
         SetColor(player.Info.color);
-
-        if (player.Info.control == Control.Player)
-        {
-            GetComponent<PlayerTank>().enabled = true;
-            GetComponent<PlayerController>().enabled = true;
-        }
-
-        else if (player.Info.control == Control.Bot)
-        {
-            GetComponent<AiTank>().enabled = true;
-            GetComponent<AiManager>().enabled = true;
-        }
     }
 
     public virtual void Ready()

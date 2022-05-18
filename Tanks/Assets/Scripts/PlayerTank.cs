@@ -14,7 +14,7 @@ public class PlayerTank : Tank
             playerController = GetComponent<PlayerController>();
     }
 
-    public void ManualPlayerUpdate()
+    public override void ManualUpdate()
     {
         if (playerController.GetMovement() != Vector3.zero && currentFuel > 0)
             Move();
@@ -77,13 +77,4 @@ public class PlayerTank : Tank
         currentShootForce = percentage * maxShootForce;
     }
 
-    public override void Ready()
-    {
-        base.Ready();
-    }
-
-    public override void LinkPlayer(Player player)
-    {
-        base.LinkPlayer(player);
-    }
 }

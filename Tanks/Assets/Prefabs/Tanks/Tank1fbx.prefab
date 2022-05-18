@@ -507,8 +507,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
-  maxShootForce: 30
   maxFuel: 80
+  maxShootForce: 30
+  currentHealth: 0
+  currentFuel: 0
+  currentShootForce: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -711,8 +714,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
-  maxShootForce: 30
   maxFuel: 80
+  maxShootForce: 30
+  currentHealth: 0
+  currentFuel: 0
+  currentShootForce: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -731,8 +737,13 @@ MonoBehaviour:
   isSlowed: 0
   player: {fileID: 0}
   rotatePoint: {fileID: 2168714140922752080}
-  customColoredParts: []
-  baseColoredParts: []
+  customColoredParts:
+  - {fileID: 823687964183072229}
+  baseColoredParts:
+  - {fileID: 234084714172202981}
+  - {fileID: 963748327498118015}
+  - {fileID: 8956933184568940024}
+  - {fileID: 7907405044684808288}
   chassi: {fileID: 823687964183072229}
   tower: {fileID: 3429087769263482813}
   gun: {fileID: 3975383469951734012}
