@@ -29,12 +29,6 @@ public class AiTank : Tank
 
         Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
 
-        RaycastHit hit;
-        if (Physics.Raycast(gameObject.transform.position + new Vector3(0, 1, 0) * 0.66f + localDirection, Vector3.down, out hit, 2, groundLayerMask))
-        {
-            if (hit.normal.y < 0.85f)
-                return;
-        }
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
@@ -61,7 +55,14 @@ public class AiTank : Tank
         float g = Physics.gravity.y;
         float x = transform.position.x - enemyTarget.position.x;
         float y = transform.position.y - enemyTarget.position.y;
-        float v = maxShootForce / 2;//Mathf.Sqrt(g * (y + Mathf.Sqrt(x * x + y * y)));
+        float v = maxShootForce;
+        
+        if(Vector3.Distance(enemyTarget.position, transform.position) <= 10)
+        {
+            v = maxShootForce / 3;
+        }
+   
+       
 
         float v2 = v * v;
         float v4 = v * v * v * v;
@@ -78,15 +79,16 @@ public class AiTank : Tank
 
         if (float.IsNaN(trajectoryAngle))
         {
-            trajectoryAngle = 0;
+            trajectoryAngle = Random.Range(-90, 90);
         }
 
         currentShootForce = v;
 
-        //return trajectoryAngle;
-        //rotatePoint.transform.rotation = Quaternion.Euler(0, 0, trajectoryAngle);
+        float randomBias = Random.Range(-5.0f, 5.0f);
 
-        gun.botAim(trajectoryAngle);
+        trajectoryAngle += randomBias;
+
+        gun.botAim(-trajectoryAngle);
 
         ChooseAmmoType();
 
