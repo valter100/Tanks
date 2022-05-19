@@ -20,20 +20,48 @@ public class AiTank : Tank
         aiManager.ManualUpdate();
     }
 
-    public void Move(Transform enemyTankPosition)
+    public void MoveCloser(Transform enemyTankPosition)
     {
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         else if (enemyTankPosition.position.x < gameObject.transform.position.x)
             gameObject.transform.rotation = Quaternion.Euler(0, -180, 0);
 
-        Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
+        //Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
 
         else if (enemyTankPosition.position.x < gameObject.transform.position.x)
             gameObject.transform.position -= Vector3.right * movementSpeed * Time.deltaTime;
+
+        timeSinceLastEffect += Time.deltaTime;
+        if (timeSinceLastEffect > timeBetweenEffectSpawn)
+        {
+            Instantiate(movementEffect, transform.position, Quaternion.identity);
+            timeSinceLastEffect = 0;
+        }
+
+        if (!isSlowed)
+            currentFuel -= 0.1f; // should be changed for the correct value;
+        else
+            currentFuel -= 0.1f * 2;
+    }
+
+    public void MoveAway(Transform enemyTankPosition)
+    {
+        if (enemyTankPosition.position.x < gameObject.transform.position.x)
+            gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        else if (enemyTankPosition.position.x > gameObject.transform.position.x)
+            gameObject.transform.rotation = Quaternion.Euler(0, -180, 0);
+
+        //Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
+
+        if (enemyTankPosition.position.x > gameObject.transform.position.x)
+            gameObject.transform.position -= Vector3.right * movementSpeed * Time.deltaTime;
+
+        else if (enemyTankPosition.position.x < gameObject.transform.position.x)
+            gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
 
         timeSinceLastEffect += Time.deltaTime;
         if (timeSinceLastEffect > timeBetweenEffectSpawn)

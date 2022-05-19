@@ -6,7 +6,7 @@ public class FireState :  State
 {
     public override void DoState(AiManager thisManager, Transform enemyTankPosition, AiTank thisTank)
     {
-        if (thisManager.GetDistanceToEnemy() > thisManager.GetMaxShootingRange() && thisManager.GetFuel() > 0)
+        if (thisManager.GetDistanceToEnemy() > thisManager.GetMaxShootingRange() && thisManager.GetFuel() > 0 || thisManager.GetDistanceToEnemy() < thisManager.GetMinShootingRange() && thisManager.GetFuel() > 0)
         {
            thisManager.SetMoveState();
             return;

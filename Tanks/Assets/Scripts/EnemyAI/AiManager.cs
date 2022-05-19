@@ -16,6 +16,7 @@ public class AiManager : MonoBehaviour
     List<GameObject> targetTanks;
 
     [SerializeField] private float maxShootingRange;
+    [SerializeField] private float minShootingRange;
     private float distanceToEnemy;
     private float fuel;
 
@@ -46,6 +47,7 @@ public class AiManager : MonoBehaviour
     public float GetFuel() => fuel;
     public float GetDistanceToEnemy() => distanceToEnemy;
     public float GetMaxShootingRange() => maxShootingRange;
+    public float GetMinShootingRange() => minShootingRange;
 
     public State GetActiveState() => activeState;
     public void SetFireState() => activeState = fireState;
