@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98885a335a0105e4088d41b50f1ab0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 30
   maxFuel: 80
   maxShootForce: 30
   currentHealth: 0
@@ -713,7 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c0f1ac10f554b49b3c10dfbe105c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 30
   maxFuel: 80
   maxShootForce: 30
   currentHealth: 0

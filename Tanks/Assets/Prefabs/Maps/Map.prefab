@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9169650065926079914}
   - component: {fileID: 9169650065926079915}
-  - component: {fileID: 3072952813707866530}
   - component: {fileID: 6797612445077828031}
   - component: {fileID: 3036856133504881423}
   - component: {fileID: 9169650065926079919}
@@ -68,11 +67,11 @@ MonoBehaviour:
   waveAmplitudeMax: 0
   changeFrequency: 0
   amplitude: 3
-  width: 60
-  height: 12
+  width: 120
+  height: 16
   depth: 5
   bottomDepth: 1
-  slopeWidth: 2.52
+  slopeWidth: 3
   slopeAmplitudePercentage: 0
 --- !u!114 &6797612445077828031
 MonoBehaviour:

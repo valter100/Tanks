@@ -14,6 +14,9 @@ public abstract class Projectile : Usable
     [SerializeField] protected bool canDamageSelf;
     [SerializeField] LayerMask hitableLayers;
 
+    [SerializeField] protected bool hittingGround;
+    [SerializeField] protected float distanceToGround;
+    protected float oldDistanceToGround;
     float startTime;
     protected Rigidbody rb;
     public Tank ownTank;
@@ -63,6 +66,35 @@ public abstract class Projectile : Usable
         timeToLive -= Time.deltaTime;
         if (timeToLive <= 0.0f)
             Detonate(null);
+
+        RaycastHit hit;
+
+        Debug.DrawRay(transform.position, transform.forward * 5, Color.red);
+
+        if(Physics.Raycast(transform.position, transform.forward, out hit, float.MaxValue, hitableLayers))
+        {
+            if(hit.collider.gameObject.tag == "Map")
+            {
+                hittingGround = true;
+            }
+
+            if (hittingGround)
+            {
+                distanceToGround = Vector3.Distance(transform.position, hit.transform.position);
+                if (distanceToGround < 5 && oldDistanceToGround < distanceToGround)
+                    OnCollision(null);
+                oldDistanceToGround = distanceToGround;
+            }
+        }
+        else
+        {
+            if (hittingGround)
+            {
+                OnCollision(null);
+                //Detonate(null);
+            }
+        }
+
 
         //RaycastHit hit;
 

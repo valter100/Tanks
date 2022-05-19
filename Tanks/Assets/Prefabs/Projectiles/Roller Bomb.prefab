@@ -131,7 +131,7 @@ MonoBehaviour:
   description: The Roller Bomb will not explode on impact, but will instead roll
     for at most two seconds before exploding.
   attackPattern: {fileID: 737783228704338201}
-  damage: 7
+  damage: 6
   timeToLive: 10
   detonationSound: {fileID: 8300000, guid: 2efbc36ff19b3124d8c121ea6a7b47a0, type: 3}
   source: {fileID: 0}
@@ -140,7 +140,8 @@ MonoBehaviour:
   canDamageSelf: 1
   hitableLayers:
     serializedVersion: 2
-    m_Bits: 336
+    m_Bits: 320
+  hittingGround: 0
   ownTank: {fileID: 0}
   explosion: {fileID: 5804621341593681060}
 --- !u!114 &5804621341593681060
@@ -155,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 3
+  radius: 2.5
   explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
 --- !u!114 &737783228704338201
 MonoBehaviour:

@@ -126,7 +126,8 @@ MonoBehaviour:
   canDamageSelf: 1
   hitableLayers:
     serializedVersion: 2
-    m_Bits: 336
+    m_Bits: 320
+  hittingGround: 0
   ownTank: {fileID: 0}
   explosion: {fileID: -1507804714081709414}
 --- !u!114 &-1507804714081709414
@@ -141,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
+  radius: 3
   explosionEffect: {fileID: 5509785784624008221, guid: 2ff44e8969298f74fb784b77712bafbe, type: 3}
 --- !u!114 &-6776930662685570134
 MonoBehaviour:

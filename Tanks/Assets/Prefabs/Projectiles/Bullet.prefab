@@ -127,7 +127,8 @@ MonoBehaviour:
   canDamageSelf: 1
   hitableLayers:
     serializedVersion: 2
-    m_Bits: 336
+    m_Bits: 320
+  hittingGround: 0
   ownTank: {fileID: 0}
 --- !u!114 &4733216876846786093
 MonoBehaviour:

@@ -139,7 +139,8 @@ MonoBehaviour:
   canDamageSelf: 0
   hitableLayers:
     serializedVersion: 2
-    m_Bits: 336
+    m_Bits: 320
+  hittingGround: 0
   ownTank: {fileID: 0}
   pushbackRadius: 10
   pushbackForce: 500

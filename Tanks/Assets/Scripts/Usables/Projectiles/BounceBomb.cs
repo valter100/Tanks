@@ -31,13 +31,16 @@ public class BounceBomb : ExplodingProjectile
     {
         explosion.Explode();
         bouncesLeft--;
-
+        
         ownTank.GetComponent<AudioSource>().PlayOneShot(detonationSound);
 
         float newYVelocity = yVelocityBefore * -1 * elasticity;
 
         rb.velocity = new Vector3(rb.velocity.x, newYVelocity, 0);
 
+        hittingGround = false;
+        distanceToGround = 0;
+        oldDistanceToGround = distanceToGround;
         //play bounce animation?
     }
 }
