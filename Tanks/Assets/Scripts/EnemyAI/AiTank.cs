@@ -27,8 +27,6 @@ public class AiTank : Tank
         else if (enemyTankPosition.position.x < gameObject.transform.position.x)
             gameObject.transform.rotation = Quaternion.Euler(0, -180, 0);
 
-        //Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
-
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;
 
@@ -54,8 +52,6 @@ public class AiTank : Tank
             gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         else if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.rotation = Quaternion.Euler(0, -180, 0);
-
-        //Vector3 localDirection = gameObject.transform.InverseTransformDirection(Vector3.right);
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position -= Vector3.right * movementSpeed * Time.deltaTime;
@@ -108,14 +104,17 @@ public class AiTank : Tank
 
         currentShootForce = v;
 
+        //Random bias is added to the aim angle so that it is not a perfect hit every time
         float randomBias = Random.Range(-5.0f, 5.0f);
 
         trajectoryAngle += randomBias;
 
         gun.botAim(-trajectoryAngle);
 
+        //Random ammo type is selected
         ChooseAmmoType();
 
+        //Fires projectile att target
         if (CanFire())
             Fire();
     }

@@ -765,8 +765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeTargetPosition: {fileID: 0}
-  maxShootingRange: 25
-  minShootingRange: 5
+  maxShootingRange: 30
+  minShootingRange: 10
   lowHealthTarget: 0
   highHealthTarget: 0
   closestTarget: 0

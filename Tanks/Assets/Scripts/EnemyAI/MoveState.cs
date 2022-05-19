@@ -7,7 +7,7 @@ public class MoveState : State
     
     public override void DoState(AiManager thisManager,Transform enemyTankPosition, AiTank thisTank)
     {
-        if (thisManager.GetDistanceToEnemy() < thisManager.GetMaxShootingRange() && thisManager.GetDistanceToEnemy()  > thisManager.GetMinShootingRange() || thisManager.GetFuel() <= 0)
+        if (thisManager.GetDistanceToEnemy() < thisManager.GetMaxShootingRange() && thisManager.GetDistanceToEnemy() > thisManager.GetMinShootingRange() || thisManager.GetFuel() <= 0)
         {
             thisManager.SetFireState();
             return;
@@ -19,9 +19,10 @@ public class MoveState : State
 
     private void DoMove(Transform enemyTankPosition, AiTank thisTank, AiManager thisManager)
     {
-        if (thisManager.GetDistanceToEnemy() < thisManager.GetMaxShootingRange())
+        if (thisManager.GetDistanceToEnemy() > thisManager.GetMaxShootingRange())
             thisTank.MoveCloser(enemyTankPosition);
-        else if (thisManager.GetDistanceToEnemy() < thisManager.GetMaxShootingRange())
+
+        else if (thisManager.GetDistanceToEnemy() < thisManager.GetMinShootingRange())
             thisTank.MoveAway(enemyTankPosition);
         
     }
