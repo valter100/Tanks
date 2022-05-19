@@ -20,6 +20,12 @@ public class ObjectGenerator : MonoBehaviour
     }
 
     protected int RandomInt(int max) => (int)(Random.value * max);
+    protected int RandomInt(int max, int positionsFromEdge)
+    {
+        if (positionsFromEdge >= max)
+            positionsFromEdge = max - 1;
+        return Random.Range(positionsFromEdge, max - positionsFromEdge);
+    }
 
     protected bool RandomBool() => Random.value > 0.5f;
 
@@ -34,11 +40,13 @@ public class ObjectGenerator : MonoBehaviour
         return true;
     }
 
-    protected void CreateObjectAtPosition(Vector3 position, GameObject gameObject, float rotation = 0.0f)
+    protected virtual void CreateObjectAtPosition(Vector3 position, GameObject gameObject, float rotation = 0.0f)
     {
         GameObject instantiatedObject = Instantiate(gameObject, transform, true);
         instantiatedObject.transform.position = position;
-        instantiatedObject.transform.Rotate(0.0f, 0.0f, rotation);
+        instantiatedObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+        if (rotation != 0 && transform.childCount > 0)
+            instantiatedObject.transform.GetChild(0).rotation = Quaternion.Euler(instantiatedObject.transform.GetChild(0).eulerAngles + new Vector3(0, 0, rotation));
     }
 }
 
