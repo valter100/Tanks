@@ -25,7 +25,7 @@ public class GameInfo : MonoBehaviour
     {
         foreach (PlayerInfo tankCustomization in info)
         {
-            if (tankCustomization.transform.Find("Tank").gameObject.activeInHierarchy)
+            if (tankCustomization.transform.GetChild(1).gameObject.activeInHierarchy)
             {
                 names.Add(tankCustomization.name);
                 colors.Add(tankCustomization.color);

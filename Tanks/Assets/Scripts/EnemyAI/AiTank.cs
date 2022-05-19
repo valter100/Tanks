@@ -23,9 +23,9 @@ public class AiTank : Tank
     public void MoveCloser(Transform enemyTankPosition)
     {
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
-            gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, leftRotation, 0);
         else if (enemyTankPosition.position.x < gameObject.transform.position.x)
-            gameObject.transform.rotation = Quaternion.Euler(0, -180, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, rightRotation, 0);
 
         if (enemyTankPosition.position.x > gameObject.transform.position.x)
             gameObject.transform.position += Vector3.right * movementSpeed * Time.deltaTime;

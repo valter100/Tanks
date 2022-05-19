@@ -18,6 +18,7 @@ public class CustomizationPanel : MonoBehaviour
 
     [SerializeField] private string[] colorNames;
     [SerializeField] private Color[] colors;
+    [SerializeField] GameObject[] tanks;
 
     private void Start()
     {
@@ -111,7 +112,11 @@ public class CustomizationPanel : MonoBehaviour
 
     private void UpdateTankType()
     {
-        
+        PlayerSpot playerSpot = tank.transform.parent.GetComponent<PlayerSpot>();
+        Destroy(tank.gameObject);
+        tank = Instantiate(Prefabs.Tanks[playerInfo.tankPrefab], playerSpot.transform).GetComponent<Tank>();
+        tank.gameObject.transform.localScale = Vector3.one;
+        UpdateTankColor();
     }
 
 }

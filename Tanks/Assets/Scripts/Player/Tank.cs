@@ -14,44 +14,45 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected float maxFuel;
     [SerializeField] protected float maxShootForce;
 
-    [Header("Current Stats")]
-    [SerializeField] protected float currentHealth;
-    [SerializeField] protected float currentFuel;
-    [SerializeField] protected float currentShootForce;
+    //[Header("Current Stats")]
+    protected float currentHealth;
+    protected float currentFuel;
+    protected float currentShootForce;
 
     [Header("Movement")]
     [SerializeField] protected LayerMask groundLayerMask;
     [SerializeField] protected float movementSpeed;
-    [SerializeField] protected float jumpForce;
     [SerializeField] protected ParticleSystem movementEffect;
     [SerializeField] protected float timeBetweenEffectSpawn;
+    [SerializeField] protected float rightRotation;
+    [SerializeField] protected float leftRotation;
 
     [Header("Combat")]
     [SerializeField] protected ParticleSystem fireParticles;
     [SerializeField] protected AudioClip fireSound;
-    [SerializeField] protected Animator animator;
+    protected Animator animator;
     [SerializeField] protected ParticleSystem damagedParticles;
     [SerializeField] protected float aimRadius;
 
     [Header("Explosion")]
-    [SerializeField] protected Explosion explosion;
+    protected Explosion explosion;
     [SerializeField] protected AudioClip explosionSound;
     [SerializeField] protected float explosionDamage;
 
-    [Header("Status Effects")]
-    [SerializeField] protected bool isSlowed;
+    //[Header("Status Effects")]
+    protected bool isSlowed;
 
     [Header("References")]
-    [SerializeField] protected static GameManager gameManager;
-    [SerializeField] protected static CameraController cameraController;
-    [SerializeField] protected Player player;
-    [SerializeField] protected GameObject rotatePoint;
+    protected static GameManager gameManager;
+    protected static CameraController cameraController;
+    protected Player player;
+    //[SerializeField] protected GameObject rotatePoint;
     [SerializeField] protected GameObject[] customColoredParts;
     [SerializeField] protected GameObject[] baseColoredParts;
     [SerializeField] protected GameObject chassi;
-    [SerializeField] protected Tower tower;
-    [SerializeField] protected Gun gun;
     [SerializeField] protected Transform rumbleSpot;
+    protected Tower tower;
+    protected Gun gun;
 
     [Header("Other")]
     [SerializeField] private Color baseColor;
@@ -100,6 +101,11 @@ public abstract class Tank : MonoBehaviour
             baseColorPart.GetComponent<Renderer>().material.color = baseColor;
 
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        explosion = GetComponent<Explosion>();
+        tower = GetComponentInChildren<Tower>();
+        gun = GetComponentInChildren<Gun>();
+
         currentHealth = maxHealth;
         currentFuel = maxFuel;
     }

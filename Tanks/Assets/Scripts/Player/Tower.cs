@@ -6,6 +6,10 @@ public class Tower : MonoBehaviour
 {
     [SerializeField] Transform rotatePoint;
     [SerializeField] PlayerController controller;
+
+    [SerializeField] float leftRotation;
+    [SerializeField] float rightRotation;
+
     Camera cam;
 
     bool facingRight;
@@ -28,12 +32,12 @@ public class Tower : MonoBehaviour
 
         if (xValue < 0 && !facingRight)
         {
-            rotatePoint.transform.rotation = Quaternion.Euler(0, 0, 0);
+            rotatePoint.transform.rotation = Quaternion.Euler(0, leftRotation, 0);
             facingRight = true;
         }
         else if (xValue > 0 && facingRight)
         {
-            rotatePoint.transform.rotation = Quaternion.Euler(0, -180, 0);
+            rotatePoint.transform.rotation = Quaternion.Euler(0, rightRotation, 0);
             facingRight = false;
         }
     }

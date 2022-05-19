@@ -847,6 +847,7 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.43137255, g: 0.43137255, b: 0.43137255, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
+  tanks: []
 --- !u!114 &7353830308896141877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,7 +861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 0}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: -1, z: 0}
 --- !u!1001 &2642904137459350411
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1030,6 +1031,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
+--- !u!224 &1515556872017831551 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3577315770686430708, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
+  m_PrefabInstance: {fileID: 2642904137459350411}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &428815133400298070 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2404375026276911581, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
@@ -1041,11 +1047,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &1515556872017831551 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3577315770686430708, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
-  m_PrefabInstance: {fileID: 2642904137459350411}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8498081829000045783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1219,6 +1220,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
+--- !u!224 &4920866331841345827 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3577315770686430708, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
+  m_PrefabInstance: {fileID: 8498081829000045783}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6102745002112298250 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2404375026276911581, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
@@ -1230,11 +1236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &4920866331841345827 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3577315770686430708, guid: f2532e32d893b4e5fac12f019395a6da, type: 3}
-  m_PrefabInstance: {fileID: 8498081829000045783}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8822248873900468597
 PrefabInstance:
   m_ObjectHideFlags: 0

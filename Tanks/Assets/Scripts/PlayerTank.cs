@@ -35,10 +35,10 @@ public class PlayerTank : Tank
     public void Move()
     {
         if (playerController.GetMovement().x > 0)
-            chassi.transform.rotation = Quaternion.Euler(0, 0, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, leftRotation, 0);
 
         else if (playerController.GetMovement().x < 0)
-            chassi.transform.rotation = Quaternion.Euler(0, 180, 0);
+            chassi.transform.rotation = Quaternion.Euler(0, rightRotation, 0);
 
         //Vector3 localDirection = chassi.transform.InverseTransformDirection(Vector3.right);
 
