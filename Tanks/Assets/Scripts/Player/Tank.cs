@@ -56,8 +56,8 @@ public abstract class Tank : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Color baseColor;
     [SerializeField] protected bool debugTrajectory;
-    [SerializeField] protected bool preview;
-    [SerializeField] protected bool facingRight;
+    protected bool preview;
+    protected bool facingRight;
 
     protected float timeSinceLastEffect;
     protected bool hasFired = false;

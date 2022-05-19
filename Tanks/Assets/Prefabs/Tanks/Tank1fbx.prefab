@@ -543,8 +543,6 @@ MonoBehaviour:
   rumbleSpot: {fileID: 6458958948821315585}
   baseColor: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
   debugTrajectory: 0
-  preview: 0
-  facingRight: 0
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,8 +748,6 @@ MonoBehaviour:
   rumbleSpot: {fileID: 6458958948821315585}
   baseColor: {r: 0, g: 0, b: 0, a: 0}
   debugTrajectory: 0
-  preview: 0
-  facingRight: 0
 --- !u!114 &2626749122293949152
 MonoBehaviour:
   m_ObjectHideFlags: 0
