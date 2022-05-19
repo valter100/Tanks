@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
     [SerializeField] public Item item;
-    [SerializeField] private GameObject displayObject;
-    [SerializeField] private MeshRenderer renderObj;
+    [SerializeField] private GameObject icon;
+    [SerializeField] private GameObject emptyGameObjectPrefab;
 
     private int amount;
 
@@ -67,13 +67,28 @@ public class ItemSlot : MonoBehaviour
     public void SetItem(Item item)
     {
         this.item = item;
-
-        if (displayObject != null)
-            Destroy(displayObject);
+        if (icon != null)
+        {
+            Destroy(icon);
+            icon = null;
+        }
+            
 
         if (item != null)
         {
-            displayObject = Instantiate(item.usable.gameObject, transform);
+            icon = Instantiate(item.usable.gameObject, transform);
+            Destroy(icon.GetComponent<Usable>());
+            Destroy(icon.GetComponent<AttackPattern>());
+            Destroy(icon.GetComponent<Explosion>());
+            Destroy(icon.GetComponent<Rigidbody>());
+            //MeshFilter meshFilter = icon.AddComponent<MeshFilter>();
+            //meshFilter = item.usable.GetComponent<MeshFilter>();
+            //MeshRenderer meshRenderer = icon.AddComponent<MeshRenderer>();
+            //meshRenderer = item.usable.GetComponent<MeshRenderer>();
+
+            icon.transform.localScale = new Vector3(63, 63, 63);
+
+
             amount = item.amount;
             amountText.text = amount == 0 ? "" : amount.ToString();
         }
