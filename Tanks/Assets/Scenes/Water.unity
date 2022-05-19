@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5653,6 +5653,74 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3036856133504881423, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: distanceFromEdge
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036856133504881423, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: heightAdjustment
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3036856133504881423, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: minimumObjectDistance
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: depthAdjustment
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: objectsPerWidth
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: heightAdjustment
+      value: 1.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: largeObjectPercentage
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: minimumObjectDistance
+      value: 1.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: largeObjects.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: smallObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: largeObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 4591165065254574267, guid: 9207f8eefa0c0bf488bec3b13877b4bc, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: largeObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 3624347781992319424, guid: fa042b1581d53a847841a77487ab0315, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: largeObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 3047746488661861345, guid: 7a137ff3b5042194a9a54127c581dc17, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: smallObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 6806623264713002176, guid: 58fc57e7626280149932846ce9e2909a, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: smallObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 6806623264713002176, guid: 58fc57e7626280149932846ce9e2909a, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: smallObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 787828567422048172, guid: 22b2c37a0de8a814fbe603affdb03c38, type: 3}
+    - target: {fileID: 6797612445077828031, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: smallObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 4300002036050326642, guid: 8bb01187b71370f48a9221026c62a967, type: 3}
     - target: {fileID: 9169650065926079912, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_Name
       value: Map
@@ -5700,6 +5768,46 @@ PrefabInstance:
     - target: {fileID: 9169650065926079914, guid: 979e555061338e84ba069951e0ddae66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveWidthMax
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveWidthMin
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: overhangHeight
+      value: 1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: pointsPerWidth
+      value: 1.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: changeFrequency
+      value: 0.297
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: generationMethod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: maxPointDistance
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: minPointDistance
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveAmplitudeMax
+      value: 0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 9169650065926079915, guid: 979e555061338e84ba069951e0ddae66, type: 3}
+      propertyPath: waveAmplitudeMin
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 979e555061338e84ba069951e0ddae66, type: 3}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GenerateSpawnpoints : ObjectGenerator
 {
+    [SerializeField] private int distanceFromEdge;
     [SerializeField] private bool ready;
 
     public bool Ready => ready;
@@ -27,7 +28,7 @@ public class GenerateSpawnpoints : ObjectGenerator
 
         while (attemptsBeforeExit > 0)
         {
-            randomizedVector = linePositions[RandomInt(linePositions.Length)];
+            randomizedVector = linePositions[RandomInt(linePositions.Length, distanceFromEdge)];
             randomizedVector.z = depth / 2.0f;
             randomizedVector.y += heightAdjustment;
 

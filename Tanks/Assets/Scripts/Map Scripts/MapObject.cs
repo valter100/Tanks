@@ -6,7 +6,8 @@ namespace Tanks
 {
     public class MapObject : MonoBehaviour
     {
-        //[SerializeField] private bool rotateAroundZ;
+        [Range(0, 90)]
+        [SerializeField] float degreeLimit;
         private Rigidbody rb;
         private Rigidbody Rigidbody => rb ??= GetComponent<Rigidbody>();
 
@@ -35,7 +36,6 @@ namespace Tanks
             }
 
         }
-
         private void AttachToObject()
         {
             Ray ray = new Ray(transform.position, Vector3.down);
@@ -43,7 +43,8 @@ namespace Tanks
             bool hitATarget = Physics.Raycast(ray, out hit);
             if (hitATarget)
             {
-                Rigidbody.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(hit.normal.y, hit.normal.x) * Mathf.Rad2Deg);
+                float zRotation = Mathf.Clamp(Mathf.Atan2(hit.normal.y, hit.normal.x) * Mathf.Rad2Deg, 90 - degreeLimit, 90 + degreeLimit);
+                Rigidbody.rotation = Quaternion.Euler(0, 0, zRotation);
                 Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             }
         }
