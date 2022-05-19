@@ -8,6 +8,7 @@ public class ItemSlot : MonoBehaviour
 {
     [SerializeField] public Item item;
     [SerializeField] private GameObject displayObject;
+    [SerializeField] private MeshRenderer renderObj;
 
     private int amount;
 
