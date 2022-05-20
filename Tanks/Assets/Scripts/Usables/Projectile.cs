@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Projectile : Usable
 {
+    [Header("Projectile")]
     [SerializeField] protected AttackPattern attackPattern;
     [SerializeField] protected float damage;
     [SerializeField] protected float timeToLive;

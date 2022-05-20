@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour
 {
-    [SerializeField] public Item item;
+    [SerializeField] private Item item;
     [SerializeField] private GameObject icon;
-    [SerializeField] private GameObject emptyGameObjectPrefab;
+    [SerializeField] private float iconScale = 63;
 
     private int amount;
 
@@ -18,12 +18,13 @@ public class ItemSlot : MonoBehaviour
 
     public bool Selected => frame.activeSelf;
 
+    public Item Item => item;
+
     void Start()
     {
         inventory = transform.parent.parent.GetComponent<Inventory>();
         amountText = transform.Find("Amount").GetComponent<TextMeshProUGUI>();
         frame = transform.Find("Frame").gameObject;
-
         amountText.text = "";
     }
 
@@ -67,27 +68,29 @@ public class ItemSlot : MonoBehaviour
     public void SetItem(Item item)
     {
         this.item = item;
+
         if (icon != null)
         {
             Destroy(icon);
             icon = null;
         }
-            
-
+        
         if (item != null)
         {
             icon = Instantiate(item.usable.gameObject, transform);
+
+            float scale = icon.GetComponent<Usable>().IconScale * iconScale;
+            icon.transform.localScale = new Vector3(scale, scale, scale);
+
             Destroy(icon.GetComponent<Usable>());
             Destroy(icon.GetComponent<AttackPattern>());
             Destroy(icon.GetComponent<Explosion>());
             Destroy(icon.GetComponent<Rigidbody>());
+
             //MeshFilter meshFilter = icon.AddComponent<MeshFilter>();
             //meshFilter = item.usable.GetComponent<MeshFilter>();
             //MeshRenderer meshRenderer = icon.AddComponent<MeshRenderer>();
             //meshRenderer = item.usable.GetComponent<MeshRenderer>();
-
-            icon.transform.localScale = new Vector3(63, 63, 63);
-
 
             amount = item.amount;
             amountText.text = amount == 0 ? "" : amount.ToString();

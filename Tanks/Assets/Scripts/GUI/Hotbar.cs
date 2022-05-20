@@ -58,9 +58,9 @@ public class Hotbar : MonoBehaviour
             playerName.text = player == null ? "" : player.Info.name;
         }
 
-        if (player != null && player.Inventory.SelectedItem != itemSlot.item)
+        if (player != null && player.Inventory.SelectedItem != itemSlot.Item)
         {
-            itemSlot.item = player.Inventory.SelectedItem;
+            itemSlot.SetItem(player.Inventory.SelectedItem);
             UpdateItemPanel();
         }
 
@@ -92,10 +92,10 @@ public class Hotbar : MonoBehaviour
 
     private void UpdateItemPanel()
     {
-        itemName.text = itemSlot.item.usable.Name;
-        itemDescription.text = itemSlot.item.usable.Description;
+        itemName.text = itemSlot.Item.usable.Name;
+        itemDescription.text = itemSlot.Item.usable.Description;
 
-        Projectile projectile = itemSlot.item.usable.GetComponent<Projectile>();
+        Projectile projectile = itemSlot.Item.usable.GetComponent<Projectile>();
         bool isProjectile = projectile != null;
 
         itemDamage.transform.parent.gameObject.SetActive(isProjectile);
