@@ -128,9 +128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Shell
+  description: The Shell ...
+  iconScale: 1
   startAmount: 10
   amountRange: 2
-  description: The Shell ...
   attackPattern: {fileID: -6891325378449484819}
   damage: 3
   timeToLive: 10

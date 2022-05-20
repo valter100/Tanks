@@ -115,9 +115,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Large Shell
+  description: The Large Shell ...
+  iconScale: 1
   startAmount: 6
   amountRange: 2
-  description: The Large Shell ...
   attackPattern: {fileID: -6776930662685570134}
   damage: 4
   timeToLive: 10

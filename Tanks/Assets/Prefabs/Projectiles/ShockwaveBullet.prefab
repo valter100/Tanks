@@ -127,10 +127,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Shockwave Bomb
-  startAmount: 6
-  amountRange: 2
   description: The Shockwave Bomb will on impact release a shockwave, knocking back
     neaby tanks.
+  iconScale: 1
+  startAmount: 6
+  amountRange: 2
   attackPattern: {fileID: -8432250830994518478}
   damage: 0
   timeToLive: 10
