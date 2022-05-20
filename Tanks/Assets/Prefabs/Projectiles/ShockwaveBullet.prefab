@@ -127,6 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Shockwave Bomb
+  startAmount: 6
+  amountRange: 2
   description: The Shockwave Bomb will on impact release a shockwave, knocking back
     neaby tanks.
   attackPattern: {fileID: -8432250830994518478}
@@ -141,6 +143,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   hittingGround: 0
+  distanceToGround: 0
   ownTank: {fileID: 0}
   pushbackRadius: 10
   pushbackForce: 500

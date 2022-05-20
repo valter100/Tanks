@@ -128,6 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Drop Bomb
+  startAmount: 5
+  amountRange: 1
   description: The Drop Bomb will after a short duration lose all of its velocity
     and plummet down.
   attackPattern: {fileID: 8159165948748337676}
@@ -142,6 +144,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   hittingGround: 0
+  distanceToGround: 0
   ownTank: {fileID: 0}
   explosion: {fileID: 5804621341593681060}
   dropTime: 1.5

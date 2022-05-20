@@ -127,6 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Spread Bullet
+  startAmount: 7
+  amountRange: 2
   description: The Spread Bullet ...
   attackPattern: {fileID: -1178211308454573183}
   damage: 2
@@ -140,6 +142,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   hittingGround: 0
+  distanceToGround: 0
   ownTank: {fileID: 0}
   spreadTimer: 0.5
   spreadCount: 3

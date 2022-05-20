@@ -115,6 +115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Large Shell
+  startAmount: 6
+  amountRange: 2
   description: The Large Shell ...
   attackPattern: {fileID: -6776930662685570134}
   damage: 4
@@ -128,6 +130,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   hittingGround: 0
+  distanceToGround: 0
   ownTank: {fileID: 0}
   explosion: {fileID: -1507804714081709414}
 --- !u!114 &-1507804714081709414

@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
 
         inventory.Clear();
         foreach (GameObject prefab in Prefabs.Usables.Values)
-            inventory.AddItem(prefab.GetComponent<Usable>(), Random.Range(6, 12), false);
+            inventory.AddItem(prefab.GetComponent<Usable>(), prefab.GetComponent<Usable>().GetStartAmount(), false);
 
         // PlayerHUD
 

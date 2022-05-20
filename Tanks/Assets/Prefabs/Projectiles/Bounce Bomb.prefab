@@ -128,6 +128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Bounce Bomb
+  startAmount: 9
+  amountRange: 2
   description: The Bounce Bomb will bounce on impact two times which causes an explosion
     for each bounce.
   attackPattern: {fileID: -3755382965088315169}
@@ -142,6 +144,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   hittingGround: 0
+  distanceToGround: 0
   ownTank: {fileID: 0}
   explosion: {fileID: 5804621341593681060}
   bouncesLeft: 2

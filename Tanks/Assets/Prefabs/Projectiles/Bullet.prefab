@@ -115,6 +115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Bullet
+  startAmount: 18
+  amountRange: 3
   description: The Bullet causes direct damage to any hit tank, but will not explode
     or destroy terrain.
   attackPattern: {fileID: 4733216876846786093}
@@ -129,6 +131,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   hittingGround: 0
+  distanceToGround: 0
   ownTank: {fileID: 0}
 --- !u!114 &4733216876846786093
 MonoBehaviour:

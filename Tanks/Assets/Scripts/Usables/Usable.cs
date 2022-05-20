@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class Usable : MonoBehaviour
 {
     [SerializeField] protected new string name;
+    [SerializeField] protected float startAmount;
+    [SerializeField] protected float amountRange;
 
     [TextArea(0, 4)]
     [SerializeField] protected string description;
@@ -16,4 +18,9 @@ public abstract class Usable : MonoBehaviour
     /// Uses this Usable.
     /// </summary>
     public abstract void Use();
+
+    public int GetStartAmount()
+    {
+        return (int)Random.Range(startAmount - amountRange, startAmount + amountRange + 1);
+    }
 }
