@@ -730,7 +730,7 @@ MonoBehaviour:
   - {fileID: 7907405044684808288}
   chassi: {fileID: 823687964183072229}
   rumbleSpot: {fileID: 6458958948821315585}
-  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  baseColor: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
   debugTrajectory: 0
 --- !u!114 &2626749122293949152
 MonoBehaviour:

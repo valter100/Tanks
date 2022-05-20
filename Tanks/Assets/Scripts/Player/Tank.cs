@@ -55,10 +55,11 @@ public abstract class Tank : MonoBehaviour
     protected Gun gun;
 
     [Header("Other")]
-    [SerializeField] private Color baseColor;
     [SerializeField] protected bool debugTrajectory;
+
     protected bool preview;
     protected bool facingRight;
+    static protected Color baseColor = new Color(0.22f, 0.22f, 0.22f);
 
     protected float timeSinceLastEffect;
     protected bool hasFired = false;
@@ -66,7 +67,6 @@ public abstract class Tank : MonoBehaviour
     protected Ray ray;
 
     public Player GetPlayer() => player;
-
 
     public float GetFuelPercentage() => currentFuel / maxFuel;
 
@@ -86,6 +86,12 @@ public abstract class Tank : MonoBehaviour
 
     public bool Destroyed() => currentHealth <= 0.0f;
 
+    protected virtual void Awake()
+    {
+        foreach (GameObject baseColorPart in baseColoredParts)
+            baseColorPart.GetComponent<Renderer>().material.color = baseColor;
+    }
+
     protected virtual void Start()
     {
         if (!preview)
@@ -96,9 +102,6 @@ public abstract class Tank : MonoBehaviour
             if (cameraController == null)
                 cameraController = CameraController.Instance;
         }
-
-        foreach (GameObject baseColorPart in baseColoredParts)
-            baseColorPart.GetComponent<Renderer>().material.color = baseColor;
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();

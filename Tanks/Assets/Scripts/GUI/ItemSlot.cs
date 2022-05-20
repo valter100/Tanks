@@ -44,7 +44,7 @@ public class ItemSlot : MonoBehaviour
                 }
             }
         }
-            
+        
         else if (amount != 0)
             SetItem(null);
     }
