@@ -42,8 +42,8 @@ public class PlayerHUD : MonoBehaviour
             fuelBar.gameObject.SetActive(false);
             powerBar.gameObject.SetActive(false);
 
-            playerName.transform.position -= offsetAdjustment;
-            healthBar.transform.position -= offsetAdjustment;
+            playerName.transform.localPosition -= offsetAdjustment;
+            healthBar.transform.localPosition -= offsetAdjustment;
         }
             
         else if (fuelBar.gameObject.activeInHierarchy == false && player == gameManager.CurrentPlayer)
@@ -51,8 +51,8 @@ public class PlayerHUD : MonoBehaviour
             fuelBar.gameObject.SetActive(true);
             powerBar.gameObject.SetActive(true);
 
-            playerName.transform.position += offsetAdjustment;
-            healthBar.transform.position += offsetAdjustment;
+            playerName.transform.localPosition += offsetAdjustment;
+            healthBar.transform.localPosition += offsetAdjustment;
         }
             
         // Update values
