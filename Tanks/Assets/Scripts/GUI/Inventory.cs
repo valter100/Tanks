@@ -68,7 +68,7 @@ public class Inventory : MonoBehaviour
 
         for (int i = playerInventory.items.Count - 1; i >= 0; --i)
         {
-            itemSlots[i].item = playerInventory.items[i];
+            itemSlots[i].SetItem(playerInventory.items[i]);
         }
 
         for (int i = playerInventory.items.Count; i < itemSlots.Length; ++i)
