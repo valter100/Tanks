@@ -189,7 +189,7 @@ public abstract class Tank : MonoBehaviour
         if (currentHealth <= 0)
             return;
 
-        MessagesManager.AddMessage((-damage).ToString("0.0")).SetColor(Color.red).SetWorldPosition(transform.position);
+        MessagesManager.AddMessage((-damage).ToString("0.0") + " HP").SetColor(Color.red).SetWorldPosition(transform.position);
         currentHealth = Math.Max(0.0f, currentHealth - damage);
 
         if (currentHealth > 0.0f)
@@ -264,7 +264,7 @@ public abstract class Tank : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        MessagesManager.AddMessage("+" + amount.ToString("0.0")).SetColor(Color.green).SetWorldPosition(transform.position);
+        MessagesManager.AddMessage("+" + amount.ToString("0.0") + " HP").SetColor(Color.green).SetWorldPosition(transform.position);
     }
 
     public void AddFuel(float amount)

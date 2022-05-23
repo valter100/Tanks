@@ -71,4 +71,9 @@ public class PlayerController : MonoBehaviour
         return playerControls.Tank.Inventory.triggered;
     }
 
+    public bool Trigger_Back()
+    {
+        return playerControls.Tank.Back.triggered;
+    }
+
 }

@@ -33,8 +33,11 @@ public class Hotbar : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemExplosiveRadius;
     [SerializeField] private TextMeshProUGUI itemRange;
 
-    private void Start()
+    public bool Open => open;
+
+    public void Start()
     {
+        itemSlot.ManualStart();
         SetOpen(true);
 
         playerName.text = "";

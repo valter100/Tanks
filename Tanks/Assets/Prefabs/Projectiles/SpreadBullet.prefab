@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Spread Bullet
   description: The Spread Bullet ...
-  iconScale: 1
+  iconScale: 0.7
   startAmount: 7
   amountRange: 2
   attackPattern: {fileID: -1178211308454573183}

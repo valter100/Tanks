@@ -20,7 +20,7 @@ public class ItemSlot : MonoBehaviour
 
     public Item Item => item;
 
-    void Start()
+    public void ManualStart()
     {
         inventory = transform.parent.parent.GetComponent<Inventory>();
         amountText = transform.Find("Amount").GetComponent<TextMeshProUGUI>();
@@ -28,7 +28,7 @@ public class ItemSlot : MonoBehaviour
         amountText.text = "";
     }
 
-    void Update()
+    private void Update()
     {
         if (item != null)
         {

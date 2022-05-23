@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MainMenu : Menu
 {
-    [SerializeField] Vector3 cameraPosition;
-    [SerializeField] Quaternion cameraRotation;
-    [SerializeField] Tank mainTank;
+    [SerializeField] private Vector3 cameraPosition;
+    [SerializeField] private Quaternion cameraRotation;
+    [SerializeField] private Tank mainTank;
 
     protected override void Start()
     {
@@ -18,7 +18,8 @@ public class MainMenu : Menu
 
     protected override void Update()
     {
-        
+        if (playerController.Trigger_Back())
+            OnClick_Exit();
     }
 
     protected override void OnEnable()

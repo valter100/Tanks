@@ -5,47 +5,53 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    [Header("Values")]
     [SerializeField] private bool open;
-    [SerializeField] private PlayerController playerController;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private GUIManager guiManager;
-    [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private int selectedItemSlot;
     [SerializeField] private ItemSlot[] itemSlots;
 
-    /// <summary>
-    /// Returns whether or not the invenrory is open.
-    /// </summary>
+    [Header("Temporary references")]
+    [SerializeField] private Player player;
+
+    [Header("Permanent references")]
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private GUIManager guiManager;
+    [SerializeField] private GridLayoutGroup grid;
+    
     public bool Open => open;
 
-    void Start()
+    public void Start()
     {
         itemSlots = grid.transform.GetComponentsInChildren<ItemSlot>();
         selectedItemSlot = -1;
         SetOpen(false);
+
+        foreach (ItemSlot itemSlot in itemSlots)
+            itemSlot.ManualStart();
     }
 
-    void Update()
+    private void Update()
     {
-        if (playerController.Trigger_Inventory())
+        if (playerController.Trigger_Inventory() && !gameManager.Paused && player != null && player.Info.control == Control.Player)
             ToggleOpen();
 
         if (gameManager.CurrentPlayer == null)
         {
-            if (playerInventory != null)
+            if (player != null)
                 Clear();
         }
 
-        else if (gameManager.CurrentPlayer.Inventory != playerInventory)
+        else if (gameManager.CurrentPlayer != player)
         {
-            Link(gameManager.CurrentPlayer.Inventory);
+            Link(gameManager.CurrentPlayer);
+            SetOpen(false);
         }
     }
 
     public void Clear()
     {
-        playerInventory = null;
+        player = null;
         selectedItemSlot = -1;
 
         for (int i = itemSlots.Length - 1; i >= 0; --i)
@@ -55,23 +61,23 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void Reload(PlayerInventory playerInventory)
+    public void Reload(Player player)
     {
-        if (this.playerInventory == playerInventory)
-            Link(playerInventory);
+        if (this.player == player)
+            Link(player);
     }
 
-    private void Link(PlayerInventory playerInventory)
+    private void Link(Player player)
     {
-        this.playerInventory = playerInventory;
-        SelectItemSlot(playerInventory.selectedIndex);
+        this.player = player;
+        SelectItemSlot(player.Inventory.selectedIndex);
 
-        for (int i = playerInventory.items.Count - 1; i >= 0; --i)
+        for (int i = player.Inventory.items.Count - 1; i >= 0; --i)
         {
-            itemSlots[i].SetItem(playerInventory.items[i]);
+            itemSlots[i].SetItem(player.Inventory.items[i]);
         }
 
-        for (int i = playerInventory.items.Count; i < itemSlots.Length; ++i)
+        for (int i = player.Inventory.items.Count; i < itemSlots.Length; ++i)
         {
             itemSlots[i].SetItem(null);
         }
@@ -91,7 +97,7 @@ public class Inventory : MonoBehaviour
 
     public void SelectItemSlot(int i)
     {
-        if (playerInventory == null)
+        if (player == null)
             return;
 
         if (selectedItemSlot != -1)
@@ -100,7 +106,7 @@ public class Inventory : MonoBehaviour
         if (i != -1)
             itemSlots[i].Select();
 
-        playerInventory.selectedIndex = selectedItemSlot = i;
+        player.Inventory.selectedIndex = selectedItemSlot = i;
     }
 
     public void SetOpen(bool open)

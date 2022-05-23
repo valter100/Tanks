@@ -17,28 +17,36 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject airDropPrefab;
     [SerializeField] private List<AirDrop> airDrops;
 
-    private bool inPlayerTransition = false;
+    [Header("Values")]
+    [SerializeField] private bool inPlayerTransition = false;
+    [SerializeField] private bool paused;
 
+    public bool Paused => paused;
     public List<Player> Players => players;
     public Player CurrentPlayer => currentPlayer;
 
     void Start()
     {
+        paused = false;
         StartCoroutine(Coroutine_StartMatch());
     }
 
     private void Update()
     {
+        if (paused)
+            return;
+
         if (currentPlayer != null)
         {
             currentPlayer.ManualUpdate();
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-            Debug.Log("Quit");
-        }
+    public void SetPaused(bool paused)
+    {
+        this.paused = paused;
+        Time.timeScale = paused ? 0 : 1;
+        AudioListener.pause = paused;
     }
 
     private IEnumerator Coroutine_StartMatch()

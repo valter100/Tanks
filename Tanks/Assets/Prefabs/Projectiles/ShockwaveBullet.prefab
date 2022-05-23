@@ -129,7 +129,7 @@ MonoBehaviour:
   name: Shockwave Bomb
   description: The Shockwave Bomb will on impact release a shockwave, knocking back
     neaby tanks.
-  iconScale: 1
+  iconScale: 0.7
   startAmount: 6
   amountRange: 2
   attackPattern: {fileID: -8432250830994518478}

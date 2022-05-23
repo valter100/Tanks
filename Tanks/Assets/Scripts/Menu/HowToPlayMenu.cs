@@ -11,7 +11,8 @@ public class HowToPlayMenu : Menu
 
     protected override void Update()
     {
-
+        if (playerController.Trigger_Back())
+            OnClick_Back();
     }
 
     protected override void OnEnable()

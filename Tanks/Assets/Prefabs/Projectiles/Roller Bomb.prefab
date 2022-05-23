@@ -130,7 +130,7 @@ MonoBehaviour:
   name: Roller Bomb
   description: The Roller Bomb will not explode on impact, but will instead roll
     for at most two seconds before exploding.
-  iconScale: 1
+  iconScale: 1.1
   startAmount: 5
   amountRange: 2
   attackPattern: {fileID: 737783228704338201}

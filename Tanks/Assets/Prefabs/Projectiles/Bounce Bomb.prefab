@@ -130,7 +130,7 @@ MonoBehaviour:
   name: Bounce Bomb
   description: The Bounce Bomb will bounce on impact two times which causes an explosion
     for each bounce.
-  iconScale: 1
+  iconScale: 0.7
   startAmount: 9
   amountRange: 2
   attackPattern: {fileID: -3755382965088315169}

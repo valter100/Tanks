@@ -8,6 +8,8 @@ public abstract class Menu : MonoBehaviour
 
     static protected MenuManager menuManager;
 
+    protected PlayerController playerController => menuManager.PlayerController;
+
     protected virtual void Start()
     {
         if (menuManager == null)

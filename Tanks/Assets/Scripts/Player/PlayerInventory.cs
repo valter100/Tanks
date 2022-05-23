@@ -43,7 +43,7 @@ public class PlayerInventory : MonoBehaviour
             IncrementSelectedItem(1);
     }
 
-    private void IncrementSelectedItem(int increment)
+    public void IncrementSelectedItem(int increment)
     {
         selectedIndex += items.Count + increment;
         selectedIndex %= items.Count;
@@ -87,7 +87,7 @@ public class PlayerInventory : MonoBehaviour
             selectedIndex = items.FindIndex(item => item == selectedItem);
         }
 
-        inventory.Reload(this);
+        inventory.Reload(player);
     }
 
     public void RemoveItem(int i)

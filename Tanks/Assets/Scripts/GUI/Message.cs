@@ -5,6 +5,7 @@ using TMPro;
 
 public class Message : MonoBehaviour
 {
+    [SerializeField] private RectTransform rect;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private Animator animator;
     [SerializeField] private float duration;
@@ -13,13 +14,12 @@ public class Message : MonoBehaviour
     private Vector3? worldPosition;
     private Vector3 offset;
 
-
-    void Start()
+    private void Start()
     {
 
     }
 
-    void Update()
+    private void Update()
     {
         if (worldPosition == null)
         {
@@ -29,7 +29,11 @@ public class Message : MonoBehaviour
         else
         {
             offset += velocity * Time.deltaTime;
-            transform.position = Camera.main.WorldToScreenPoint(worldPosition.Value) + offset;
+
+            Vector3 screenPoint = Camera.main.WorldToScreenPoint(worldPosition.Value);
+            Vector3 viewpointPoint = Camera.main.ScreenToViewportPoint(screenPoint + offset);
+
+            rect.anchorMax = rect.anchorMin = viewpointPoint;
         }
 
         duration -= Time.deltaTime;
@@ -56,6 +60,7 @@ public class Message : MonoBehaviour
     public Message SetWorldPosition(Vector3 worldPosition)
     {
         this.worldPosition = worldPosition;
+        transform.localPosition = Vector3.zero;
         return this;
     }
 

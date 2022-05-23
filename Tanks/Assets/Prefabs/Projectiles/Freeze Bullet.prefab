@@ -129,7 +129,7 @@ MonoBehaviour:
   name: Freeze Bullet
   description: The Freeze Bullet inflicts the Freeze effect on any tank hit, which
     slows down their movement.
-  iconScale: 1
+  iconScale: 0.7
   startAmount: 5
   amountRange: 1
   attackPattern: {fileID: -7747302832281112204}

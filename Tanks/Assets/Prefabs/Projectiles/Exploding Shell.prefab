@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Shell
   description: The Shell ...
-  iconScale: 1
+  iconScale: 1.3
   startAmount: 10
   amountRange: 2
   attackPattern: {fileID: -6891325378449484819}

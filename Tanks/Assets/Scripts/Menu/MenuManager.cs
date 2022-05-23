@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] Menu mainMenu, playMenu, settingsMenu, statisticsMenu, howToPlayMenu;
-    [SerializeField] Vector3 cameraPosition;
+    [SerializeField] private Menu mainMenu, playMenu, settingsMenu, statisticsMenu, howToPlayMenu;
+    [SerializeField] private Vector3 cameraPosition;
+    [SerializeField] private PlayerController playerController;
 
     private Dictionary<Menu.Type, Menu> menus;
+
+    public PlayerController PlayerController => playerController;
 
     private void Start()
     {
