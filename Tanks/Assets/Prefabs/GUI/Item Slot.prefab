@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6930126545853502692}
   - component: {fileID: 7653824680284258830}
   - component: {fileID: 4564384483469307387}
+  - component: {fileID: 4156932811638909206}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -168,7 +169,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  iconScale: {x: 63, y: 63, z: 63}
+  iconScale: 63
+  inventory: {fileID: 0}
+  amountText: {fileID: 4848589068542551916}
+  frame: {fileID: 9176911361110047701}
+--- !u!114 &4156932811638909206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6329493833904675439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.7058824}
+  m_EffectDistance: {x: 0, y: 0}
+  m_UseGraphicAlpha: 1
 --- !u!1 &8399914072250907378
 GameObject:
   m_ObjectHideFlags: 0

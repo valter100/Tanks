@@ -6,15 +6,17 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour
 {
+    [Header("Values")]
     [SerializeField] private Item item;
     [SerializeField] private GameObject icon;
-    [SerializeField] private float iconScale = 63;
+    [SerializeField] private float iconScale;
+
+    [Header("References")]
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private TextMeshProUGUI amountText;
+    [SerializeField] private GameObject frame;
 
     private int amount;
-
-    private Inventory inventory;
-    private TextMeshProUGUI amountText;
-    private GameObject frame;
 
     public bool Selected => frame.activeSelf;
 
@@ -22,9 +24,6 @@ public class ItemSlot : MonoBehaviour
 
     public void ManualStart()
     {
-        inventory = transform.parent.parent.GetComponent<Inventory>();
-        amountText = transform.Find("Amount").GetComponent<TextMeshProUGUI>();
-        frame = transform.Find("Frame").gameObject;
         amountText.text = "";
     }
 
@@ -43,6 +42,9 @@ public class ItemSlot : MonoBehaviour
                     amountText.text = amount == 0 ? "" : amount.ToString();
                 }
             }
+
+            if (icon != null)
+                icon.transform.rotation = inventory.IconRotation;
         }
         
         else if (amount != 0)
@@ -86,11 +88,6 @@ public class ItemSlot : MonoBehaviour
             Destroy(icon.GetComponent<AttackPattern>());
             Destroy(icon.GetComponent<Explosion>());
             Destroy(icon.GetComponent<Rigidbody>());
-
-            //MeshFilter meshFilter = icon.AddComponent<MeshFilter>();
-            //meshFilter = item.usable.GetComponent<MeshFilter>();
-            //MeshRenderer meshRenderer = icon.AddComponent<MeshRenderer>();
-            //meshRenderer = item.usable.GetComponent<MeshRenderer>();
 
             amount = item.amount;
             amountText.text = amount == 0 ? "" : amount.ToString();

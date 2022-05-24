@@ -10,6 +10,11 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int selectedItemSlot;
     [SerializeField] private ItemSlot[] itemSlots;
 
+    [Header("Icon rotation")]
+    [SerializeField] private Quaternion iconEulerRotation;
+    [SerializeField] private Vector3 iconRotation;
+    [SerializeField] private Vector3 iconAngularVelocity;
+
     [Header("Temporary references")]
     [SerializeField] private Player player;
 
@@ -20,6 +25,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GridLayoutGroup grid;
     
     public bool Open => open;
+    public Quaternion IconRotation => iconEulerRotation;
 
     public void Start()
     {
@@ -47,6 +53,12 @@ public class Inventory : MonoBehaviour
             Link(gameManager.CurrentPlayer);
             SetOpen(false);
         }
+
+        iconRotation += iconAngularVelocity * Time.deltaTime;
+        iconRotation.x %= 360f;
+        iconRotation.y %= 360f;
+        iconRotation.z %= 360f;
+        iconEulerRotation = Quaternion.Euler(iconRotation);
     }
 
     public void Clear()
