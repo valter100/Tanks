@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   iconScale: 63
+  iconOffset: {x: 0, y: 0, z: -80}
   inventory: {fileID: 0}
   amountText: {fileID: 4848589068542551916}
   frame: {fileID: 9176911361110047701}
@@ -214,7 +215,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8399914072250907378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -150}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4000335610786851552}

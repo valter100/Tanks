@@ -10,6 +10,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Item item;
     [SerializeField] private GameObject icon;
     [SerializeField] private float iconScale;
+    [SerializeField] private Vector3 iconOffset;
 
     [Header("References")]
     [SerializeField] private Inventory inventory;
@@ -44,7 +45,7 @@ public class ItemSlot : MonoBehaviour
             }
 
             if (icon != null)
-                icon.transform.rotation = inventory.IconRotation;
+                icon.transform.localRotation = inventory.IconRotation;
         }
         
         else if (amount != 0)
@@ -83,6 +84,8 @@ public class ItemSlot : MonoBehaviour
 
             float scale = icon.GetComponent<Usable>().IconScale * iconScale;
             icon.transform.localScale = new Vector3(scale, scale, scale);
+            icon.transform.localPosition += iconOffset;
+            icon.gameObject.layer = LayerMask.NameToLayer("UI");
 
             Destroy(icon.GetComponent<Usable>());
             Destroy(icon.GetComponent<AttackPattern>());

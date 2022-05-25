@@ -117,7 +117,7 @@ MonoBehaviour:
   name: Bullet
   description: The Bullet causes direct damage to any hit tank, but will not explode
     or destroy terrain.
-  iconScale: 1.4
+  iconScale: 1.1
   startAmount: 18
   amountRange: 3
   attackPattern: {fileID: 4733216876846786093}

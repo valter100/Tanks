@@ -94,7 +94,8 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroy(playerHud.gameObject);
+        if (playerHud != null)
+            Destroy(playerHud.gameObject);
     }
 
 }
