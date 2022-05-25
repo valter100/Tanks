@@ -36,11 +36,14 @@ public class PlayerInventory : MonoBehaviour
     
     public void ManualUpdate()
     {
-        if (playerController.Trigger_PreviousItem())
-            IncrementSelectedItem(-1);
+        if (player.Info.control == Control.Player)
+        {
+            if (playerController.Trigger_PreviousItem())
+                IncrementSelectedItem(-1);
 
-        else if (playerController.Trigger_NextItem())
-            IncrementSelectedItem(1);
+            else if (playerController.Trigger_NextItem())
+                IncrementSelectedItem(1);
+        }
     }
 
     public void IncrementSelectedItem(int increment)

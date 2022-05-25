@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private Tank tank;
     [SerializeField] private GameObject playerHudPrefab;
+    [SerializeField] private PlayerHUD playerHud;
 
     private static GameManager gameManager;
 
@@ -46,12 +47,18 @@ public class Player : MonoBehaviour
         {
             tank = tankObject.GetComponent<PlayerTank>();
             tankObject.GetComponent<PlayerController>().enabled = true;
+
+            Destroy(tankObject.GetComponent<AiTank>());
+            Destroy(tankObject.GetComponent<AiManager>());
         }
 
         else if (control == Control.Bot)
         {
             tank = tankObject.GetComponent<AiTank>();
             tankObject.GetComponent<AiManager>().enabled = true;
+
+            Destroy(tankObject.GetComponent<PlayerTank>());
+            Destroy(tankObject.GetComponent<PlayerController>());
         }
 
         tank.enabled = true;
@@ -70,11 +77,10 @@ public class Player : MonoBehaviour
         // PlayerHUD
 
         GameObject canvas = GameObject.Find("Canvas");
-        PlayerHUD playerHud = Instantiate(playerHudPrefab, canvas.transform).GetComponent<PlayerHUD>();
+        playerHud = Instantiate(playerHudPrefab, canvas.transform).GetComponent<PlayerHUD>();
         playerHud.LinkPlayer(this);
         playerHud.transform.SetAsFirstSibling();
     }
-
 
     public void Ready()
     {
@@ -84,6 +90,11 @@ public class Player : MonoBehaviour
     public void Unready()
     {
         tank.Unready();
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(playerHud.gameObject);
     }
 
 }

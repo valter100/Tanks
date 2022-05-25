@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -116,7 +117,17 @@ public class AiTank : Tank
 
         //Fires projectile att target
         if (CanFire())
-            Fire();
+            StartCoroutine(Coroutine_DelayedFire());
+    }
+
+    private IEnumerator Coroutine_DelayedFire()
+    {
+        hasFired = true;
+        for (float delay = 1.5f; delay > 0f; delay -= Time.deltaTime)
+            yield return null;
+
+        Fire();
+        yield return 0;
     }
 
     private void ChooseAmmoType()

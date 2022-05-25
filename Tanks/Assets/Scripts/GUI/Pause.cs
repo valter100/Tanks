@@ -33,7 +33,7 @@ public class Pause : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(open);
 
         gameManager.SetPaused(open);
-        guiManager.Hotbar.SetOpen(!open);
+        guiManager.Hotbar.SetHidden(open);
         guiManager.Overlay.gameObject.SetActive(open);
     }
 
@@ -44,7 +44,8 @@ public class Pause : MonoBehaviour
 
     public void OnClick_Restart()
     {
-
+        SetOpen(false);
+        gameManager.RestartMatch();
     }
 
     public void OnClick_Settings()

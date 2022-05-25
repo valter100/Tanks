@@ -8,9 +8,18 @@ public class GameManager : MonoBehaviour
     [Header("Players")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private List<Player> players;
-    [SerializeField] private Player currentPlayer;
     [SerializeField] private int currentPlayerIndex;
 
+    /// <summary>
+    /// The current player that is also active (controllable).
+    /// </summary>
+    [SerializeField] private Player activePlayer;
+
+    /// <summary>
+    /// The current player, may or may not be active.
+    /// </summary>
+    [SerializeField] private Player currentPlayer;
+    
     [Header("References")]
     [SerializeField] private CameraController cameraController;
     [SerializeField] private GameObject map;
@@ -23,6 +32,15 @@ public class GameManager : MonoBehaviour
 
     public bool Paused => paused;
     public List<Player> Players => players;
+
+    /// <summary>
+    /// The current player that is also active (controllable).
+    /// </summary>
+    public Player ActivePlayer => activePlayer;
+
+    /// <summary>
+    /// The current player, may or may not be active.
+    /// </summary>
     public Player CurrentPlayer => currentPlayer;
 
     void Start()
@@ -36,9 +54,9 @@ public class GameManager : MonoBehaviour
         if (paused)
             return;
 
-        if (currentPlayer != null)
+        if (activePlayer != null)
         {
-            currentPlayer.ManualUpdate();
+            activePlayer.ManualUpdate();
         }
     }
 
@@ -51,6 +69,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator Coroutine_StartMatch()
     {
+        activePlayer = null;
+        currentPlayer = null;
+        currentPlayerIndex = -1;
+        SetPaused(false);
+
         GameObject gameInfoObject = GameObject.Find("Game Info");
 
         if (gameInfoObject != null)
@@ -91,8 +114,8 @@ public class GameManager : MonoBehaviour
         if (players.Count != 0)
         {
             currentPlayerIndex = 0;
-            currentPlayer = players[currentPlayerIndex];
-            currentPlayer.Ready();
+            activePlayer = currentPlayer = players[currentPlayerIndex];
+            activePlayer.Ready();
         }
         
         yield return 0;
@@ -124,37 +147,38 @@ public class GameManager : MonoBehaviour
     private IEnumerator Coroutine_PlayerTransition()
     {
         inPlayerTransition = true;
-        float delay;
 
-        try { delay = currentPlayer.Inventory.SelectedItem.usable.GetComponent<Projectile>().GetTimeToLive(); }
-        catch { delay = 1.5f; }
+        float delay;
+        try { delay = activePlayer.Inventory.SelectedItem.usable.GetComponent<Projectile>().GetTimeToLive(); }
+        catch { delay = 2f; }
+
+        if (activePlayer != null)
+            activePlayer.Unready();
+
+        activePlayer = null;
+        currentPlayer = null;
 
         while (delay > 0.0f)
         {
-            GameObject firedProjectile = GameObject.FindGameObjectWithTag("Projectile");
             delay -= Time.deltaTime;
 
-            if (firedProjectile == null && delay > 1.5f)
-                delay = 1.5f;
+            if (delay > 2f && GameObject.FindGameObjectWithTag("Projectile") == null)
+                delay = 2f;
 
             yield return null;
         }
 
-        SetNextPlayer();
+        StartCoroutine(Coroutine_SetNextPlayer());
         inPlayerTransition = false;
 
-        if (Random.Range(0f, 1f) < 0.3f)
+        if (Random.Range(0f, 1f) < 1/3f)
             CreateNewAirDrop();
 
         yield return 0;
     }
 
-    public void SetNextPlayer()
+    public IEnumerator Coroutine_SetNextPlayer()
     {
-        // Unready current player
-        if (currentPlayer != null)
-            currentPlayer.Unready();
-
         // Deactivate destoryed players
         foreach (Player player in players)
         {
@@ -172,9 +196,22 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        // Ready next player
+        // Delay
+        //for (float delay = 0.75f; delay > 0f; delay -= Time.deltaTime)
+        //yield return null;
+
+        // Set current player
         currentPlayer = players[currentPlayerIndex];
         currentPlayer.Ready();
+
+        // Delay if bot
+        if (players[currentPlayerIndex].Info.control != Control.Player)
+            for (float delay = 1.5f; delay > 0f; delay -= Time.deltaTime)
+                yield return null;
+
+        // Set active player
+        activePlayer = players[currentPlayerIndex];
+        yield return 0;
     }
 
     public void CreateNewAirDrop()
@@ -183,5 +220,21 @@ public class GameManager : MonoBehaviour
         AirDrop airDrop = Instantiate(airDropPrefab, generateSpawnpoints.GetNewSpawnpoint(), Quaternion.identity).GetComponent<AirDrop>();
         airDrop.transform.position += new Vector3(0, 10, 0);
         airDrops.Add(airDrop);
+    }
+
+    public void RestartMatch()
+    {
+        // Destory players
+        for (int i = players.Count - 1; i >= 0; --i)
+            Destroy(players[i].gameObject);
+
+        players.Clear();
+
+        // Generate new map
+
+        // ...
+
+        // Start new match
+        StartCoroutine(Coroutine_StartMatch());
     }
 }

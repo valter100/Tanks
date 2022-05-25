@@ -7,7 +7,11 @@ using TMPro;
 public class Hotbar : MonoBehaviour
 {
     [Header("Values")]
+    [SerializeField] private bool hidden;
     [SerializeField] private bool open;
+    [SerializeField] private float openDuration;
+    [SerializeField] private Vector3 openedPosition;
+    [SerializeField] private Vector3 closedPosition;
 
     [Header("Temporary references")]
     [SerializeField] private Player player;
@@ -38,7 +42,8 @@ public class Hotbar : MonoBehaviour
     public void Start()
     {
         itemSlot.ManualStart();
-        SetOpen(true);
+        SetHidden(false);
+        SetOpen(false, true);
 
         playerName.text = "";
         playerHealth.text = "";
@@ -59,6 +64,8 @@ public class Hotbar : MonoBehaviour
         {
             player = gameManager.CurrentPlayer;
             playerName.text = player == null ? "" : player.Info.name;
+
+            SetOpen(player != null);
         }
 
         if (player != null && player.Inventory.SelectedItem != itemSlot.Item)
@@ -70,13 +77,38 @@ public class Hotbar : MonoBehaviour
         UpdatePlayerPlanel();
     }
 
-    public void SetOpen(bool open)
+    public void SetHidden(bool hidden)
     {
-        this.open = open;
-        GetComponent<Image>().enabled = open;
+        this.hidden = hidden;
+        GetComponent<Image>().enabled = !hidden;
 
         for (int i = transform.childCount - 1; i >= 0; --i)
-            transform.GetChild(i).gameObject.SetActive(open);
+            transform.GetChild(i).gameObject.SetActive(!hidden);
+    }
+
+    public void SetOpen(bool open, bool instant = false)
+    {
+        this.open = open;
+
+        if (instant)
+            transform.localPosition = open ? openedPosition : closedPosition;
+        else
+            StartCoroutine(Coroutine_Move(open));
+    }
+
+    private IEnumerator Coroutine_Move(bool open)
+    {
+        Vector3 start = open ? closedPosition : openedPosition;
+        Vector3 end = open ? openedPosition : closedPosition;
+
+        for (float elapsed = 0f; elapsed < openDuration; elapsed += Time.deltaTime)
+        {
+            transform.localPosition = Vector3.Lerp(start, end, (elapsed / openDuration).LerpValueSmoothstep());
+            yield return null;
+        }
+
+        transform.localPosition = end;
+        yield return 0;
     }
 
     private void UpdatePlayerPlanel()
