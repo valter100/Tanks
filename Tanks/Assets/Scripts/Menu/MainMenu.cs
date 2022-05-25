@@ -53,6 +53,11 @@ public class MainMenu : Menu
         menuManager.SwapMenu(this, Type.HowToPlay);
     }
 
+    public void OnClick_Credits()
+    {
+        menuManager.SwapMenu(this, Type.Credits);
+    }
+
     public void OnClick_Exit()
     {
         #if UNITY_EDITOR

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Menu : MonoBehaviour
 {
-    public enum Type { Main, Play, Settings, Statistics, HowToPlay }
+    public enum Type { Main, Play, Settings, Statistics, HowToPlay, Credits }
 
     static protected MenuManager menuManager;
 

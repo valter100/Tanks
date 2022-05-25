@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField] private Menu mainMenu, playMenu, settingsMenu, statisticsMenu, howToPlayMenu;
+    [SerializeField] private Menu mainMenu, playMenu, settingsMenu, statisticsMenu, howToPlayMenu, creditsMenu;
     [SerializeField] private Vector3 cameraPosition;
     [SerializeField] private PlayerController playerController;
 
@@ -22,7 +22,8 @@ public class MenuManager : MonoBehaviour
             { Menu.Type.Play, playMenu },
             { Menu.Type.Settings, settingsMenu },
             { Menu.Type.Statistics, statisticsMenu },
-            { Menu.Type.HowToPlay, howToPlayMenu }
+            { Menu.Type.HowToPlay, howToPlayMenu },
+            { Menu.Type.Credits, creditsMenu }
         };
 
         foreach (KeyValuePair<Menu.Type, Menu> menu in menus)
