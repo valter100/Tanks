@@ -47,7 +47,7 @@ public class Explosion : MonoBehaviour
         mapDestruction = gameObject.AddComponent<Tanks.MapDestroyingExplosive>();
         mapDestruction.Explode(radius);
 
-        CameraShake.AddTrauma(damage * 0.1f);
+        CameraShake.AddTrauma(0.2f + damage * 0.1f);
         Instantiate(explosionEffect, transform.position, Quaternion.Euler(-90, 0, 0));
         transform.parent = null;
 
