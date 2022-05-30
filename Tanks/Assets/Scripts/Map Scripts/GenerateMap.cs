@@ -77,9 +77,6 @@ public class GenerateMap : MonoBehaviour
     {
         if (generateNewSeed || generateOldSeed)
         {
-            foreach (Transform child in transform)
-                Destroy(child.gameObject);
-
             if (generateOldSeed)
                 GenerateRandomMap(mapSeed);
             else
@@ -113,6 +110,9 @@ public class GenerateMap : MonoBehaviour
 
     private void GenerateRandomMap(string seed = "")
     {
+        foreach (Transform child in transform)
+            Destroy(child.gameObject);
+
         if (seed == "")
             seed = System.DateTime.Now.Ticks.ToString();
 
