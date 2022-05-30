@@ -14,16 +14,11 @@ public class Message : MonoBehaviour
     private Vector3? worldPosition;
     private Vector3 offset;
 
-    private void Start()
-    {
-
-    }
-
     private void Update()
     {
         if (worldPosition == null)
         {
-            transform.position += velocity * Time.deltaTime;
+            transform.localPosition += velocity * Time.deltaTime;
         }
 
         else
@@ -79,6 +74,15 @@ public class Message : MonoBehaviour
     public Message SetDuration(float duration)
     {
         this.duration = duration;
+        return this;
+    }
+
+    /// <summary>
+    /// (Optional) Sets the speed of the message.
+    /// </summary>
+    public Message SetSpeed(float speed)
+    {
+        velocity *= speed;
         return this;
     }
 
