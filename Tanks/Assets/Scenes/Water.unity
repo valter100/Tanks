@@ -1398,6 +1398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 477c0ce83877e472bbb574b3dc51a10a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  folderPath: 
 --- !u!224 &352547341 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6217827647031445803, guid: 46b7d00efa6f84ccc965eb8e32ca9029, type: 3}
