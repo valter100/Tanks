@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject airDropPrefab;
     [SerializeField] private List<AirDrop> airDrops;
+    [SerializeField] private GUIManager guiManager;
 
     [Header("Values")]
     [SerializeField] private bool inPlayerTransition = false;
@@ -45,7 +46,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        paused = false;
         StartCoroutine(Coroutine_StartMatch());
     }
 
@@ -56,7 +56,11 @@ public class GameManager : MonoBehaviour
 
         if (activePlayer != null)
         {
-            activePlayer.ManualUpdate();
+            if (!inPlayerTransition && !activePlayer.gameObject.activeInHierarchy)
+                StartPlayerTransition();
+
+            else
+                activePlayer.ManualUpdate();
         }
     }
 
@@ -72,36 +76,37 @@ public class GameManager : MonoBehaviour
         activePlayer = null;
         currentPlayer = null;
         currentPlayerIndex = -1;
+        inPlayerTransition = false;
         SetPaused(false);
+
+        map.GetComponent<GenerateMap>().GenerateRandomMap();
 
         GameObject gameInfoObject = GameObject.Find("Game Info");
 
-        if (gameInfoObject != null)
+        if (gameInfoObject == null)
         {
-            GameInfo gameInfo = gameInfoObject.GetComponent<GameInfo>();
-            GenerateSpawnpoints generateSpawnpoints = GameObject.Find("Map").GetComponent<GenerateSpawnpoints>();
-
-            for (int i = 0; i < gameInfo.names.Count; ++i)
-            {
-                Vector3 spawnPoint = generateSpawnpoints.GetNewSpawnpoint();
-                if (spawnPoint == Vector3.zero)
-                {
-                    i--;
-                    yield return null;
-                }
-                Player player = AddNewPlayer();
-                player.Initialize(
-                    gameInfo.names[i][0] != '\u200B' ? gameInfo.names[i] : "Player " + players.Count,
-                    gameInfo.colors[i],
-                    gameInfo.tankPrefabs[i],
-                    gameInfo.controls[i],
-                    spawnPoint);
-            }
+            Debug.Log("No Game Info found. Using Test Game Info instead.");
+            gameInfoObject = GameObject.Find("Test Game Info");
         }
 
-        else
+        GameInfo gameInfo = gameInfoObject.GetComponent<GameInfo>();
+        GenerateSpawnpoints generateSpawnpoints = GameObject.Find("Map").GetComponent<GenerateSpawnpoints>();
+
+        for (int i = 0; i < gameInfo.names.Count; ++i)
         {
-            Debug.LogWarning("No Game Info Game Object found. Make sure to launch the game through the Menu scene.");
+            Vector3 spawnPoint = generateSpawnpoints.GetNewSpawnpoint();
+            if (spawnPoint == Vector3.zero)
+            {
+                i--;
+                yield return null;
+            }
+            Player player = AddNewPlayer();
+            player.Initialize(
+                gameInfo.names[i][0] != '\u200B' ? gameInfo.names[i] : "Player " + players.Count,
+                gameInfo.colors[i],
+                gameInfo.tankPrefabs[i],
+                gameInfo.controls[i],
+                spawnPoint);
         }
 
         float delay = 1.0f;
@@ -113,9 +118,7 @@ public class GameManager : MonoBehaviour
 
         if (players.Count != 0)
         {
-            currentPlayerIndex = 0;
-            activePlayer = currentPlayer = players[currentPlayerIndex];
-            activePlayer.Ready();
+            StartPlayerTransition();
         }
         
         yield return 0;
@@ -130,18 +133,10 @@ public class GameManager : MonoBehaviour
 
     public void StartPlayerTransition()
     {
-        if (players.Count == 1)
-        {
-            Debug.Log(currentPlayer.Info.name + " Wins!");
-        }
-
-        else if (players.Count == 0)
-        {
-            Debug.Log("Draw");
-        }
-
         if (!inPlayerTransition)
+        {
             StartCoroutine(Coroutine_PlayerTransition());
+        }
     }
 
     private IEnumerator Coroutine_PlayerTransition()
@@ -179,11 +174,10 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator Coroutine_SetNextPlayer()
     {
-        // Deactivate destoryed players
-        foreach (Player player in players)
+        if (GetAlivePlayers() < 2)
         {
-            if (player.gameObject.activeInHierarchy && player.Tank.Destroyed())
-                player.gameObject.SetActive(false);
+            StartCoroutine(Coroutine_EndGame());
+            yield break;
         }
 
         // Find next player
@@ -195,10 +189,6 @@ public class GameManager : MonoBehaviour
             if (players[currentPlayerIndex].gameObject.activeInHierarchy)
                 break;
         }
-
-        // Delay
-        //for (float delay = 0.75f; delay > 0f; delay -= Time.deltaTime)
-        //yield return null;
 
         // Set current player
         currentPlayer = players[currentPlayerIndex];
@@ -224,17 +214,57 @@ public class GameManager : MonoBehaviour
 
     public void RestartMatch()
     {
-        // Destory players
+        Debug.Log("GameManager.RestartMatch() disabled. Can cause crashes.");
+
+        /*
         for (int i = players.Count - 1; i >= 0; --i)
             Destroy(players[i].gameObject);
-
         players.Clear();
 
-        // Generate new map
+        for (int i = airDrops.Count - 1; i >= 0; --i)
+            Destroy(airDrops[i].gameObject);
+        airDrops.Clear();
 
-        // ...
+        foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("Projectile"))
+            Destroy(gameObject);
 
-        // Start new match
+        StopAllCoroutines();
+        cameraController.Restart();
+        MessagesManager.ClearAllMessages();
         StartCoroutine(Coroutine_StartMatch());
+        */
+    }
+
+    private IEnumerator Coroutine_EndGame()
+    {
+        MessagesManager.ClearAllMessages();
+        currentPlayer = null;
+
+        for (float delay = 1f; delay > 0f; delay -= Time.deltaTime)
+            yield return null;
+
+        if (GetAlivePlayers() != 1)
+            guiManager.EndScreen.SetText("Draw!");
+
+        else
+        {
+            int i = -1;
+            while (!players[++i].gameObject.activeSelf) ;
+            guiManager.EndScreen.SetText(players[i].Info.name + " wins!");
+        }
+
+        guiManager.EndScreen.SetOpen(true);
+        yield return 0;
+    }
+
+    private int GetAlivePlayers()
+    {
+        int alivePlayers = 0;
+
+        foreach (Player player in players)
+            if (player.gameObject.activeSelf)
+                ++alivePlayers;
+
+        return alivePlayers;
     }
 }

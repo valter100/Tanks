@@ -511,6 +511,9 @@ MonoBehaviour:
   maxHealth: 30
   maxFuel: 80
   maxShootForce: 30
+  currentHealth: 0
+  currentFuel: 0
+  currentShootForce: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -525,6 +528,9 @@ MonoBehaviour:
   aimRadius: 250
   explosionSound: {fileID: 8300000, guid: 2efbc36ff19b3124d8c121ea6a7b47a0, type: 3}
   explosionDamage: 3
+  chassi: {fileID: 823687964183072229}
+  rumbleSpot: {fileID: 6458958948821315585}
+  player: {fileID: 0}
   customColoredParts:
   - {fileID: 823687964183072229}
   baseColoredParts:
@@ -532,10 +538,8 @@ MonoBehaviour:
   - {fileID: 963748327498118015}
   - {fileID: 8956933184568940024}
   - {fileID: 7907405044684808288}
-  chassi: {fileID: 823687964183072229}
-  rumbleSpot: {fileID: 6458958948821315585}
-  baseColor: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
   debugTrajectory: 0
+  playerController: {fileID: 7664846895700311258}
 --- !u!114 &7664846895700311258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,6 +711,9 @@ MonoBehaviour:
   maxHealth: 30
   maxFuel: 80
   maxShootForce: 30
+  currentHealth: 0
+  currentFuel: 0
+  currentShootForce: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -721,6 +728,9 @@ MonoBehaviour:
   aimRadius: 250
   explosionSound: {fileID: 8300000, guid: 2efbc36ff19b3124d8c121ea6a7b47a0, type: 3}
   explosionDamage: 3
+  chassi: {fileID: 823687964183072229}
+  rumbleSpot: {fileID: 6458958948821315585}
+  player: {fileID: 0}
   customColoredParts:
   - {fileID: 823687964183072229}
   baseColoredParts:
@@ -728,9 +738,6 @@ MonoBehaviour:
   - {fileID: 963748327498118015}
   - {fileID: 8956933184568940024}
   - {fileID: 7907405044684808288}
-  chassi: {fileID: 823687964183072229}
-  rumbleSpot: {fileID: 6458958948821315585}
-  baseColor: {r: 0.27450982, g: 0.27450982, b: 0.27450982, a: 1}
   debugTrajectory: 0
 --- !u!114 &2626749122293949152
 MonoBehaviour:

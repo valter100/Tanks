@@ -27,11 +27,12 @@ public class Inventory : MonoBehaviour
     public bool Open => open;
     public Quaternion IconRotation => iconEulerRotation;
 
-    public void Start()
+    private void OnEnable() => Start();
+
+    private void Start()
     {
         itemSlots = grid.transform.GetComponentsInChildren<ItemSlot>();
         selectedItemSlot = -1;
-        SetOpen(false);
 
         foreach (ItemSlot itemSlot in itemSlots)
             itemSlot.ManualStart();

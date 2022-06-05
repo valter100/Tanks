@@ -39,11 +39,11 @@ public class Hotbar : MonoBehaviour
 
     public bool Open => open;
 
-    public void Start()
+    private void OnEnable() => Start();
+
+    private void Start()
     {
         itemSlot.ManualStart();
-        SetHidden(false);
-        SetOpen(false, true);
 
         playerName.text = "";
         playerHealth.text = "";

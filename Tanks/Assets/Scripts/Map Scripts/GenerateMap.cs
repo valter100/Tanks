@@ -69,7 +69,6 @@ public class GenerateMap : MonoBehaviour
     private List<int> triangleIndices;
     private List<Vector3> vertices;
     private List<Quad> quads;
-    void Start() => GenerateRandomMap();
 
     private void Print(string text) { if (printDebug) { Debug.Log(text); } }
 
@@ -108,7 +107,7 @@ public class GenerateMap : MonoBehaviour
         GenerateQuads();
     }
 
-    private void GenerateRandomMap(string seed = "")
+    public void GenerateRandomMap(string seed = "")
     {
         foreach (Transform child in transform)
             Destroy(child.gameObject);

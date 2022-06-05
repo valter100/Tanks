@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Pause : MonoBehaviour
+public class EndScreen : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] private bool open;
@@ -11,6 +12,7 @@ public class Pause : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private GUIManager guiManager;
+    [SerializeField] private TextMeshProUGUI text;
 
     public bool Open => open;
 
@@ -23,29 +25,25 @@ public class Pause : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(open);
 
         gameManager.SetPaused(open);
-        guiManager.Hotbar.SetHidden(open);
+        guiManager.Hotbar.SetOpen(!open, true);
+        guiManager.Inventory.SetOpen(false);
         guiManager.Overlay.gameObject.SetActive(open);
     }
 
-    public void OnClick_Resume()
-    {
-        SetOpen(false);
-    }
-
-    public void OnClick_Restart()
+    public void OnClick_Rematch()
     {
         SetOpen(false);
         gameManager.RestartMatch();
     }
 
-    public void OnClick_Settings()
-    {
-
-    }
-
     public void OnClick_Exit()
     {
         Exit.ExitApplication();
+    }
+
+    public void SetText(string text)
+    {
+        this.text.text = text;
     }
 
 }

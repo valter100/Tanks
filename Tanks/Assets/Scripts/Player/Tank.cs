@@ -14,10 +14,10 @@ public abstract class Tank : MonoBehaviour
     [SerializeField] protected float maxFuel;
     [SerializeField] protected float maxShootForce;
 
-    //[Header("Current Stats")]
-    protected float currentHealth;
-    protected float currentFuel;
-    protected float currentShootForce;
+    [Header("Current Stats")]
+    [SerializeField] protected float currentHealth;
+    [SerializeField] protected float currentFuel;
+    [SerializeField] protected float currentShootForce;
 
     [Header("Movement")]
     [SerializeField] protected LayerMask groundLayerMask;
@@ -30,36 +30,35 @@ public abstract class Tank : MonoBehaviour
     [Header("Combat")]
     [SerializeField] protected ParticleSystem fireParticles;
     [SerializeField] protected AudioClip fireSound;
-    protected Animator animator;
     [SerializeField] protected ParticleSystem damagedParticles;
     [SerializeField] protected float aimRadius;
+    protected Animator animator;
 
     [Header("Explosion")]
-    protected Explosion explosion;
     [SerializeField] protected AudioClip explosionSound;
     [SerializeField] protected float explosionDamage;
-
-    //[Header("Status Effects")]
-    protected bool isSlowed;
+    protected Explosion explosion;
 
     [Header("References")]
-    protected static GameManager gameManager;
-    protected static CameraController cameraController;
-    protected Player player;
-    //[SerializeField] protected GameObject rotatePoint;
-    [SerializeField] protected GameObject[] customColoredParts;
-    [SerializeField] protected GameObject[] baseColoredParts;
     [SerializeField] protected GameObject chassi;
     [SerializeField] protected Transform rumbleSpot;
+    [SerializeField] protected Player player;
+    [SerializeField] protected GameObject[] customColoredParts;
+    [SerializeField] protected GameObject[] baseColoredParts;
+    //[SerializeField] protected GameObject rotatePoint;
     protected Tower tower;
     protected Gun gun;
 
     [Header("Other")]
     [SerializeField] protected bool debugTrajectory;
 
+    protected static GameManager gameManager;
+    protected static CameraController cameraController;
+    protected static Color baseColor = new Color(0.22f, 0.22f, 0.22f);
+
+    protected bool isSlowed;
     protected bool preview;
     protected bool facingRight;
-    static protected Color baseColor = new Color(0.22f, 0.22f, 0.22f);
 
     protected float timeSinceLastEffect;
     protected bool hasFired = false;
@@ -189,7 +188,7 @@ public abstract class Tank : MonoBehaviour
         if (currentHealth <= 0)
             return;
 
-        MessagesManager.AddMessage((-damage).ToString("0.0") + " HP").SetColor(Color.red).SetWorldPosition(transform.position);
+        MessagesManager.AddMessage((-damage).ToString("0.0") + " HP").SetColor(new Color(1f, 0.4f, 0f)).SetWorldPosition(transform.position);
         currentHealth = Math.Max(0.0f, currentHealth - damage);
 
         if (currentHealth > 0.0f)
@@ -258,6 +257,7 @@ public abstract class Tank : MonoBehaviour
     public void DestroyTank()
     {
         gameObject.SetActive(false);
+        player.gameObject.SetActive(false);
     }
 
     public void AddHealth(float amount)

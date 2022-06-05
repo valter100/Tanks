@@ -14,11 +14,6 @@ public class GameInfo : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-
-        names = new List<string>();
-        colors = new List<Color>();
-        tankPrefabs = new List<Prefab>();
-        controls = new List<Control>();
     }
 
     public void SaveInfo()

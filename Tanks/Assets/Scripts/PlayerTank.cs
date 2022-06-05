@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerTank : Tank
 {
-    private static PlayerController playerController;
+    [Header("Player Tank")]
+    [SerializeField] private PlayerController playerController;
 
     protected override void Start()
     {
         base.Start();
 
-        if (playerController == null)
-            playerController = GetComponent<PlayerController>();
+        // Other stuff ...
     }
 
     public override void ManualUpdate()

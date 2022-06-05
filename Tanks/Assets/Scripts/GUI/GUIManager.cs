@@ -9,42 +9,44 @@ public class GUIManager : MonoBehaviour
     [SerializeField] private Inventory inventory;
     [SerializeField] private Hotbar hotbar;
     [SerializeField] private Pause pause;
+    [SerializeField] private EndScreen endScreen;
     [SerializeField] private Image overlay;
 
     public Inventory Inventory => inventory;
     public Hotbar Hotbar => hotbar;
     public Pause Pause => pause;
     public Image Overlay => overlay;
+    public EndScreen EndScreen => endScreen;
 
     private void Start()
     {
-        if (Activate(inventory.gameObject))
-            inventory.Start();
+        if (!inventory.gameObject.activeSelf)
+            inventory.gameObject.SetActive(true);
 
-        if (Activate(hotbar.gameObject))
-            hotbar.Start();
+        if (!hotbar.gameObject.activeSelf)
+            hotbar.gameObject.SetActive(true);
 
-        if (Activate(pause.gameObject))
-            pause.Start();
+        if (!pause.gameObject.activeSelf)
+            pause.gameObject.SetActive(true);
+
+        if (!endScreen.gameObject.activeSelf)
+            endScreen.gameObject.SetActive(true);
 
         overlay.gameObject.SetActive(false);
-
-        // Ensures the GameObject is active and returns whether or not it was already activated
-        bool Activate(GameObject gameObject)
-        {
-            if (gameObject.activeSelf)
-                return false;
-
-            gameObject.SetActive(true);
-            return true;
-        }
+        endScreen.SetOpen(false);
+        pause.SetOpen(false);
+        hotbar.SetOpen(false, true);
+        inventory.SetOpen(false);
     }
 
     private void Update()
     {
         if (playerController.Trigger_Back())
         {
-            if (pause.Open)
+            if (endScreen.Open)
+                endScreen.OnClick_Exit();
+
+            else if (pause.Open)
                 pause.SetOpen(false);
 
             else if (inventory.Open)

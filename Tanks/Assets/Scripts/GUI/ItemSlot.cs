@@ -85,6 +85,7 @@ public class ItemSlot : MonoBehaviour
             float scale = icon.GetComponent<Usable>().IconScale * iconScale;
             icon.transform.localScale = new Vector3(scale, scale, scale);
             icon.transform.localPosition += iconOffset;
+            icon.transform.localRotation = inventory.IconRotation;
             icon.gameObject.layer = LayerMask.NameToLayer("UI");
 
             Destroy(icon.GetComponent<Usable>());

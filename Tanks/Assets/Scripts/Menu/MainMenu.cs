@@ -60,11 +60,7 @@ public class MainMenu : Menu
 
     public void OnClick_Exit()
     {
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #else
-        Application.Quit();
-        #endif
+        Exit.ExitApplication();
     }
 
 }

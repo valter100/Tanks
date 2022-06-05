@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
         public bool allowTranslation, allowZoom;
     }
 
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main;
         Instance = this;
@@ -83,7 +83,7 @@ public class CameraController : MonoBehaviour
         mainCamera.fieldOfView = targetFOV = viewSettings[view].maxFOV;
     }
 
-    void Update()
+    private void Update()
     {
         if (transitioning)
             return;
@@ -327,4 +327,11 @@ public class CameraController : MonoBehaviour
         followObject = gameObject;
         parentTransform.position = gameObject.transform.position;
     }
+
+    public void Restart()
+    {
+        StopAllCoroutines();
+        Start();
+    }
+
 }
