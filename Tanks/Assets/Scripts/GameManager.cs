@@ -144,8 +144,14 @@ public class GameManager : MonoBehaviour
         inPlayerTransition = true;
 
         float delay;
-        try { delay = activePlayer.Inventory.SelectedItem.usable.GetComponent<Projectile>().GetTimeToLive(); }
-        catch { delay = 2f; }
+        try 
+        {
+            delay = activePlayer.Inventory.SelectedItem.usable.GetComponent<Projectile>().GetTimeToLive(); 
+        }
+        catch 
+        {                     
+            delay = 2f; 
+        }
 
         if (activePlayer != null)
             activePlayer.Unready();
@@ -156,18 +162,15 @@ public class GameManager : MonoBehaviour
         while (delay > 0.0f)
         {
             delay -= Time.deltaTime;
-
-            if (delay > 2f && GameObject.FindGameObjectWithTag("Projectile") == null)
+            GameObject foundProjectile = GameObject.FindGameObjectWithTag("Projectile");
+            if (delay > 2f && !foundProjectile)
                 delay = 2f;
 
-            yield return null;
+            yield return 0;
         }
 
         StartCoroutine(Coroutine_SetNextPlayer());
         inPlayerTransition = false;
-
-        if (Random.Range(0f, 1f) < 1/3f)
-            CreateNewAirDrop();
 
         yield return 0;
     }
@@ -201,6 +204,10 @@ public class GameManager : MonoBehaviour
 
         // Set active player
         activePlayer = players[currentPlayerIndex];
+
+        if (Random.Range(0f, 1f) < 1 / 3f)
+            CreateNewAirDrop();
+
         yield return 0;
     }
 

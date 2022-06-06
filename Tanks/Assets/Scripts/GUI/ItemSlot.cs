@@ -87,6 +87,7 @@ public class ItemSlot : MonoBehaviour
             icon.transform.localPosition += iconOffset;
             icon.transform.localRotation = inventory.IconRotation;
             icon.gameObject.layer = LayerMask.NameToLayer("UI");
+            icon.tag = "Untagged";
 
             Destroy(icon.GetComponent<Usable>());
             Destroy(icon.GetComponent<AttackPattern>());
