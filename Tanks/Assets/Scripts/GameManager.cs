@@ -214,9 +214,6 @@ public class GameManager : MonoBehaviour
 
     public void RestartMatch()
     {
-        Debug.Log("GameManager.RestartMatch() disabled. Can cause crashes.");
-
-        /*
         for (int i = players.Count - 1; i >= 0; --i)
             Destroy(players[i].gameObject);
         players.Clear();
@@ -232,7 +229,6 @@ public class GameManager : MonoBehaviour
         cameraController.Restart();
         MessagesManager.ClearAllMessages();
         StartCoroutine(Coroutine_StartMatch());
-        */
     }
 
     private IEnumerator Coroutine_EndGame()

@@ -14,6 +14,11 @@ public class Message : MonoBehaviour
     private Vector3? worldPosition;
     private Vector3 offset;
 
+    private void Start()
+    {
+        transform.localPosition += new Vector3(0.0f, 0.0f, 10.0f);
+    }
+
     private void Update()
     {
         if (worldPosition == null)

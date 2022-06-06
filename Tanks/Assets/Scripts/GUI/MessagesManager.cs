@@ -58,8 +58,8 @@ public class MessagesManager : MonoBehaviour
 
     public static void ClearAllMessages()
     {
-        while (messagesManager.transform.childCount > 0)
-            Destroy(messagesManager.transform.GetChild(0).gameObject);
+        foreach (Transform child in messagesManager.transform)
+            Destroy(child.gameObject);
     }
 
 }
