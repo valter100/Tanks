@@ -7,16 +7,18 @@ public class FocusPoint : MonoBehaviour
 #pragma warning disable CS8632
 
     [Header("Adjustable")]
-    [SerializeField] Vector3 speed;
-    [SerializeField] Vector3 defaultOffset;
+    [SerializeField] private Vector3 speed;
+    [SerializeField] private Vector3 defaultOffset;
+    [SerializeField] private float minY;
 
     [Header("Information")]
-    [SerializeField] Vector3 offset;
-    [SerializeField] GameObject? followObject;
-    [SerializeField] CameraController cameraController;
-    [SerializeField] PlayerController playerController;
-    [SerializeField] GameManager gameManager;
-    Vector3 velocity;
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private GameObject? followObject;
+    [SerializeField] private CameraController cameraController;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private GameManager gameManager;
+
+    private Vector3 velocity;
 
     public GameObject GetObject() => followObject;
     public Vector3 GetDefaultOffset() => defaultOffset;
@@ -84,6 +86,10 @@ public class FocusPoint : MonoBehaviour
         transform.position += velocity.Mul(speed) * Time.deltaTime;
         followObject = null;
         offset = Vector3.zero;
+
+        // Stay within boundaries
+
+        StayWithinBoundaries();
     }
 
     /// <summary>
@@ -94,6 +100,8 @@ public class FocusPoint : MonoBehaviour
         followObject = null;
         transform.position = position;
         offset = Vector3.zero;
+
+        StayWithinBoundaries();
     }
 
     /// <summary>
@@ -151,5 +159,12 @@ public class FocusPoint : MonoBehaviour
     private void GoToObject()
     {
         transform.position = followObject.transform.position + offset;
+        StayWithinBoundaries();
+    }
+
+    private void StayWithinBoundaries()
+    {
+        if (transform.position.y < minY)
+            transform.position = new Vector3(transform.position.x, minY, transform.position.z);
     }
 }
