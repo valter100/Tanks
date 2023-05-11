@@ -16,7 +16,7 @@ public class AirDrop : MonoBehaviour
         Item
     }
 
-    [SerializeField] public Color color;
+    [SerializeField] public UnityEngine.Color color;
     [SerializeField] protected GameObject Crate;
 
     public GameObject GroundDetection;
@@ -102,17 +102,17 @@ public class AirDrop : MonoBehaviour
 
     private void SetColor(Type type)
     {
-        Color color;
+        UnityEngine.Color color;
 
         switch (type)
         {
             case Type.Health:
-                color = Color.green;
+                color = UnityEngine.Color.green;
                 amount = 10;
                 break;
 
             case Type.Fuel:
-                color = new Color(0f, 190f/255f, 1f);
+                color = new UnityEngine.Color(0f, 190f/255f, 1f);
                 amount = 75;
                 break;
 
@@ -122,7 +122,7 @@ public class AirDrop : MonoBehaviour
                 break;
 
             default:
-                color = Color.white;
+                color = UnityEngine.Color.white;
                 amount = 0;
                 break;
         }
@@ -130,7 +130,7 @@ public class AirDrop : MonoBehaviour
         Crate.GetComponent<Renderer>().material.color = color;
     }
 
-    private Color GetUsableColor()
+    private UnityEngine.Color GetUsableColor()
     {
         // Purple 147, 112, 219
         // Blue     0,   0, 255
@@ -142,7 +142,7 @@ public class AirDrop : MonoBehaviour
         float r =   0f + index * 255f / Prefabs.Usables.Count;
         float g =   0f + index * 255f / Prefabs.Usables.Count;
         float b = 255f - index * 255f / Prefabs.Usables.Count;
-        return new Color(r/255f, g/255f, b/255f, 1f);
+        return new UnityEngine.Color(r/255f, g/255f, b/255f, 1f);
     }
 
     private void SetUsablePrefab()

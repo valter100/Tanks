@@ -54,6 +54,6 @@ public enum Prefab
     FreezeBullet,
     LargeExplodingShell,
     RollerBomb,
-    ShockwaveBullet,
-    SpreadBullet
+    ShockwaveBullet
+    //SpreadBullet
 }
