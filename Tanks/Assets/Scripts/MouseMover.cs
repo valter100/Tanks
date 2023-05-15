@@ -20,7 +20,7 @@ public class MouseMover : StandaloneInputModule
 
     void Start()
     {
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this); //Don't include if mouse movement is specific to a single scene
         mouse = Mouse.current;
         mousePos = Input.mousePosition;
     }
@@ -28,6 +28,10 @@ public class MouseMover : StandaloneInputModule
     // Update is called once per frame
     void Update()
     { 
+        // For every keybind we need to connect both of the joysticks, one for WASD and one for the Arrow keys.
+        // The script checks both of the joysticks every update, which means that both players can steer the mouse
+        // at the same time. This can be further customized with weaving in turn based limitations and the likes.
+
         foreach(KeyCode key in up)
         {
             if (Input.GetKey(key))
@@ -60,9 +64,10 @@ public class MouseMover : StandaloneInputModule
                 break;
             }
         }
-       
-        mouse.WarpCursorPosition(mousePos);
+        // This method places the mouse cursor onto a specific screen coordinate. We use Mouse Pos here to make the cursor follow our inputs.
+        mouse.WarpCursorPosition(mousePos); 
 
+        // Method that simulates mouse clicks. NUM3 has to be hardcoded since Num dont have keycode with the old input system.
         if (Input.GetKeyDown("[3]"))
         {
             ClickAt(mousePos, true);
@@ -81,32 +86,6 @@ public class MouseMover : StandaloneInputModule
             ClickAt(mousePos, false);
         }
 
-        //foreach (KeyCode key in leftClickButtons)
-        //{
-        //    try
-        //    {
-        //        if (Input.GetKeyDown("[" + key  + "]"))
-        //        {
-        //            ClickAt(mousePos, true);
-        //        }
-        //        else if(Input.GetKeyUp("[" + key + "]"))
-        //        {
-        //            ClickAt(mousePos, false);
-        //        }
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        if (Input.GetKeyDown(key))
-        //        {
-        //            ClickAt(mousePos, true);
-        //        }
-        //        else if (Input.GetKeyUp(key))
-        //        {
-        //            ClickAt(mousePos, false);
-        //        }
-        //    }
-        //}
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
@@ -122,10 +101,5 @@ public class MouseMover : StandaloneInputModule
         }, out bool b, out bool bb);
 
         ProcessTouchPress(pointerData, pressed, !pressed);
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Pressed!");
-        }
     }
 }

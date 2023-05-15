@@ -95,7 +95,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 200
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -523,7 +523,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      white_zoom_8: 21300016
+      white_zoom_14: 21300028
       white_zoom_13: 21300026
       white_zoom_4: 21300008
       white_zoom_3: 21300006
@@ -538,7 +538,7 @@ TextureImporter:
       white_zoom_6: 21300012
       white_zoom_11: 21300022
       white_zoom_9: 21300018
-      white_zoom_14: 21300028
+      white_zoom_8: 21300016
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
