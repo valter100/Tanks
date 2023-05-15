@@ -20,6 +20,7 @@ public class MouseMover : StandaloneInputModule
 
     void Start()
     {
+        DontDestroyOnLoad(this);
         mouse = Mouse.current;
         mousePos = Input.mousePosition;
     }
@@ -32,6 +33,7 @@ public class MouseMover : StandaloneInputModule
             if (Input.GetKey(key))
             {
                 mousePos += new Vector2(0, 1) * mouseSpeed;
+                break;
             }
         }        
         foreach(KeyCode key in left)
@@ -39,6 +41,7 @@ public class MouseMover : StandaloneInputModule
             if (Input.GetKey(key))
             {
                 mousePos += new Vector2(-1, 0) * mouseSpeed;
+                break;
             }
         }        
         foreach(KeyCode key in down)
@@ -46,6 +49,7 @@ public class MouseMover : StandaloneInputModule
             if (Input.GetKey(key))
             {
                 mousePos += new Vector2(0, -1) * mouseSpeed;
+                break;
             }
         }        
         foreach(KeyCode key in right)
@@ -53,6 +57,7 @@ public class MouseMover : StandaloneInputModule
             if (Input.GetKey(key))
             {
                 mousePos += new Vector2(1, 0) * mouseSpeed;
+                break;
             }
         }
        

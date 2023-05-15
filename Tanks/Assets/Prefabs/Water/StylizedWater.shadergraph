@@ -1,5 +1,5 @@
 {
-    "m_SGVersion": 2,
+    "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.GraphData",
     "m_ObjectId": "4daf888b1e354860bf48459ff1ff09da",
     "m_Properties": [
@@ -38,6 +38,12 @@
         }
     ],
     "m_Keywords": [],
+    "m_Dropdowns": [],
+    "m_CategoryData": [
+        {
+            "m_Id": "b6e93b5dc72843399fdd19b3469df36b"
+        }
+    ],
     "m_Nodes": [
         {
             "m_Id": "0f6755f5f0874e5599c43cc1c0892c9c"
@@ -642,10 +648,11 @@
         "serializedMesh": {
             "m_SerializedMesh": "{\"mesh\":{\"instanceID\":0}}",
             "m_Guid": ""
-        }
+        },
+        "preventRotation": false
     },
     "m_Path": "Shader Graphs",
-    "m_ConcretePrecision": 0,
+    "m_GraphPrecision": 0,
     "m_PreviewMode": 2,
     "m_OutputNode": {
         "m_Id": ""
@@ -1265,9 +1272,13 @@
         "m_GuidSerialized": "550cff51-ffba-4fb5-a54e-5e5b414d8479"
     },
     "m_Name": "DeepWater",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_24332c1a097d4767ac9c6677de17bf76",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1278,6 +1289,7 @@
         "b": 0.801886796951294,
         "a": 1.0
     },
+    "isMainColor": false,
     "m_ColorMode": 0
 }
 
@@ -1289,9 +1301,13 @@
         "m_GuidSerialized": "462bd839-a7c5-4773-9e85-6351ab5bc7f0"
     },
     "m_Name": "FoamColor",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_24615ef7561f4f61972ef0f49c4240ba",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1302,6 +1318,7 @@
         "b": 1.0,
         "a": 0.7215686440467835
     },
+    "isMainColor": false,
     "m_ColorMode": 0
 }
 
@@ -1506,17 +1523,23 @@
 }
 
 {
-    "m_SGVersion": 0,
+    "m_SGVersion": 1,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
     "m_ObjectId": "3553ef9752c14eb98abcd60881a51bbe",
     "m_ActiveSubTarget": {
         "m_Id": "5c7d4e9f57e04644acc5013d3915d3fa"
     },
+    "m_AllowMaterialOverride": false,
     "m_SurfaceType": 1,
+    "m_ZTestMode": 4,
+    "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
-    "m_TwoSided": false,
+    "m_RenderFace": 2,
     "m_AlphaClip": false,
-    "m_CustomEditorGUI": ""
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
+    "m_CustomEditorGUI": "",
+    "m_SupportVFX": false
 }
 
 {
@@ -1551,9 +1574,13 @@
         "m_GuidSerialized": "7d95b0bd-728c-499f-bcdc-79c6c8f4ef37"
     },
     "m_Name": "WaterDepth",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_37b45158b6c84beca91c3b2cf0635260",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1574,9 +1601,13 @@
         "m_GuidSerialized": "f9b64332-e9b4-4157-9bf3-d58fcd95f28f"
     },
     "m_Name": "RefractionStrength",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_38077ee2610e4e88b8cfd023e72411ef",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1844,9 +1875,13 @@
         "m_GuidSerialized": "207bd16a-651e-4556-ab6e-0690aed500d3"
     },
     "m_Name": "ShallowWater",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_5465b9e01979489db694a9aed39a4fac",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1857,6 +1892,7 @@
         "b": 0.9905660152435303,
         "a": 1.0
     },
+    "isMainColor": false,
     "m_ColorMode": 0
 }
 
@@ -2062,7 +2098,9 @@
     ],
     "m_PropertyIds": [
         2101616401
-    ]
+    ],
+    "m_Dropdowns": [],
+    "m_DropdownSelectedEntries": []
 }
 
 {
@@ -2225,7 +2263,9 @@
     "m_PropertyIds": [
         -1920062442,
         984583157
-    ]
+    ],
+    "m_Dropdowns": [],
+    "m_DropdownSelectedEntries": []
 }
 
 {
@@ -2372,7 +2412,9 @@
     ],
     "m_PropertyIds": [
         2101616401
-    ]
+    ],
+    "m_Dropdowns": [],
+    "m_DropdownSelectedEntries": []
 }
 
 {
@@ -2451,9 +2493,13 @@
         "m_GuidSerialized": "9f64a980-ddbe-4788-984f-ae9fa7d6ccff"
     },
     "m_Name": "FoamCutoff",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_7e24ae8476ef435b9e886868e72a969c",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -2844,9 +2890,13 @@
         "m_GuidSerialized": "c59a03ca-d751-4396-b319-b69e2aa77063"
     },
     "m_Name": "RefractionSpeed",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_a086b39bbe31448ebdbc88c5e6a8a310",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -2867,9 +2917,13 @@
         "m_GuidSerialized": "d241aa00-44d0-4fda-b8a6-f12a7d204ba1"
     },
     "m_Name": "RefractionScale",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_a24dd8af1d4d42bab4a4ede865933a6b",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3053,9 +3107,13 @@
         "m_GuidSerialized": "9ac68850-9dc2-4ab5-aea8-97d98500751b"
     },
     "m_Name": "FoamScale",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_aee2418a4ace44e09913bb6451cc00f1",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3172,6 +3230,48 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "b6e93b5dc72843399fdd19b3469df36b",
+    "m_Name": "",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "37b45158b6c84beca91c3b2cf0635260"
+        },
+        {
+            "m_Id": "5465b9e01979489db694a9aed39a4fac"
+        },
+        {
+            "m_Id": "24332c1a097d4767ac9c6677de17bf76"
+        },
+        {
+            "m_Id": "a086b39bbe31448ebdbc88c5e6a8a310"
+        },
+        {
+            "m_Id": "a24dd8af1d4d42bab4a4ede865933a6b"
+        },
+        {
+            "m_Id": "38077ee2610e4e88b8cfd023e72411ef"
+        },
+        {
+            "m_Id": "c3afadcc695a41599ba9548f9e9d0999"
+        },
+        {
+            "m_Id": "7e24ae8476ef435b9e886868e72a969c"
+        },
+        {
+            "m_Id": "fb0057514a554163944977d2a67856e3"
+        },
+        {
+            "m_Id": "aee2418a4ace44e09913bb6451cc00f1"
+        },
+        {
+            "m_Id": "24615ef7561f4f61972ef0f49c4240ba"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector2MaterialSlot",
     "m_ObjectId": "b9c2d07c303048079f4e7dec7ae68531",
     "m_Id": 1,
@@ -3199,9 +3299,13 @@
         "m_GuidSerialized": "10595b81-6d60-4ecb-b9ff-d09150e91624"
     },
     "m_Name": "FoamAmount",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_c3afadcc695a41599ba9548f9e9d0999",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3887,7 +3991,9 @@
     "m_PropertyIds": [
         -1920062442,
         984583157
-    ]
+    ],
+    "m_Dropdowns": [],
+    "m_DropdownSelectedEntries": []
 }
 
 {
@@ -4010,9 +4116,13 @@
         "m_GuidSerialized": "aa93045e-6495-4b9a-b2aa-c2fa47da2698"
     },
     "m_Name": "FoamSpeed",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_fb0057514a554163944977d2a67856e3",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,

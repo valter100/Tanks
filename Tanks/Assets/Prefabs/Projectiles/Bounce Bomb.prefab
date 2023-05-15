@@ -33,6 +33,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,6 +57,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -131,8 +133,8 @@ MonoBehaviour:
   description: The Bounce Bomb will bounce on impact two times which causes an explosion
     for each bounce.
   iconScale: 0.7
-  startAmount: 9
-  amountRange: 2
+  startAmount: 5
+  amountRange: 1
   attackPattern: {fileID: -3755382965088315169}
   damage: 2
   timeToLive: 15
@@ -149,8 +151,8 @@ MonoBehaviour:
   ownTank: {fileID: 0}
   explosion: {fileID: 5804621341593681060}
   bouncesLeft: 2
-  elasticity: 0.6
-  addedRadius: 1
+  elasticity: 0.5
+  addedRadius: 0.75
 --- !u!114 &5804621341593681060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0bd2490f72879e4c9e5370698397bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 3.5
+  radius: 3
   explosionEffect: {fileID: 5509785784624008221, guid: a44788c97c2989a48a6f613907790306, type: 3}
 --- !u!114 &-3755382965088315169
 MonoBehaviour:

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6141,12 +6141,12 @@ MonoBehaviour:
   inGameMusicVolumeIncrement: 0.1
   windowMode: 1
   soundVolume: 1
-  menuMusicVolume: 0.8
-  inGameMusicVolume: 0.4
+  menuMusicVolume: 1
+  inGameMusicVolume: 1
   defaultWindowMode: 1
   defaultSoundVolume: 1
-  defaultMenuMusicVolume: 0.8
-  defaultInGameMusicVolume: 0.4
+  defaultMenuMusicVolume: 1
+  defaultInGameMusicVolume: 1
   mixer: {fileID: 24100000, guid: 019caff40b334af409d1ac5b4b4952dc, type: 2}
 --- !u!4 &1109300536
 Transform:
@@ -11467,9 +11467,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8523233214602026942, guid: 89359d1731701394abc7e7233c3ab93a, type: 3}
+      propertyPath: mouseSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8523233214602026943, guid: 89359d1731701394abc7e7233c3ab93a, type: 3}
       propertyPath: m_Name
       value: MouseMover
+      objectReference: {fileID: 0}
+    - target: {fileID: 8523233214602026943, guid: 89359d1731701394abc7e7233c3ab93a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89359d1731701394abc7e7233c3ab93a, type: 3}
